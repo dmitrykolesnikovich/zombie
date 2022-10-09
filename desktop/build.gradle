@@ -1,5 +1,5 @@
 ext {
-    mainClassName = "vizor.zombie.DesktopLauncher"
+    mainClassName = "zombie.DesktopLauncher"
     assetsDir = new File("../assets")
 }
 
