@@ -18,7 +18,7 @@ public class ZombieGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
+		ScreenUtils.clear(1f, 0.25f, 0.25f, 1);
 		batch.begin();
 		batch.draw(img, 0, 0);
 		batch.end();
