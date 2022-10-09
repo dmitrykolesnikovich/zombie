@@ -1,2 +1,5 @@
-# zombie
-Тестовое задание Game Java Developer (Vizor Games)
+# Zombie
+
+## How to Run
+
+`gradlew desktop:run`
