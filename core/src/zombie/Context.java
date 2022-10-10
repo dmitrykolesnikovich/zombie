@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import zombie.features.Input;
@@ -20,6 +21,7 @@ public class Context extends ApplicationAdapter {
     private static final Color backgroundColor = new Color(0x7AAAC9FF);
     public Level level;
     private SpriteBatch batch;
+    private ShapeRenderer shapeRenderer;
     public final Vector2 origin = new Vector2();
     public final OrthographicCamera camera = new OrthographicCamera();
     public Animation heroAnimation;
@@ -29,11 +31,13 @@ public class Context extends ApplicationAdapter {
     public void create() {
         Gdx.input.setInputProcessor(new Input(this));
         batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
 
         try {
             level = Level.createLevel("main_island");
             heroAnimation = Animation.createAnimation("anim_woodcutter_stand");
-            System.out.println("breakpoint");
+            origin.set(level.offsetPoint.x, -level.offsetPoint.y);
+            updateCamera();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -44,24 +48,42 @@ public class Context extends ApplicationAdapter {
         totalTime += Gdx.graphics.getDeltaTime();
         ScreenUtils.clear(backgroundColor);
         batch.begin();
+
+        // tiles
         for (Tile tile : level.tiles) {
-            float x = tile.x - level.offsetPoint.x;
-            float y = tile.y - level.offsetPoint.y;
+            float x = tile.x;
+            float y = Gdx.graphics.getHeight() - tile.y;
             float width = tile.width;
             float height = tile.height;
-            batch.draw(tile.texture, x, Gdx.graphics.getHeight() - y, width, height);
+            batch.draw(tile.texture, x, y, width, height);
         }
 
         // hero
         TextureRegion heroFrame = heroAnimation.delegate.getKeyFrame(totalTime, true);
-        batch.draw(heroFrame, 0, 0);
-
+        int heroX = 1080;
+        int heroY = Gdx.graphics.getHeight() + 436;
+        batch.draw(heroFrame, heroX, heroY);
         batch.end();
+
+        // outline
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(new Color(0.25f, 0.25f, 1, 1));
+        for (Tile tile : level.tiles) {
+            float x = tile.x;
+            float y = Gdx.graphics.getHeight() - tile.y;
+            float width = tile.width;
+            float height = tile.height;
+            shapeRenderer.rect(x, y, width, height);
+        }
+        shapeRenderer.setColor(new Color(1, 0.25f, 0.25f, 1));
+        shapeRenderer.rect(heroX, heroY, heroFrame.getRegionWidth(), heroFrame.getRegionHeight());
+        shapeRenderer.end();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
+        shapeRenderer.dispose();
         level.dispose();
     }
 
@@ -80,6 +102,7 @@ public class Context extends ApplicationAdapter {
         camera.position.set(origin.x + width / 2, origin.y - height / 2, 0);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
+        shapeRenderer.setProjectionMatrix(camera.combined);
     }
 
 }

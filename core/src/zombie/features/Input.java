@@ -26,7 +26,7 @@ public class Input extends InputAdapter {
         if (button != com.badlogic.gdx.Input.Buttons.LEFT || pointer > 0) return false;
         initialDraggingPoint.set(screenX, screenY, 0);
         initialMatrix = new Matrix4(context.camera.invProjectionView);
-        Utils.unproject(context.camera, initialDraggingPoint, initialMatrix); // context.camera.unproject(initialDraggingPoint);
+        Utils.unproject(context.camera, initialDraggingPoint, initialMatrix);
         currentOrigin.set(context.origin);
         isDown = true;
         return true;
@@ -36,7 +36,7 @@ public class Input extends InputAdapter {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if (isDown) {
             currentDraggingPoint.set(screenX, screenY, 0);
-            Utils.unproject(context.camera, currentDraggingPoint, initialMatrix); // context.camera.unproject(initialDraggingPoint);
+            Utils.unproject(context.camera, currentDraggingPoint, initialMatrix);
             Vector2 origin = context.origin;
             float dx = currentDraggingPoint.x - initialDraggingPoint.x;
             float dy = currentDraggingPoint.y - initialDraggingPoint.y;
