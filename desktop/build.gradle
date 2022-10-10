@@ -1,5 +1,4 @@
 ext {
-    mainClassName = "zombie.DesktopLauncher"
     assetsDir = new File("../assets")
 }
 
@@ -11,7 +10,7 @@ sourceSets {
 }
 
 task run(dependsOn: classes, type: JavaExec) {
-    mainClass = project.mainClassName
+    mainClass = "zombie.DesktopLauncher"
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
     workingDir = project.assetsDir
@@ -22,26 +21,14 @@ task run(dependsOn: classes, type: JavaExec) {
     }
 }
 
-task debug(dependsOn: classes, type: JavaExec) {
-    mainClass = project.mainClassName
+task orthographicCamera(dependsOn: classes, type: JavaExec) {
+    mainClass = "zombie.OrthographicCameraExampleLauncher"
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
     workingDir = project.assetsDir
     ignoreExitValue = true
-    debug = true
-}
 
-task dist(type: Jar) {
-    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-    manifest {
-        attributes 'Main-Class': project.mainClassName
+    if (org.gradle.internal.os.OperatingSystem.current() == org.gradle.internal.os.OperatingSystem.MAC_OS) {
+        jvmArgs += "-XstartOnFirstThread"
     }
-    dependsOn configurations.runtimeClasspath
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-    with jar
 }
-
-
-dist.dependsOn classes
