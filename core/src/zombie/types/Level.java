@@ -28,7 +28,6 @@ public class Level implements Disposable {
     public float tilesPerAtlasRow;
     public List<Tile> tiles = new ArrayList<>();
     public Vector2 offsetPoint;
-    public Vector2 origin = new Vector2();
 
     // graphics
     public Texture texture;
@@ -47,9 +46,9 @@ public class Level implements Disposable {
         String filePath = dirPath + "/" + name + "_map_config.xml";
         XmlReader xml = new XmlReader();
         XmlReader.Element tileMapElement = xml.parse(new FileReader(filePath));
-        Level result = new Level();
 
         // attributes
+        Level result = new Level();
         result.image = tileMapElement.getAttribute("image");
         result.tileWidth = Float.parseFloat(tileMapElement.getAttribute("tileWidth"));
         result.tileHeight = Float.parseFloat(tileMapElement.getAttribute("tileHeight"));
