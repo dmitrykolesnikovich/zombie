@@ -32,3 +32,18 @@ task orthographicCamera(dependsOn: classes, type: JavaExec) {
         jvmArgs += "-XstartOnFirstThread"
     }
 }
+
+task dist(type: Jar) {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    manifest {
+        attributes 'Main-Class': "zombie.DesktopLauncher"
+    }
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}
+
+
+dist.dependsOn classes

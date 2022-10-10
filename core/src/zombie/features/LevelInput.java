@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import zombie.Context;
 import zombie.Utils;
 
-public class Input extends InputAdapter {
+public class LevelInput extends InputAdapter {
 
     private final Context context;
     private boolean isDown = false;
@@ -17,7 +17,7 @@ public class Input extends InputAdapter {
     private final Vector2 currentOrigin = new Vector2();
     private Matrix4 initialMatrix;
 
-    public Input(Context context) {
+    public LevelInput(Context context) {
         this.context = context;
     }
 
@@ -27,7 +27,7 @@ public class Input extends InputAdapter {
         initialDraggingPoint.set(screenX, screenY, 0);
         initialMatrix = new Matrix4(context.camera.invProjectionView);
         Utils.unproject(context.camera, initialDraggingPoint, initialMatrix);
-        currentOrigin.set(context.origin);
+        currentOrigin.set(context.cameraOrigin);
         isDown = true;
         return true;
     }
@@ -37,7 +37,7 @@ public class Input extends InputAdapter {
         if (isDown) {
             currentDraggingPoint.set(screenX, screenY, 0);
             Utils.unproject(context.camera, currentDraggingPoint, initialMatrix);
-            Vector2 origin = context.origin;
+            Vector2 origin = context.cameraOrigin;
             float dx = currentDraggingPoint.x - initialDraggingPoint.x;
             float dy = currentDraggingPoint.y - initialDraggingPoint.y;
             System.out.println("dragging: " + dx + ", " + dy);
@@ -57,7 +57,7 @@ public class Input extends InputAdapter {
     @Override
     public boolean scrolled(float amountX, float amountY) {
         System.out.println("scroll: " + amountX + ", " + amountY);
-        context.camera.zoom += amountY * 0.2;
+        context.camera.zoom += amountY * 0.025;
         context.camera.zoom = MathUtils.clamp(context.camera.zoom, context.level.minScale, context.level.maxScale);
         context.updateCamera();
         return true;
