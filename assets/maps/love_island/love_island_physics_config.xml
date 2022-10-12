@@ -18110,9 +18110,9 @@
   <zones>
     <list>
       <PhysicsZone availableForBuilding="false" color="0" id="0" locked="false" passable="false"></PhysicsZone>
-      <PhysicsZone availableForBuilding="false" color="-154" id="1" locked="false" name="shore" passable="true"></PhysicsZone>
+      <PhysicsZone availableForBuilding="false" color="-154" id="1" locked="false" name="shore" passable="false"></PhysicsZone>
       <PhysicsZone availableForBuilding="true" color="-16711885" id="4" locked="false" name="exploration" passable="true"></PhysicsZone>
-      <PhysicsZone availableForBuilding="false" color="-13408513" id="7" locked="false" name="fishermans_water" passable="true"></PhysicsZone>
+      <PhysicsZone availableForBuilding="false" color="-13408513" id="7" locked="false" name="fishermans_water" passable="false"></PhysicsZone>
     </list>
   </zones>
 </PhysicsMap>

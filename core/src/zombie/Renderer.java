@@ -67,7 +67,7 @@ public class Renderer {
         for (Cell cell : level.physics.cells) {
             float x = cell.j * level.cellSide;
             float y = cell.i * level.cellSide;
-            drawRectangleIso(renderer, x, y, level.cellSide, level.cellSide, cell.zone.availableForBuilding ? cell.zone.color : Color.DARK_GRAY);
+            drawRectangleIso(renderer, x, y, level.cellSide, level.cellSide, cell.availableForMovement() ? cell.zone.color : Color.DARK_GRAY);
         }
         renderer.end();
     }

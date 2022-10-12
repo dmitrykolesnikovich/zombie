@@ -16671,13 +16671,13 @@
   <zones>
     <list>
       <PhysicsZone availableForBuilding="false" color="0" id="0" locked="false" name="void" passable="false"></PhysicsZone>
-      <PhysicsZone availableForBuilding="false" color="-154" id="1" locked="false" name="shore" passable="true"></PhysicsZone>
+      <PhysicsZone availableForBuilding="false" color="-154" id="1" locked="false" name="shore" passable="false"></PhysicsZone>
       <PhysicsZone availableForBuilding="true" color="-16751104" id="2" locked="true" name="behind_the_fence" passable="true"></PhysicsZone>
       <PhysicsZone availableForBuilding="false" color="-52" id="3" locked="false" name="road" passable="true"></PhysicsZone>
       <PhysicsZone availableForBuilding="true" color="-16711885" id="4" locked="false" name="main" passable="true"></PhysicsZone>
-      <PhysicsZone availableForBuilding="false" color="-13261" id="5" locked="true" name="shore_fence" passable="true"></PhysicsZone>
+      <PhysicsZone availableForBuilding="false" color="-13261" id="5" locked="true" name="shore_fence" passable="false"></PhysicsZone>
       <PhysicsZone availableForBuilding="true" color="-16711732" id="6" locked="true" name="on_hill" passable="true"></PhysicsZone>
-      <PhysicsZone availableForBuilding="false" color="-13408513" id="7" locked="false" name="fishermans_water" passable="true"></PhysicsZone>
+      <PhysicsZone availableForBuilding="false" color="-13408513" id="7" locked="false" name="fishermans_water" passable="false"></PhysicsZone>
       <PhysicsZone availableForBuilding="false" color="-16777216" id="8" locked="false" name="portal" passable="true"></PhysicsZone>
     </list>
   </zones>

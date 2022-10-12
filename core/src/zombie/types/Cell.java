@@ -12,6 +12,7 @@ public class Cell {
     // used by features
     public Level level;
     private Vector2 centerIso;
+    public Object body;
 
     public Vector2 getCenterIso() {
         float side = level.cellSide;
@@ -20,6 +21,10 @@ public class Cell {
             Utils.convertOrthoToIso(centerIso);
         }
         return centerIso;
+    }
+
+    public boolean availableForMovement() {
+        return zone.passable && body == null;
     }
 
     @Override

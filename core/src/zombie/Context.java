@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import zombie.features.DragLevelFeature;
 import zombie.features.MoveHeroFeature;
+import zombie.features.OutlineDebugFeature;
 import zombie.features.ZoomLevelFeature;
 import zombie.types.Cell;
 import zombie.types.Level;
@@ -18,11 +19,13 @@ public class Context extends ApplicationAdapter {
     private static final Color HERO_OUTLINE_COLOR = new Color(1, 1, 0.25f, 1);
 
     public Level level;
+    public boolean isOutlineDebugEnabled = false;
 
     @Override
     public void create() {
         level = LevelBuilder.buildLevel("main_island");
         Gdx.input.setInputProcessor(new InputMultiplexer(
+                new OutlineDebugFeature(this),
                 new DragLevelFeature(level),
                 new ZoomLevelFeature(level),
                 new MoveHeroFeature(level)
@@ -42,11 +45,11 @@ public class Context extends ApplicationAdapter {
         Renderer.drawTiles(level);
         Renderer.drawWave(level);
         Renderer.drawHero(level);
-        /*
-        Renderer.drawTilesOutline(level, TILE_OUTLINE_COLOR);
-        Renderer.drawHeroOutline(level, HERO_OUTLINE_COLOR);
-        Renderer.drawCells(level);
-        */
+        if (isOutlineDebugEnabled) {
+            Renderer.drawTilesOutline(level, TILE_OUTLINE_COLOR);
+            Renderer.drawHeroOutline(level, HERO_OUTLINE_COLOR);
+            Renderer.drawCells(level);
+        }
     }
 
     @Override

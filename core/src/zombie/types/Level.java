@@ -33,7 +33,7 @@ public class Level implements Disposable {
     /*model*/
 
     public float cellSide = 16;
-    public Color backgroundColor = new Color(0x000000FF); // todo replace with 0x7AAAC9FF;
+    public Color backgroundColor = new Color(0x7AAAC9FF);
     public Physics physics;
     public final Vector2 pivot = new Vector2();
     public final OrthographicCamera camera = new OrthographicCamera();
