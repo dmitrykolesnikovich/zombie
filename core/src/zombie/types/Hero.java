@@ -2,7 +2,7 @@ package zombie.types;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import zombie.features.HeroMovement;
+import zombie.features.HeroInput;
 
 import java.io.FileNotFoundException;
 
@@ -10,13 +10,13 @@ public class Hero {
 
     public final Vector2 origin = new Vector2();
     private Animation animation;
-    private final HeroMovement movement = new HeroMovement(this, 16f);
+    private final HeroInput input = new HeroInput(this, 16f);
 
     public void update(float deltaTime) {
         if (animation != null) {
             animation.totalTime += deltaTime;
         }
-        movement.update();
+        input.update();
     }
 
     public void animate(String animationName, boolean flipped) {

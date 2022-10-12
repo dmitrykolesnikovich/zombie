@@ -6,14 +6,14 @@ import com.badlogic.gdx.math.Vector2;
 import zombie.Utils;
 import zombie.types.Hero;
 
-public class HeroMovement {
+public class HeroInput {
 
     private final Hero hero;
     private final float speed;
     private boolean isDown = true;
     private boolean isRight = true;
 
-    public HeroMovement(Hero hero, float speed) {
+    public HeroInput(Hero hero, float speed) {
         this.hero = hero;
         this.speed = speed;
     }
