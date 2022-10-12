@@ -3,12 +3,11 @@ package zombie.features;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
-import zombie.Context;
 import zombie.Utils;
 import zombie.types.Hero;
 
 public class HeroMovement {
-    
+
     private final Hero hero;
     private final float speed;
     private boolean isDown = true;

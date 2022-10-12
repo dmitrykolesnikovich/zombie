@@ -1,5 +1,7 @@
 package zombie.types;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -38,6 +40,19 @@ public class Level implements Disposable {
 
     public Physics physics;
     public final Vector2 origin = new Vector2();
+    public final OrthographicCamera camera = new OrthographicCamera();
+    public Hero hero;
+
+    public void resize() {
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    }
+
+    public void resize(int width, int height) {
+        camera.position.set(origin.x + width / 2f, origin.y + height / 2f, 0);
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
+        camera.update();
+    }
 
     @Override
     public void dispose() {
@@ -51,47 +66,50 @@ public class Level implements Disposable {
         XmlReader.Element tileMapElement = xml.parse(new FileReader(filePath));
 
         // attributes
-        Level result = new Level();
-        result.image = tileMapElement.getAttribute("image");
-        result.tileWidth = Float.parseFloat(tileMapElement.getAttribute("tileWidth"));
-        result.tileHeight = Float.parseFloat(tileMapElement.getAttribute("tileHeight"));
-        result.tileBorderSize = Float.parseFloat(tileMapElement.getAttribute("tileBorderSize"));
-        result.tileMapWidth = Float.parseFloat(tileMapElement.getAttribute("tileMapWidth"));
-        result.tileMapHeight = Float.parseFloat(tileMapElement.getAttribute("tileMapHeight"));
-        result.defaultScale = Float.parseFloat(tileMapElement.getAttribute("defaultScale"));
-        result.maxScale = Float.parseFloat(tileMapElement.getAttribute("maxScale"));
-        result.minScale = Float.parseFloat(tileMapElement.getAttribute("minScale"));
-        result.tilesPerAtlasRow = Float.parseFloat(tileMapElement.getAttribute("tilesPerAtlasRow"));
-        result.tilesPerAtlasColumn = Float.parseFloat(tileMapElement.getAttribute("tilesPerAtlasColumn"));
+        Level level = new Level();
+        level.image = tileMapElement.getAttribute("image");
+        level.tileWidth = Float.parseFloat(tileMapElement.getAttribute("tileWidth"));
+        level.tileHeight = Float.parseFloat(tileMapElement.getAttribute("tileHeight"));
+        level.tileBorderSize = Float.parseFloat(tileMapElement.getAttribute("tileBorderSize"));
+        level.tileMapWidth = Float.parseFloat(tileMapElement.getAttribute("tileMapWidth"));
+        level.tileMapHeight = Float.parseFloat(tileMapElement.getAttribute("tileMapHeight"));
+        level.defaultScale = Float.parseFloat(tileMapElement.getAttribute("defaultScale"));
+        level.maxScale = Float.parseFloat(tileMapElement.getAttribute("maxScale"));
+        level.minScale = Float.parseFloat(tileMapElement.getAttribute("minScale"));
+        level.tilesPerAtlasRow = Float.parseFloat(tileMapElement.getAttribute("tilesPerAtlasRow"));
+        level.tilesPerAtlasColumn = Float.parseFloat(tileMapElement.getAttribute("tilesPerAtlasColumn"));
 
         XmlReader.Element pointElement = tileMapElement.getChildByName("offset").getChildByName("Point");
-        result.offsetPoint = new Vector2(Float.parseFloat(pointElement.getAttribute("x")), Float.parseFloat(pointElement.getAttribute("y")));
+        level.offsetPoint = new Vector2(Float.parseFloat(pointElement.getAttribute("x")), Float.parseFloat(pointElement.getAttribute("y")));
 
         // graphics
-        int atlasSize = (int) (result.tilesPerAtlasRow * result.tilesPerAtlasColumn);
-        result.atlas = new TextureRegion[atlasSize];
-        result.texture = new Texture(dirPath + "/" + result.image);
-        for (int row = 0; row < result.tilesPerAtlasRow; row++) {
-            for (int column = 0; column < result.tilesPerAtlasColumn; column++) {
-                float x = (2 * column + 1) * result.tileBorderSize + column * result.tileWidth;
-                float y = (2 * row + 1) * result.tileBorderSize + row * result.tileHeight;
-                TextureRegion atlasTexture = new TextureRegion(result.texture, (int) x, (int) y, (int) result.tileWidth, (int) result.tileHeight);
-                result.atlas[(int) (row * result.tilesPerAtlasColumn + column)] = atlasTexture;
+        int atlasSize = (int) (level.tilesPerAtlasRow * level.tilesPerAtlasColumn);
+        level.atlas = new TextureRegion[atlasSize];
+        level.texture = new Texture(dirPath + "/" + level.image);
+        for (int row = 0; row < level.tilesPerAtlasRow; row++) {
+            for (int column = 0; column < level.tilesPerAtlasColumn; column++) {
+                float x = (2 * column + 1) * level.tileBorderSize + column * level.tileWidth;
+                float y = (2 * row + 1) * level.tileBorderSize + row * level.tileHeight;
+                TextureRegion atlasTexture = new TextureRegion(level.texture, (int) x, (int) y, (int) level.tileWidth, (int) level.tileHeight);
+                level.atlas[(int) (row * level.tilesPerAtlasColumn + column)] = atlasTexture;
             }
         }
-        result.atlasFlippedHorizontallyOnly = new TextureRegion[atlasSize];
-        result.atlasFlippedVerticallyOnly = new TextureRegion[atlasSize];
-        result.atlasFlippedBoth = new TextureRegion[atlasSize];
+        level.atlasFlippedHorizontallyOnly = new TextureRegion[atlasSize];
+        level.atlasFlippedVerticallyOnly = new TextureRegion[atlasSize];
+        level.atlasFlippedBoth = new TextureRegion[atlasSize];
 
         // children
         Array<XmlReader.Element> tileElements = tileMapElement.getChildByName("items").getChildByName("list").getChildrenByName("Tile");
         for (XmlReader.Element tileElement : tileElements) {
-            Tile tile = Tile.createTile(result, tileElement);
-            result.tiles.add(tile);
+            Tile tile = Tile.createTile(level, tileElement);
+            level.tiles.add(tile);
         }
 
-        result.physics = Physics.createPhysics(name);
-        return result;
+        level.physics = Physics.createPhysics(name);
+        level.origin.set(level.offsetPoint.x, level.offsetPoint.y);
+        level.camera.setToOrtho(true);
+        level.hero = new Hero();
+        return level;
     }
 
     TextureRegion findTextureRegion(int index, boolean flipHorizontal, boolean flippedVertical) {

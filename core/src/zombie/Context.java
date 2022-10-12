@@ -21,14 +21,7 @@ public class Context extends ApplicationAdapter {
     private static final Color tileOutlineColor = new Color(1, 0.25f, 0.25f, 1);
     private static final Color heroOutlineColor = new Color(1, 1, 0.25f, 1);
 
-    /*model*/
-
     public Level level;
-    public final OrthographicCamera camera = new OrthographicCamera();
-    public final Hero hero = new Hero();
-
-    /*renderer*/
-
     private SpriteBatch tilesRenderer;
     private SpriteBatch heroRenderer;
     private ShapeRenderer tilesOutlineRenderer;
@@ -40,8 +33,6 @@ public class Context extends ApplicationAdapter {
 
     @Override
     public void create() {
-        Gdx.input.setInputProcessor(new InputMultiplexer(new LevelInput(this)));
-        camera.setToOrtho(true);
         tilesRenderer = new SpriteBatch();
         heroRenderer = new SpriteBatch();
         tilesOutlineRenderer = new ShapeRenderer();
@@ -50,8 +41,7 @@ public class Context extends ApplicationAdapter {
 
         try {
             level = Level.createLevel("main_island");
-            level.origin.set(level.offsetPoint.x, level.offsetPoint.y);
-            // heroOrigin.set(level.offsetPoint.x, level.offsetPoint.y);
+            Gdx.input.setInputProcessor(new InputMultiplexer(new LevelInput(level)));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -78,6 +68,7 @@ public class Context extends ApplicationAdapter {
         }
 
         // hero
+        Hero hero = level.hero;
         hero.update(Gdx.graphics.getDeltaTime());
         heroRenderer.begin();
         TextureRegion frame = hero.getAnimationFrame();
@@ -116,25 +107,24 @@ public class Context extends ApplicationAdapter {
         }
     }
 
-    public void resize() {
-        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-    }
-
     @Override
     public void resize(int width, int height) {
-        camera.position.set(level.origin.x + width / 2f, level.origin.y + height / 2f, 0);
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
-        camera.update();
-        heroRenderer.setProjectionMatrix(camera.combined);
-        heroOutlineRenderer.setProjectionMatrix(camera.combined);
+        level.resize(width, height);
+        tilesRenderer.setProjectionMatrix(level.camera.combined);
+        heroRenderer.setProjectionMatrix(level.camera.combined);
+        tilesOutlineRenderer.setProjectionMatrix(level.camera.combined);
+        heroOutlineRenderer.setProjectionMatrix(level.camera.combined);
+        cellsRenderer.setProjectionMatrix(level.camera.combined);
     }
 
     @Override
     public void dispose() {
-        heroRenderer.dispose();
-        heroOutlineRenderer.dispose();
         level.dispose();
+        tilesRenderer.dispose();
+        heroRenderer.dispose();
+        tilesOutlineRenderer.dispose();
+        heroOutlineRenderer.dispose();
+        cellsRenderer.dispose();
     }
 
 }

@@ -7,27 +7,28 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import zombie.Context;
 import zombie.Utils;
+import zombie.types.Level;
 
 public class LevelInput extends InputAdapter {
 
-    private final Context context;
+    private final Level level;
     private final Vector3 initialPoint = new Vector3();
-    private final Vector3 currentPoint = new Vector3();
-    private final Matrix4 initialCameraMatrix = new Matrix4();
     private final Vector2 initialLevelOrigin = new Vector2();
+    private final Matrix4 initialCameraMatrix = new Matrix4();
+    private final Vector3 currentPoint = new Vector3();
     private boolean isDown = false;
 
-    public LevelInput(Context context) {
-        this.context = context;
+    public LevelInput(Level level) {
+        this.level = level;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button != com.badlogic.gdx.Input.Buttons.LEFT || pointer > 0) return false;
         initialPoint.set(screenX, screenY, 0);
-        initialCameraMatrix.set(context.camera.invProjectionView);
-        Utils.unproject(context.camera, initialPoint, initialCameraMatrix);
-        initialLevelOrigin.set(context.level.origin);
+        initialLevelOrigin.set(level.origin);
+        initialCameraMatrix.set(level.camera.invProjectionView);
+        Utils.unproject(level.camera, initialPoint, initialCameraMatrix);
         isDown = true;
         return true;
     }
@@ -36,12 +37,12 @@ public class LevelInput extends InputAdapter {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if (isDown) {
             currentPoint.set(screenX, screenY, 0);
-            Utils.unproject(context.camera, currentPoint, initialCameraMatrix);
+            Utils.unproject(level.camera, currentPoint, initialCameraMatrix);
             float dx = currentPoint.x - initialPoint.x;
             float dy = currentPoint.y - initialPoint.y;
-            context.level.origin.x = initialLevelOrigin.x - dx;
-            context.level.origin.y = initialLevelOrigin.y - dy;
-            context.resize();
+            level.origin.x = initialLevelOrigin.x - dx;
+            level.origin.y = initialLevelOrigin.y - dy;
+            level.resize();
         }
         return true;
     }
@@ -54,9 +55,9 @@ public class LevelInput extends InputAdapter {
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
-        context.camera.zoom += amountY * 0.025;
-        context.camera.zoom = MathUtils.clamp(context.camera.zoom, context.level.minScale, context.level.maxScale * 10);
-        context.resize();
+        level.camera.zoom += amountY * 0.025;
+        level.camera.zoom = MathUtils.clamp(level.camera.zoom, level.minScale, level.maxScale * 10);
+        level.resize();
         return true;
     }
 
