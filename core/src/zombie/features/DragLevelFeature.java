@@ -1,7 +1,6 @@
 package zombie.features;
 
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -11,10 +10,10 @@ import zombie.types.Level;
 public class DragLevelFeature extends InputAdapter {
 
     private final Level level;
-    private final Vector3 initialPoint = new Vector3();
-    private final Vector2 initialLevelOrigin = new Vector2();
-    private final Matrix4 initialCameraMatrix = new Matrix4();
-    private final Vector3 currentPoint = new Vector3();
+    private final Vector3 initialTouchPoint = new Vector3();
+    private final Vector2 initialLevelPivot = new Vector2();
+    private final Matrix4 initialTouchMatrix = new Matrix4();
+    private final Vector3 currentTouchPoint = new Vector3();
     private boolean isDown = false;
 
     public DragLevelFeature(Level level) {
@@ -24,25 +23,25 @@ public class DragLevelFeature extends InputAdapter {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button != com.badlogic.gdx.Input.Buttons.LEFT || pointer > 0) return false;
-        initialPoint.set(screenX, screenY, 0);
-        initialLevelOrigin.set(level.origin);
-        initialCameraMatrix.set(level.camera.invProjectionView);
-        Utils.unproject(level.camera, initialPoint, initialCameraMatrix);
+
+        initialTouchPoint.set(screenX, screenY, 0);
+        Utils.unproject(level.camera, initialTouchPoint, initialTouchMatrix.set(level.camera.invProjectionView));
+        initialLevelPivot.set(level.pivot);
         isDown = true;
         return true;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if (isDown) {
-            currentPoint.set(screenX, screenY, 0);
-            Utils.unproject(level.camera, currentPoint, initialCameraMatrix);
-            float dx = currentPoint.x - initialPoint.x;
-            float dy = currentPoint.y - initialPoint.y;
-            level.origin.x = initialLevelOrigin.x - dx;
-            level.origin.y = initialLevelOrigin.y - dy;
-            level.resize();
-        }
+        if (!isDown) return false;
+
+        currentTouchPoint.set(screenX, screenY, 0);
+        Utils.unproject(level.camera, currentTouchPoint, initialTouchMatrix);
+        float dx = currentTouchPoint.x - initialTouchPoint.x;
+        float dy = currentTouchPoint.y - initialTouchPoint.y;
+        level.pivot.x = initialLevelPivot.x - dx;
+        level.pivot.y = initialLevelPivot.y - dy;
+        level.resize();
         return true;
     }
 

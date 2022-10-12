@@ -65,7 +65,7 @@ public class HeroMovementFeature {
 
         // convert 2d to iso
         Utils.convert2dToIso(movement);
-        hero.origin.add(movement);
+        hero.position.add(movement);
 
         // animation
         if (existsMovement) {

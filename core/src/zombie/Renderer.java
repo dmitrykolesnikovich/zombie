@@ -37,7 +37,7 @@ public class Renderer {
         TextureRegion image = hero.getImageOrNull();
 
         renderer.begin();
-        drawImage(renderer, image, hero.origin.x, hero.origin.y, image.getRegionWidth(), image.getRegionHeight());
+        drawImage(renderer, image, hero.position.x, hero.position.y, image.getRegionWidth(), image.getRegionHeight());
         renderer.end();
     }
 
@@ -57,7 +57,7 @@ public class Renderer {
         TextureRegion image = hero.getImageOrNull();
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
-        drawRectangle2d(renderer, hero.origin.x, hero.origin.y, image.getRegionWidth(), image.getRegionHeight(), color);
+        drawRectangle2d(renderer, hero.position.x, hero.position.y, image.getRegionWidth(), image.getRegionHeight(), color);
         renderer.end();
     }
 

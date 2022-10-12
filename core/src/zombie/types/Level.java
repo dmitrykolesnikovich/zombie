@@ -34,7 +34,7 @@ public class Level implements Disposable {
     public float cellSide = 16;
     public Color backgroundColor = new Color(0x000000FF); // todo replace with 0x7AAAC9FF;
     public Physics physics;
-    public final Vector2 origin = new Vector2();
+    public final Vector2 pivot = new Vector2();
     public final OrthographicCamera camera = new OrthographicCamera();
     public Hero hero;
 
@@ -63,7 +63,7 @@ public class Level implements Disposable {
     }
 
     public void resize(int width, int height) {
-        camera.position.set(origin.x + width / 2f, origin.y + height / 2f, 0);
+        camera.position.set(pivot.x + width / 2f, pivot.y + height / 2f, 0);
         camera.viewportWidth = width;
         camera.viewportHeight = height;
         camera.update();

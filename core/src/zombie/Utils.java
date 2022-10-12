@@ -68,12 +68,13 @@ public class Utils {
 
     /*camera*/
 
-    public static void unproject(Camera camera, Vector3 screenCoords, Matrix4 initialMatrix) {
+    // https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/graphics/Camera.java#L194
+    public static void unproject(Camera camera, Vector3 screenCoords, Matrix4 invProjectionView) {
         float x = screenCoords.x, y = Gdx.graphics.getHeight() - screenCoords.y;
         screenCoords.x = (2 * x) / camera.viewportWidth - 1;
         screenCoords.y = (2 * y) / camera.viewportHeight - 1;
         screenCoords.z = 2 * screenCoords.z - 1;
-        screenCoords.prj(initialMatrix);
+        screenCoords.prj(invProjectionView);
     }
 
 }

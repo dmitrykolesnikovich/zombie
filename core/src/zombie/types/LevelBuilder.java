@@ -66,7 +66,7 @@ public class LevelBuilder {
 
         // model
         level.physics = PhysicsBuilder.buildPhysics(name);
-        level.origin.set(level.offsetPoint.x, level.offsetPoint.y);
+        level.pivot.set(level.offsetPoint.x, level.offsetPoint.y);
         level.camera.setToOrtho(true);
         level.hero = new Hero();
 

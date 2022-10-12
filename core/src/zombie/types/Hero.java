@@ -6,7 +6,7 @@ import zombie.features.HeroMovementFeature;
 
 public class Hero {
 
-    public final Vector2 origin = new Vector2();
+    public final Vector2 position = new Vector2();
     public float movementSpeed = 16;
     private final HeroMovementFeature movementFeature = new HeroMovementFeature(this);
     private Animation animation;
