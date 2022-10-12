@@ -34,9 +34,11 @@ public class PhysicsBuilder {
 
         // cells
         Array<XmlReader.Element> cellElements = physicsElement.getChildByName("cells").getChildByName("list").getChildrenByName("PhysicsCell");
+        physics.grid = new Cell[physics.width][physics.height];
         for (XmlReader.Element cellElement : cellElements) {
             Cell cell = CellBuilder.buildCell(cellElement, physics);
             physics.cells.add(cell);
+            physics.grid[cell.i][cell.j] = cell;
         }
 
         return physics;

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
+import zombie.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,5 +113,18 @@ public class Level implements Disposable {
         if (image == null) throw new IllegalStateException("index: " + index);
         return image;
     }
+
+    public Cell findCellOrNull(Vector2 point) {
+        Utils.convertIsoTo2d(VECTOR_2D.set(point));
+        if (VECTOR_2D.y < 0 || VECTOR_2D.x < 0) return null;
+
+        int i = (int) (VECTOR_2D.y / cellSide);
+        int j = (int) (VECTOR_2D.x / cellSide);
+        return physics.grid[i][j];
+    }
+
+    /*internals*/
+
+    private static final Vector2 VECTOR_2D = new Vector2();
 
 }

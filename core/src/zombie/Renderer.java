@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import zombie.types.Cell;
@@ -35,9 +36,10 @@ public class Renderer {
         SpriteBatch renderer = level.heroRenderer;
         Hero hero = level.hero;
         TextureRegion image = hero.getImageOrNull();
+        Rectangle bounds = hero.getBounds();
 
         renderer.begin();
-        drawImage(renderer, image, hero.position.x, hero.position.y, image.getRegionWidth(), image.getRegionHeight());
+        drawImage(renderer, image, bounds);
         renderer.end();
     }
 
@@ -54,10 +56,10 @@ public class Renderer {
     public static void drawHeroOutline(Level level, Color color) {
         ShapeRenderer renderer = level.heroOutlineRenderer;
         Hero hero = level.hero;
-        TextureRegion image = hero.getImageOrNull();
+        Rectangle bounds = hero.getBounds();
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
-        drawRectangle2d(renderer, hero.position.x, hero.position.y, image.getRegionWidth(), image.getRegionHeight(), color);
+        drawRectangle2d(renderer, bounds, color);
         renderer.end();
     }
 
@@ -75,8 +77,16 @@ public class Renderer {
 
     /*internals*/
 
+    private static void drawImage(SpriteBatch renderer, TextureRegion image, Rectangle rectangle) {
+        drawImage(renderer, image, rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+    }
+
     private static void drawImage(SpriteBatch renderer, TextureRegion image, float x, float y, float width, float height) {
         renderer.draw(image, x, y, width / 2, height / 2, width, height, 1, -1, 0);
+    }
+
+    private static void drawRectangle2d(ShapeRenderer renderer, Rectangle rectangle, Color color) {
+        drawRectangle2d(renderer, rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight(), color);
     }
 
     private static void drawRectangle2d(ShapeRenderer renderer, float x, float y, float width, float height, Color color) {

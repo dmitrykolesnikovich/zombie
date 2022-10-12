@@ -9,5 +9,6 @@ public class Physics {
     public int height;
     public Zone[] zones;
     public final List<Cell> cells = new ArrayList<>();
+    public Cell[][] grid;
 
 }

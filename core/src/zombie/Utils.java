@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 public class Utils {
 
     private static final Vector2 VECTOR_ISO = new Vector2();
+    private static final Vector3 VECTOR_UNPROJECT = new Vector3();
 
     /*isometry*/
 
@@ -27,13 +28,14 @@ public class Utils {
         return vector;
     }
 
-    public static void convert2dToIso(float[] rectangle2d, float[] rectangleIso) {
+    public static float[] convert2dToIso(float[] rectangle2d, float[] rectangleIso) {
         for (int index = 0; index < rectangle2d.length; index += 2) {
             Utils.convert2dToIso(rectangle2d, rectangleIso, index);
         }
+        return rectangleIso;
     }
 
-    public static void convert2dToIso(float[] rectangle2d, float[] rectangleIso, int offset) {
+    public static float[] convert2dToIso(float[] rectangle2d, float[] rectangleIso, int offset) {
         float ox = rectangle2d[0];
         float oy = rectangle2d[1];
         float x = rectangle2d[offset];
@@ -43,6 +45,7 @@ public class Utils {
         convert2dToIso(VECTOR_ISO.set(x, y).sub(ox, oy)).add(ox, oy);
         rectangleIso[offset] = VECTOR_ISO.x;
         rectangleIso[offset + 1] = VECTOR_ISO.y;
+        return rectangleIso;
     }
 
     /*rectangle*/
@@ -69,12 +72,19 @@ public class Utils {
     /*camera*/
 
     // https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/graphics/Camera.java#L194
-    public static void unproject(Camera camera, Vector3 screenCoords, Matrix4 invProjectionView) {
+    public static void unproject(Camera camera, Vector2 screenCoords, Matrix4 invProjectionView) {
+        VECTOR_UNPROJECT.x = screenCoords.x;
+        VECTOR_UNPROJECT.y = screenCoords.y;
+        VECTOR_UNPROJECT.z = 0;
+
         float x = screenCoords.x, y = Gdx.graphics.getHeight() - screenCoords.y;
-        screenCoords.x = (2 * x) / camera.viewportWidth - 1;
-        screenCoords.y = (2 * y) / camera.viewportHeight - 1;
-        screenCoords.z = 2 * screenCoords.z - 1;
-        screenCoords.prj(invProjectionView);
+        VECTOR_UNPROJECT.x = (2 * x) / camera.viewportWidth - 1;
+        VECTOR_UNPROJECT.y = (2 * y) / camera.viewportHeight - 1;
+        VECTOR_UNPROJECT.z = -1;
+        VECTOR_UNPROJECT.prj(invProjectionView);
+
+        screenCoords.x = VECTOR_UNPROJECT.x;
+        screenCoords.y = VECTOR_UNPROJECT.y;
     }
 
 }
