@@ -18,8 +18,8 @@ public class Utils {
 
     /*renderer*/
 
-    public static void drawImage(SpriteBatch renderer, TextureRegion frame, float x, float y, float width, float height) {
-        renderer.draw(frame, x, y, width / 2, height / 2, width, height, 1, -1, 0);
+    public static void drawImage(SpriteBatch renderer, TextureRegion image, float x, float y, float width, float height) {
+        renderer.draw(image, x, y, width / 2, height / 2, width, height, 1, -1, 0);
     }
 
     public static void drawRectangle2d(ShapeRenderer renderer, float x, float y, float width, float height, Color color) {

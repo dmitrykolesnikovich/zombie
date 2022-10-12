@@ -30,7 +30,7 @@ public class Hero {
         }
     }
 
-    public TextureRegion getAnimationFrame() {
+    public TextureRegion getImage() {
         if (animation == null) return null;
         return animation.delegate.getKeyFrame(animation.totalTime, true);
     }

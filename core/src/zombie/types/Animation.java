@@ -41,22 +41,22 @@ public class Animation {
 
         // children
         Array<XmlReader.Element> frameElements = animationElement.getChildByName("frames").getChildByName("list").getChildrenByName("Frame");
-        List<TextureRegion> frames = new ArrayList<>();
+        List<TextureRegion> images = new ArrayList<>();
         for (XmlReader.Element frameElement : frameElements) {
             int x = Integer.parseInt(frameElement.getAttribute("x"));
             int y = Integer.parseInt(frameElement.getAttribute("y"));
             int width = Integer.parseInt(frameElement.getAttribute("width"));
             int height = Integer.parseInt(frameElement.getAttribute("height"));
             int ticks = Integer.parseInt(frameElement.getAttribute("ticks"));
-            TextureRegion frame = new TextureRegion(animation.texture, x, y, width, height);
-            if (flipped) frame.flip(true, false);
+            TextureRegion image = new TextureRegion(animation.texture, x, y, width, height);
+            if (flipped) image.flip(true, false);
             for (int i = 0; i < ticks; i++) {
-                frames.add(frame);
+                images.add(image);
             }
         }
 
         float frameDuration = 1f / frameElements.size;
-        animation.delegate = new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, frames.toArray(new TextureRegion[0]));
+        animation.delegate = new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, images.toArray(new TextureRegion[0]));
         cache.put(name, animation);
         return animation;
     }

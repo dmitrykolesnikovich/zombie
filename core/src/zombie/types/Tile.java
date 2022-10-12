@@ -12,7 +12,7 @@ public class Tile {
     public boolean flipHorizontal;
     public boolean flipVertical;
     public int index;
-    public TextureRegion texture;
+    public TextureRegion image;
 
     public static Tile createTile(Level level, XmlReader.Element element) {
         Tile tile = new Tile();
@@ -23,7 +23,7 @@ public class Tile {
         tile.flipHorizontal = Boolean.parseBoolean(element.getAttribute("flipHorizontal"));
         tile.flipVertical = Boolean.parseBoolean(element.getAttribute("flipVertical"));
         tile.index = Integer.parseInt(element.getAttribute("index"));
-        tile.texture = level.findTextureRegion(tile.index - 1, tile.flipHorizontal, tile.flipVertical);
+        tile.image = level.findImage(tile.index - 1, tile.flipHorizontal, tile.flipVertical);
         return tile;
     }
 

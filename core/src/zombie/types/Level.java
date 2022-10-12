@@ -1,9 +1,12 @@
 package zombie.types;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
@@ -16,7 +19,6 @@ import java.util.List;
 
 public class Level implements Disposable {
 
-    // config
     public float defaultScale;
     public String image;
     public float maxScale;
@@ -31,17 +33,35 @@ public class Level implements Disposable {
     public List<Tile> tiles = new ArrayList<>();
     public Vector2 offsetPoint;
 
-    // graphics
+    public float cellSide = 16;
+    public Color backgroundColor = new Color(0x000000FF); // todo replace with 0x7AAAC9FF;
+
+    /*model*/
+
+    public Physics physics;
+    public final Vector2 origin = new Vector2();
+    public final OrthographicCamera camera = new OrthographicCamera();
+    public Hero hero;
+
+    /*render*/
+
+    public SpriteBatch tilesRenderer;
+    public SpriteBatch heroRenderer;
+    public ShapeRenderer tilesOutlineRenderer;
+    public ShapeRenderer heroOutlineRenderer;
+    public ShapeRenderer cellsRenderer;
+
+    /*textures*/
+
     public Texture texture;
     public TextureRegion[] atlas;
     public TextureRegion[] atlasFlippedHorizontallyOnly;
     public TextureRegion[] atlasFlippedVerticallyOnly;
     public TextureRegion[] atlasFlippedBoth;
 
-    public Physics physics;
-    public final Vector2 origin = new Vector2();
-    public final OrthographicCamera camera = new OrthographicCamera();
-    public Hero hero;
+    public void update(float deltaTime) {
+        hero.update(deltaTime);
+    }
 
     public void resize() {
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -52,11 +72,50 @@ public class Level implements Disposable {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
         camera.update();
+
+        tilesRenderer.setProjectionMatrix(camera.combined);
+        heroRenderer.setProjectionMatrix(camera.combined);
+        tilesOutlineRenderer.setProjectionMatrix(camera.combined);
+        heroOutlineRenderer.setProjectionMatrix(camera.combined);
+        cellsRenderer.setProjectionMatrix(camera.combined);
     }
 
     @Override
     public void dispose() {
         texture.dispose();
+
+        tilesRenderer.dispose();
+        heroRenderer.dispose();
+        tilesOutlineRenderer.dispose();
+        heroOutlineRenderer.dispose();
+        cellsRenderer.dispose();
+    }
+
+    TextureRegion findImage(int index, boolean flipHorizontal, boolean flippedVertical) {
+        boolean isFlippedNone = !flipHorizontal && !flippedVertical;
+        boolean isFlippedHorizontallyOnly = flipHorizontal && !flippedVertical;
+        boolean isFlippedVerticallyOnly = !flipHorizontal && flippedVertical;
+        boolean isFlippedBoth = flipHorizontal && flippedVertical;
+        if (isFlippedNone) return atlas[index];
+
+        // read from cache
+        TextureRegion image = null;
+        if (isFlippedHorizontallyOnly) image = atlasFlippedHorizontallyOnly[index];
+        if (isFlippedVerticallyOnly) image = atlasFlippedVerticallyOnly[index];
+        if (isFlippedBoth) image = atlasFlippedBoth[index];
+
+        // write to cache
+        if (image == null) {
+            image = new TextureRegion(atlas[index]);
+            image.flip(isFlippedHorizontallyOnly, isFlippedVerticallyOnly);
+        }
+        if (isFlippedHorizontallyOnly) atlasFlippedHorizontallyOnly[index] = image;
+        if (isFlippedVerticallyOnly) atlasFlippedVerticallyOnly[index] = image;
+        if (isFlippedBoth) atlasFlippedBoth[index] = image;
+
+        // validate
+        if (image == null) throw new IllegalStateException("index: " + index);
+        return image;
     }
 
     public static Level createLevel(String name) throws FileNotFoundException {
@@ -90,8 +149,8 @@ public class Level implements Disposable {
             for (int column = 0; column < level.tilesPerAtlasColumn; column++) {
                 float x = (2 * column + 1) * level.tileBorderSize + column * level.tileWidth;
                 float y = (2 * row + 1) * level.tileBorderSize + row * level.tileHeight;
-                TextureRegion atlasTexture = new TextureRegion(level.texture, (int) x, (int) y, (int) level.tileWidth, (int) level.tileHeight);
-                level.atlas[(int) (row * level.tilesPerAtlasColumn + column)] = atlasTexture;
+                TextureRegion image = new TextureRegion(level.texture, (int) x, (int) y, (int) level.tileWidth, (int) level.tileHeight);
+                level.atlas[(int) (row * level.tilesPerAtlasColumn + column)] = image;
             }
         }
         level.atlasFlippedHorizontallyOnly = new TextureRegion[atlasSize];
@@ -105,38 +164,20 @@ public class Level implements Disposable {
             level.tiles.add(tile);
         }
 
+        // model
         level.physics = Physics.createPhysics(name);
         level.origin.set(level.offsetPoint.x, level.offsetPoint.y);
         level.camera.setToOrtho(true);
         level.hero = new Hero();
+
+        // renderer
+        level.tilesRenderer = new SpriteBatch();
+        level.heroRenderer = new SpriteBatch();
+        level.tilesOutlineRenderer = new ShapeRenderer();
+        level.heroOutlineRenderer = new ShapeRenderer();
+        level.cellsRenderer = new ShapeRenderer();
+
         return level;
-    }
-
-    TextureRegion findTextureRegion(int index, boolean flipHorizontal, boolean flippedVertical) {
-        boolean isFlippedNone = !flipHorizontal && !flippedVertical;
-        boolean isFlippedHorizontallyOnly = flipHorizontal && !flippedVertical;
-        boolean isFlippedVerticallyOnly = !flipHorizontal && flippedVertical;
-        boolean isFlippedBoth = flipHorizontal && flippedVertical;
-        if (isFlippedNone) return atlas[index];
-
-        // read from cache
-        TextureRegion result = null;
-        if (isFlippedHorizontallyOnly) result = atlasFlippedHorizontallyOnly[index];
-        if (isFlippedVerticallyOnly) result = atlasFlippedVerticallyOnly[index];
-        if (isFlippedBoth) result = atlasFlippedBoth[index];
-
-        // write to cache
-        if (result == null) {
-            result = new TextureRegion(atlas[index]);
-            result.flip(isFlippedHorizontallyOnly, isFlippedVerticallyOnly);
-        }
-        if (isFlippedHorizontallyOnly) atlasFlippedHorizontallyOnly[index] = result;
-        if (isFlippedVerticallyOnly) atlasFlippedVerticallyOnly[index] = result;
-        if (isFlippedBoth) atlasFlippedBoth[index] = result;
-
-        // validate
-        if (result == null) throw new IllegalStateException("index: " + index);
-        return result;
     }
 
 }
