@@ -26,10 +26,9 @@ public class PhysicsBuilder {
 
         // zones
         Array<XmlReader.Element> zoneElements = physicsElement.getChildByName("zones").getChildByName("list").getChildrenByName("PhysicsZone");
-        physics.zones = new Zone[zoneElements.size];
         for (XmlReader.Element zoneElement : zoneElements) {
             Zone zone = ZoneBuilder.buildZone(zoneElement);
-            physics.zones[zone.id] = zone;
+            physics.zones.put(zone.id, zone);
         }
 
         // cells

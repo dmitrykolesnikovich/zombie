@@ -115,7 +115,7 @@ public class Level implements Disposable {
     }
 
     public Cell findCellOrNull(Vector2 point) {
-        Utils.convertIsoTo2d(VECTOR_2D.set(point));
+        Utils.convertIsoToOrtho(VECTOR_2D.set(point));
         if (VECTOR_2D.y < 0 || VECTOR_2D.x < 0) return null;
 
         int i = (int) (VECTOR_2D.y / cellSide);

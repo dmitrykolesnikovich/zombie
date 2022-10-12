@@ -14,35 +14,35 @@ public class Utils {
 
     /*isometry*/
 
-    public static Vector2 convert2dToIso(Vector2 vector) {
+    public static Vector2 convertOrthoToIso(Vector2 vector) {
         float x = vector.x + vector.y;
         float y = (vector.x - vector.y) / 2;
         vector.set(x, y);
         return vector;
     }
 
-    public static Vector2 convertIsoTo2d(Vector2 vector) {
+    public static Vector2 convertIsoToOrtho(Vector2 vector) {
         float x = (vector.x + 2 * vector.y) / 2;
         float y = (vector.x - 2 * vector.y) / 2;
         vector.set(x, y);
         return vector;
     }
 
-    public static float[] convert2dToIso(float[] rectangle2d, float[] rectangleIso) {
-        for (int index = 0; index < rectangle2d.length; index += 2) {
-            Utils.convert2dToIso(rectangle2d, rectangleIso, index);
+    public static float[] convertOrthoToIso(float[] rectangleOrtho, float[] rectangleIso) {
+        for (int index = 0; index < rectangleOrtho.length; index += 2) {
+            Utils.convertOrthoToIso(rectangleOrtho, rectangleIso, index);
         }
         return rectangleIso;
     }
 
-    public static float[] convert2dToIso(float[] rectangle2d, float[] rectangleIso, int offset) {
-        float ox = rectangle2d[0];
-        float oy = rectangle2d[1];
-        float x = rectangle2d[offset];
-        float y = rectangle2d[offset + 1];
+    public static float[] convertOrthoToIso(float[] rectangleOrtho, float[] rectangleIso, int offset) {
+        float ox = rectangleOrtho[0];
+        float oy = rectangleOrtho[1];
+        float x = rectangleOrtho[offset];
+        float y = rectangleOrtho[offset + 1];
 
-        // convert 2d to iso
-        convert2dToIso(VECTOR_ISO.set(x, y).sub(ox, oy)).add(ox, oy);
+        // convert ortho to iso
+        convertOrthoToIso(VECTOR_ISO.set(x, y).sub(ox, oy)).add(ox, oy);
         rectangleIso[offset] = VECTOR_ISO.x;
         rectangleIso[offset + 1] = VECTOR_ISO.y;
         return rectangleIso;
@@ -50,7 +50,7 @@ public class Utils {
 
     /*rectangle*/
 
-    public static void initializeRectangle2d(float[] rectangle, float x, float y, float width, float height) {
+    public static void initializeRectangleOrtho(float[] rectangle, float x, float y, float width, float height) {
         float x1 = x;
         float y1 = y;
         float x2 = x + width;

@@ -63,8 +63,8 @@ public class HeroMovementFeature {
             }
         }
 
-        // convert 2d to iso
-        Utils.convert2dToIso(movement);
+        // convert ortho to iso
+        Utils.convertOrthoToIso(movement);
         hero.position.add(movement);
 
         // animation

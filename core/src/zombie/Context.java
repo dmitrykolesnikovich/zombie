@@ -18,7 +18,7 @@ public class Context extends ApplicationAdapter {
 
     @Override
     public void create() {
-        level = LevelBuilder.buildLevel("main_island");
+        level = LevelBuilder.buildLevel("love_island");
         Gdx.input.setInputProcessor(new InputMultiplexer(new DragLevelFeature(level), new ZoomLevelFeature(level)));
     }
 

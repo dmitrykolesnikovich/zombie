@@ -8,7 +8,7 @@ public class ZoneBuilder {
     public static Zone buildZone(XmlReader.Element zoneElement) {
         Zone zone = new Zone();
         zone.id = Integer.parseInt(zoneElement.getAttribute("id"));
-        zone.name = zoneElement.getAttribute("name");
+        zone.name = zoneElement.getAttribute("name", null);
         zone.passable = Boolean.parseBoolean(zoneElement.getAttribute("passable"));
         zone.locked = Boolean.parseBoolean(zoneElement.getAttribute("locked"));
         zone.availableForBuilding = Boolean.parseBoolean(zoneElement.getAttribute("availableForBuilding"));

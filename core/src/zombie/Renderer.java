@@ -48,7 +48,7 @@ public class Renderer {
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
         for (Tile tile : level.tiles) {
-            drawRectangle2d(renderer, tile.x, tile.y, tile.width, tile.height, color);
+            drawRectangleOrtho(renderer, tile.x, tile.y, tile.width, tile.height, color);
         }
         renderer.end();
     }
@@ -59,7 +59,7 @@ public class Renderer {
         Rectangle bounds = hero.getBounds();
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
-        drawRectangle2d(renderer, bounds, color);
+        drawRectangleOrtho(renderer, bounds, color);
         renderer.end();
     }
 
@@ -70,7 +70,7 @@ public class Renderer {
         for (Cell cell : level.physics.cells) {
             float x = cell.j * level.cellSide;
             float y = cell.i * level.cellSide;
-            drawRectangleIso(renderer, x, y, level.cellSide, level.cellSide, cell.zone.color);
+            drawRectangleIso(renderer, x, y, level.cellSide, level.cellSide, cell.zone.availableForBuilding ? cell.zone.color : Color.DARK_GRAY);
         }
         renderer.end();
     }
@@ -85,11 +85,11 @@ public class Renderer {
         renderer.draw(image, x, y, width / 2, height / 2, width, height, 1, -1, 0);
     }
 
-    private static void drawRectangle2d(ShapeRenderer renderer, Rectangle rectangle, Color color) {
-        drawRectangle2d(renderer, rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight(), color);
+    private static void drawRectangleOrtho(ShapeRenderer renderer, Rectangle rectangle, Color color) {
+        drawRectangleOrtho(renderer, rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight(), color);
     }
 
-    private static void drawRectangle2d(ShapeRenderer renderer, float x, float y, float width, float height, Color color) {
+    private static void drawRectangleOrtho(ShapeRenderer renderer, float x, float y, float width, float height, Color color) {
         renderer.setColor(color);
         renderer.rect(x, y, width, height);
     }
@@ -97,13 +97,13 @@ public class Renderer {
     private static void drawRectangleIso(ShapeRenderer renderer, float x, float y, float width, float height, Color color) {
         renderer.setColor(color);
 
-        // convert 2d to iso
-        Utils.convert2dToIso(VECTOR_ISO.set(x, y));
+        // convert ortho to iso
+        Utils.convertOrthoToIso(VECTOR_ISO.set(x, y));
         x = VECTOR_ISO.x;
         y = VECTOR_ISO.y;
 
-        Utils.initializeRectangle2d(RECTANGLE_2D, x, y, width, height);
-        Utils.convert2dToIso(RECTANGLE_2D, RECTANGLE_ISO);
+        Utils.initializeRectangleOrtho(RECTANGLE_2D, x, y, width, height);
+        Utils.convertOrthoToIso(RECTANGLE_2D, RECTANGLE_ISO);
         renderer.polygon(RECTANGLE_ISO);
     }
 
