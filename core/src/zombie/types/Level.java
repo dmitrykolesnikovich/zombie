@@ -8,12 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.XmlReader;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +29,10 @@ public class Level implements Disposable {
     public List<Tile> tiles = new ArrayList<>();
     public Vector2 offsetPoint;
 
-    public float cellSide = 16;
-    public Color backgroundColor = new Color(0x000000FF); // todo replace with 0x7AAAC9FF;
-
     /*model*/
 
+    public float cellSide = 16;
+    public Color backgroundColor = new Color(0x000000FF); // todo replace with 0x7AAAC9FF;
     public Physics physics;
     public final Vector2 origin = new Vector2();
     public final OrthographicCamera camera = new OrthographicCamera();
@@ -51,7 +46,7 @@ public class Level implements Disposable {
     public ShapeRenderer heroOutlineRenderer;
     public ShapeRenderer cellsRenderer;
 
-    /*textures*/
+    /*cache*/
 
     public Texture texture;
     public TextureRegion[] atlas;

@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import zombie.features.HeroInput;
 
-import java.io.FileNotFoundException;
-
 public class Hero {
 
     public final Vector2 origin = new Vector2();
@@ -20,14 +18,10 @@ public class Hero {
     }
 
     public void animate(String animationName, boolean flipped) {
-        try {
-            if (animation != null) {
-                animation.totalTime = 0;
-            }
-            animation = AnimationBuilder.buildAnimation(animationName, flipped);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        if (animation != null) {
+            animation.totalTime = 0;
         }
+        animation = AnimationBuilder.buildAnimation(animationName, flipped);
     }
 
     public TextureRegion getImageOrNull() {

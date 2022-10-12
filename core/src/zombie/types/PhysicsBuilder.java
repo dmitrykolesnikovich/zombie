@@ -8,11 +8,16 @@ import java.io.FileReader;
 
 public class PhysicsBuilder {
 
-    public static Physics buildPhysics(String name) throws FileNotFoundException {
+    public static Physics buildPhysics(String name) {
         String dirPath = "maps/" + name;
         String filePath = dirPath + "/" + name + "_physics_config.xml";
         XmlReader parser = new XmlReader();
-        XmlReader.Element physicsElement = parser.parse(new FileReader(filePath));
+        XmlReader.Element physicsElement;
+        try {
+            physicsElement = parser.parse(new FileReader(filePath));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(name);
+        }
 
         // attributes
         Physics physics = new Physics();

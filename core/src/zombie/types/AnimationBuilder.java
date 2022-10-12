@@ -17,7 +17,7 @@ public class AnimationBuilder {
     private static final Map<String, Animation> cachedAnimations = new HashMap<>();
     private static final Map<String, Animation> cachedAnimationsFlippedHorizontally = new HashMap<>();
 
-    public static Animation buildAnimation(String name, boolean flipped) throws FileNotFoundException {
+    public static Animation buildAnimation(String name, boolean flipped) {
         Map<String, Animation> cache = flipped ? cachedAnimationsFlippedHorizontally : cachedAnimations;
         Animation existingAnimation = cache.get(name);
         if (existingAnimation != null) return existingAnimation;
@@ -25,7 +25,12 @@ public class AnimationBuilder {
         String dirPath = "animations/" + name;
         String filePath = dirPath + "/" + name + ".xml";
         XmlReader xmlReader = new XmlReader();
-        XmlReader.Element animationElement = xmlReader.parse(new FileReader(filePath));
+        XmlReader.Element animationElement;
+        try {
+            animationElement = xmlReader.parse(new FileReader(filePath));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(name);
+        }
 
         // attributes
         Animation animation = new Animation();

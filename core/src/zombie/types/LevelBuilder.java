@@ -13,11 +13,16 @@ import java.io.FileReader;
 
 public class LevelBuilder {
 
-    public static Level buildLevel(String name) throws FileNotFoundException {
+    public static Level buildLevel(String name) {
         String dirPath = "maps/" + name;
         String filePath = dirPath + "/" + name + "_map_config.xml";
         XmlReader xml = new XmlReader();
-        XmlReader.Element tileMapElement = xml.parse(new FileReader(filePath));
+        XmlReader.Element tileMapElement;
+        try {
+            tileMapElement = xml.parse(new FileReader(filePath));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(name);
+        }
 
         // attributes
         Level level = new Level();
@@ -55,7 +60,7 @@ public class LevelBuilder {
         // children
         Array<XmlReader.Element> tileElements = tileMapElement.getChildByName("items").getChildByName("list").getChildrenByName("Tile");
         for (XmlReader.Element tileElement : tileElements) {
-            Tile tile = TileBuilder.buildTile(level, tileElement);
+            Tile tile = TileBuilder.buildTile(tileElement, level);
             level.tiles.add(tile);
         }
 
