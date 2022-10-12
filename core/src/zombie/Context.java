@@ -30,11 +30,15 @@ public class Context extends ApplicationAdapter {
 
         // hero
         level.hero.animate("anim_woodcutter_walkwood_down", false);
-        level.hero.placeTo(40, 40);
+        level.hero.placeTo(50, 30);
         level.hero.movementSpeed = 4;
 
         // bodies
         // todo
+
+        // camera
+        level.pivot.y += 500;
+        level.resize();
     }
 
     @Override
