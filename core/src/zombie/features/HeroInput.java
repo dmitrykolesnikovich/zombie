@@ -65,8 +65,10 @@ public class HeroInput {
             }
         }
 
-        // origin
+        // convert 2d to iso
         Utils.convert2dToIso(movement);
+
+        // action
         hero.origin.add(movement);
 
         // animation

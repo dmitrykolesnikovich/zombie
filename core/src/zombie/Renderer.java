@@ -11,9 +11,6 @@ import zombie.types.Hero;
 import zombie.types.Level;
 import zombie.types.Tile;
 
-import static zombie.Utils.convert2dToIso;
-import static zombie.Utils.initializeRectangle2d;
-
 public class Renderer {
 
     private static final float[] RECTANGLE_2D = new float[8];
@@ -90,14 +87,13 @@ public class Renderer {
     private static void drawRectangleIso(ShapeRenderer renderer, float x, float y, float width, float height, Color color) {
         renderer.setColor(color);
 
-        // convert to iso
-        VECTOR_ISO.set(x, y);
-        convert2dToIso(VECTOR_ISO);
+        // convert 2d to iso
+        Utils.convert2dToIso(VECTOR_ISO.set(x, y));
         x = VECTOR_ISO.x;
         y = VECTOR_ISO.y;
 
-        initializeRectangle2d(RECTANGLE_2D, x, y, width, height);
-        convert2dToIso(RECTANGLE_2D, RECTANGLE_ISO);
+        Utils.initializeRectangle2d(RECTANGLE_2D, x, y, width, height);
+        Utils.convert2dToIso(RECTANGLE_2D, RECTANGLE_ISO);
         renderer.polygon(RECTANGLE_ISO);
     }
 

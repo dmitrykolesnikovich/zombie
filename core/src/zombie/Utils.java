@@ -12,10 +12,11 @@ public class Utils {
 
     /*isometry*/
 
-    public static void convert2dToIso(Vector2 vector) {
+    public static Vector2 convert2dToIso(Vector2 vector) {
         float x = vector.x + vector.y;
         float y = (vector.x - vector.y) / 2;
         vector.set(x, y);
+        return vector;
     }
 
     public static void convert2dToIso(float[] rectangle2d, float[] rectangleIso) {
@@ -30,12 +31,8 @@ public class Utils {
         float x = rectangle2d[offset];
         float y = rectangle2d[offset + 1];
 
-        // convert to iso
-        VECTOR_ISO.set(x, y);
-        VECTOR_ISO.sub(ox, oy);
-        convert2dToIso(VECTOR_ISO);
-        VECTOR_ISO.add(ox, oy);
-
+        // convert 2d to iso
+        convert2dToIso(VECTOR_ISO.set(x, y).sub(ox, oy)).add(ox, oy);
         rectangleIso[offset] = VECTOR_ISO.x;
         rectangleIso[offset + 1] = VECTOR_ISO.y;
     }
