@@ -92,6 +92,10 @@ public class Level implements Disposable {
         waveRenderer.dispose();
     }
 
+    public void addBody(Object body) {
+
+    }
+
     public TextureRegion findImage(int index, boolean flipHorizontal, boolean flippedVertical) {
         boolean isFlippedNone = !flipHorizontal && !flippedVertical;
         boolean isFlippedHorizontallyOnly = flipHorizontal && !flippedVertical;
