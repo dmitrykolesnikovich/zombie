@@ -7,20 +7,14 @@ import zombie.features.LevelInput;
 import zombie.types.Level;
 import zombie.types.LevelBuilder;
 
-import java.io.FileNotFoundException;
-
 public class Context extends ApplicationAdapter {
 
     public Level level;
 
     @Override
     public void create() {
-        try {
-            level = LevelBuilder.buildLevel("main_island");
-            Gdx.input.setInputProcessor(new InputMultiplexer(new LevelInput(level)));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        level = LevelBuilder.buildLevel("main_island");
+        Gdx.input.setInputProcessor(new InputMultiplexer(new LevelInput(level)));
     }
 
     @Override
