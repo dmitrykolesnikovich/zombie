@@ -40,10 +40,13 @@ public class Context extends ApplicationAdapter {
 
         Renderer.drawBackground(level);
         Renderer.drawTiles(level);
+        Renderer.drawWave(level);
         Renderer.drawHero(level);
+        /*
         Renderer.drawTilesOutline(level, TILE_OUTLINE_COLOR);
         Renderer.drawHeroOutline(level, HERO_OUTLINE_COLOR);
         Renderer.drawCells(level);
+        */
     }
 
     @Override

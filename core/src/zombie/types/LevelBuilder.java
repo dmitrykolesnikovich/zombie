@@ -76,6 +76,7 @@ public class LevelBuilder {
         level.tilesOutlineRenderer = new ShapeRenderer();
         level.heroOutlineRenderer = new ShapeRenderer();
         level.cellsRenderer = new ShapeRenderer();
+        level.waveRenderer = new SpriteBatch();
 
         return level;
     }

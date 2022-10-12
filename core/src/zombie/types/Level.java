@@ -38,6 +38,7 @@ public class Level implements Disposable {
     public final Vector2 pivot = new Vector2();
     public final OrthographicCamera camera = new OrthographicCamera();
     public Hero hero;
+    public Animation wave;
 
     /*render*/
 
@@ -46,6 +47,7 @@ public class Level implements Disposable {
     public ShapeRenderer tilesOutlineRenderer;
     public ShapeRenderer heroOutlineRenderer;
     public ShapeRenderer cellsRenderer;
+    public SpriteBatch waveRenderer;
 
     /*cache*/
 
@@ -56,7 +58,8 @@ public class Level implements Disposable {
     public TextureRegion[] atlasFlippedBoth;
 
     public void update(float deltaTime) {
-        hero.update(deltaTime);
+        if (hero != null) hero.update(deltaTime);
+        if (wave != null && !wave.update(deltaTime)) wave = null;
     }
 
     public void resize() {
@@ -74,6 +77,7 @@ public class Level implements Disposable {
         tilesOutlineRenderer.setProjectionMatrix(camera.combined);
         heroOutlineRenderer.setProjectionMatrix(camera.combined);
         cellsRenderer.setProjectionMatrix(camera.combined);
+        waveRenderer.setProjectionMatrix(camera.combined);
     }
 
     @Override
@@ -85,6 +89,7 @@ public class Level implements Disposable {
         tilesOutlineRenderer.dispose();
         heroOutlineRenderer.dispose();
         cellsRenderer.dispose();
+        waveRenderer.dispose();
     }
 
     public TextureRegion findImage(int index, boolean flipHorizontal, boolean flippedVertical) {

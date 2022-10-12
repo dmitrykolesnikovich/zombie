@@ -18,9 +18,7 @@ public class Hero {
     }
 
     public void update(float deltaTime) {
-        if (animation != null) {
-            animation.totalTime += deltaTime;
-        }
+        if (animation != null) animation.update(deltaTime);
         if (movement != null) {
             float cellProgressDelta = movementSpeed / level.cellSide * deltaTime;
             boolean running = movement.update(cellProgressDelta);
@@ -33,13 +31,13 @@ public class Hero {
 
     public void animate(String animationName, boolean flipped) {
         if (animation != null && animation.name.equals(animationName)) return;
-        if (animation != null) animation.totalTime = 0;
+        if (animation != null) animation.reset();
         animation = AnimationBuilder.buildAnimation(animationName, flipped);
     }
 
     public TextureRegion getImageOrNull() {
         if (animation == null) return null;
-        return animation.delegate.getKeyFrame(animation.totalTime, true);
+        return animation.getImage();
     }
 
     public Rectangle getBounds() {
@@ -77,10 +75,13 @@ public class Hero {
         Cell[][] grid = level.physics.grid;
         Cell currentCell = level.findCellOrNull(position);
         if (currentCell == null) return;
+        if (cell == null) return;
 
         Cell[] path;
         Cell middleCell = grid[currentCell.i][cell.j];
-        if (middleCell != currentCell && middleCell != cell) {
+        if (middleCell == null) {
+            path = new Cell[]{currentCell, cell};
+        } else if (middleCell != currentCell && middleCell != cell) {
             path = new Cell[]{currentCell, middleCell, cell};
         } else {
             path = new Cell[]{currentCell, cell};

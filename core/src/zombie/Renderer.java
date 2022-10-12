@@ -7,10 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
-import zombie.types.Cell;
-import zombie.types.Hero;
-import zombie.types.Level;
-import zombie.types.Tile;
+import zombie.types.*;
 
 public class Renderer {
 
@@ -72,6 +69,17 @@ public class Renderer {
             float y = cell.i * level.cellSide;
             drawRectangleIso(renderer, x, y, level.cellSide, level.cellSide, cell.zone.availableForBuilding ? cell.zone.color : Color.DARK_GRAY);
         }
+        renderer.end();
+    }
+
+    public static void drawWave(Level level) {
+        SpriteBatch renderer = level.waveRenderer;
+        Animation wave = level.wave;
+        if (wave == null) return;
+        TextureRegion image = wave.getImage();
+
+        renderer.begin();
+        drawImage(renderer, image, wave.getBounds());
         renderer.end();
     }
 
