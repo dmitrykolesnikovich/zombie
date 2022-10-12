@@ -4,22 +4,24 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import zombie.features.LevelInput;
-import zombie.types.*;
+import zombie.types.Cell;
+import zombie.types.Hero;
+import zombie.types.Level;
+import zombie.types.Tile;
 
 import java.io.FileNotFoundException;
 
 public class Context extends ApplicationAdapter {
 
     private static final float CELL_SIDE = 16;
-    private static final Color backgroundColor = new Color(0x000000FF); // todo replace with 0x7AAAC9FF
-    private static final Color tileOutlineColor = new Color(1, 0.25f, 0.25f, 1);
-    private static final Color heroOutlineColor = new Color(1, 1, 0.25f, 1);
+    private static final Color BACKGROUND_COLOR = new Color(0x000000FF); // todo replace with 0x7AAAC9FF
+    private static final Color TILE_OUTLINE_COLOR = new Color(1, 0.25f, 0.25f, 1);
+    private static final Color HERO_OUTLINE_COLOR = new Color(1, 1, 0.25f, 1);
 
     public Level level;
     private SpriteBatch tilesRenderer;
@@ -27,9 +29,6 @@ public class Context extends ApplicationAdapter {
     private ShapeRenderer tilesOutlineRenderer;
     private ShapeRenderer heroOutlineRenderer;
     private ShapeRenderer cellsRenderer;
-    private boolean isTilesDirty = true;
-    private boolean isTilesOutlineDirty = true;
-    private boolean isCellsDirty = true;
 
     @Override
     public void create() {
@@ -49,23 +48,18 @@ public class Context extends ApplicationAdapter {
 
     @Override
     public void render() {
-        ScreenUtils.clear(backgroundColor);
+        ScreenUtils.clear(BACKGROUND_COLOR);
 
         // tiles
-        if (isTilesDirty) {
-            tilesRenderer.begin();
-            for (Tile tile : level.tiles) {
-                float x = tile.x;
-                float y = tile.y;
-                float width = tile.width;
-                float height = tile.height;
-                Utils.drawImage(heroRenderer, tile.texture, x, y, width, height);
-            }
-            tilesRenderer.end();
-            isTilesDirty = false;
-        } else {
-            tilesRenderer.flush();
+        tilesRenderer.begin();
+        for (Tile tile : level.tiles) {
+            float x = tile.x;
+            float y = tile.y;
+            float width = tile.width;
+            float height = tile.height;
+            Utils.drawImage(tilesRenderer, tile.texture, x, y, width, height);
         }
+        tilesRenderer.end();
 
         // hero
         Hero hero = level.hero;
@@ -76,35 +70,25 @@ public class Context extends ApplicationAdapter {
         heroRenderer.end();
 
         // tiles outline
-        if (isTilesOutlineDirty) {
-            tilesOutlineRenderer.begin(ShapeRenderer.ShapeType.Line);
-            for (Tile tile : level.tiles) {
-                Utils.drawRectangle2d(tilesOutlineRenderer, tile.x, tile.y, tile.width, tile.height, tileOutlineColor);
-            }
-            tilesOutlineRenderer.end();
-            isTilesOutlineDirty = false;
-        } else {
-            tilesOutlineRenderer.flush();
+        tilesOutlineRenderer.begin(ShapeRenderer.ShapeType.Line);
+        for (Tile tile : level.tiles) {
+            Utils.drawRectangle2d(tilesOutlineRenderer, tile.x, tile.y, tile.width, tile.height, TILE_OUTLINE_COLOR);
         }
+        tilesOutlineRenderer.end();
 
         // hero outline
         heroOutlineRenderer.begin(ShapeRenderer.ShapeType.Line);
-        Utils.drawRectangle2d(heroOutlineRenderer, hero.origin.x, hero.origin.y, frame.getRegionWidth(), frame.getRegionHeight(), heroOutlineColor);
+        Utils.drawRectangle2d(heroOutlineRenderer, hero.origin.x, hero.origin.y, frame.getRegionWidth(), frame.getRegionHeight(), HERO_OUTLINE_COLOR);
         heroOutlineRenderer.end();
 
         // physics cells
-        if (isCellsDirty) {
-            cellsRenderer.begin(ShapeRenderer.ShapeType.Line);
-            for (Cell cell : level.physics.cells) {
-                float x = cell.j * CELL_SIDE;
-                float y = cell.i * CELL_SIDE;
-                Utils.drawRectangleIso(cellsRenderer, x, y, CELL_SIDE, CELL_SIDE, cell.zone.color);
-            }
-            cellsRenderer.end();
-            isCellsDirty = false;
-        } else {
-            cellsRenderer.flush();
+        cellsRenderer.begin(ShapeRenderer.ShapeType.Line);
+        for (Cell cell : level.physics.cells) {
+            float x = cell.j * CELL_SIDE;
+            float y = cell.i * CELL_SIDE;
+            Utils.drawRectangleIso(cellsRenderer, x, y, CELL_SIDE, CELL_SIDE, cell.zone.color);
         }
+        cellsRenderer.end();
     }
 
     @Override
