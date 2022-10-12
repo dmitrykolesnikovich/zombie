@@ -2,11 +2,6 @@
 <PhysicsMap height="144" width="145">
   <cells>
     <list>
-      <PhysicsCell compositionId="0" i="0" j="0" zone="3"></PhysicsCell>
-      <PhysicsCell compositionId="0" i="0" j="1" zone="3"></PhysicsCell>
-      <PhysicsCell compositionId="0" i="0" j="2" zone="3"></PhysicsCell>
-      <PhysicsCell compositionId="0" i="0" j="3" zone="3"></PhysicsCell>
-
       <PhysicsCell compositionId="0" i="70" j="0" zone="6"></PhysicsCell>
       <PhysicsCell compositionId="0" i="71" j="0" zone="6"></PhysicsCell>
       <PhysicsCell compositionId="0" i="72" j="0" zone="6"></PhysicsCell>

@@ -3,6 +3,7 @@ package zombie.types;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import zombie.Utils;
 import zombie.features.MoveHeroWithKeyboardDebugFeature;
 
 public class Hero {
@@ -46,6 +47,20 @@ public class Hero {
         bounds.setPosition(x, y);
         bounds.setSize(w, h);
         return bounds;
+    }
+
+    public void placeTo(int i, int j) {
+        Cell cell = level.physics.grid[i][j];
+        placeTo(cell);
+    }
+
+    public void placeTo(Cell cell) {
+        float side = level.cellSide;
+        if (cell.centerIso == null) {
+            cell.centerIso = new Vector2(cell.j * side, cell.i * side).add(side * 0.5f, side * 0.5f);
+            Utils.convertOrthoToIso(cell.centerIso);
+        }
+        position.set(cell.centerIso);
     }
 
 }

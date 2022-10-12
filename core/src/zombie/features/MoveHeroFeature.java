@@ -21,7 +21,8 @@ public class MoveHeroFeature extends InputAdapter {
         Utils.unproject(level.camera, touchPoint);
         Cell cell = level.findCellOrNull(touchPoint);
         System.out.println("cell: " + cell);
-        level.hero.position.set(touchPoint);
+        if (cell == null) return false;
+        level.hero.placeTo(cell);
         return true;
     }
 
