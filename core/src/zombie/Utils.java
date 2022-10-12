@@ -71,6 +71,10 @@ public class Utils {
 
     /*camera*/
 
+    public static void unproject(Camera camera, Vector2 screenCoords) {
+        unproject(camera, screenCoords, camera.invProjectionView);
+    }
+
     // https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/graphics/Camera.java#L194
     public static void unproject(Camera camera, Vector2 screenCoords, Matrix4 invProjectionView) {
         VECTOR_UNPROJECT.x = screenCoords.x;

@@ -28,11 +28,7 @@ public class DragLevelFeature extends InputAdapter {
         Utils.unproject(level.camera, initialTouchPoint, initialTouchMatrix.set(level.camera.invProjectionView));
         initialLevelPivot.set(level.pivot);
         isDown = true;
-
-        Cell cell = level.findCellOrNull(initialTouchPoint);
-        System.out.println("cell: " + cell);
-
-        return true;
+        return false;
     }
 
     @Override

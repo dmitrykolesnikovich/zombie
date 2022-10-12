@@ -6,13 +6,13 @@ import com.badlogic.gdx.math.Vector2;
 import zombie.Utils;
 import zombie.types.Hero;
 
-public class HeroMovementFeature {
+public class MoveHeroWithKeyboardDebugFeature {
 
     private final Hero hero;
     private boolean isDown = true;
     private boolean isRight = true;
 
-    public HeroMovementFeature(Hero hero) {
+    public MoveHeroWithKeyboardDebugFeature(Hero hero) {
         this.hero = hero;
     }
 
@@ -68,6 +68,7 @@ public class HeroMovementFeature {
         hero.position.add(movement);
 
         // animation
+        /*
         if (existsMovement) {
             if (isDown && !isRight) hero.animate("anim_woodcutter_walk_down", false);
             if (isDown && isRight) hero.animate("anim_woodcutter_walk_down", true);
@@ -77,6 +78,8 @@ public class HeroMovementFeature {
             if (!isRight) hero.animate("anim_woodcutter_stand", false);
             if (isRight) hero.animate("anim_woodcutter_stand", true);
         }
+        */
+        hero.animate("anim_woodcutter_walk_down", false); // just for debug todo delete this
     }
 
 }
