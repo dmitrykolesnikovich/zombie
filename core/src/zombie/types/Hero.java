@@ -63,4 +63,13 @@ public class Hero {
         position.set(cell.centerIso);
     }
 
+    public void moveTo(int i, int j) {
+        Cell cell = level.physics.grid[i][j];
+        moveTo(cell);
+    }
+
+    public void moveTo(Cell cell) {
+        placeTo(cell); // just for debug todo implement
+    }
+
 }

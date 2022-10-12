@@ -22,7 +22,7 @@ public class MoveHeroFeature extends InputAdapter {
         Cell cell = level.findCellOrNull(touchPoint);
         System.out.println("cell: " + cell);
         if (cell == null) return false;
-        level.hero.placeTo(cell);
+        level.hero.moveTo(cell);
         return true;
     }
 
