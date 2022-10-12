@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import zombie.Utils;
 import zombie.types.Level;
 
-public class LevelInput extends InputAdapter {
+public class DragLevelFeature extends InputAdapter {
 
     private final Level level;
     private final Vector3 initialPoint = new Vector3();
@@ -17,7 +17,7 @@ public class LevelInput extends InputAdapter {
     private final Vector3 currentPoint = new Vector3();
     private boolean isDown = false;
 
-    public LevelInput(Level level) {
+    public DragLevelFeature(Level level) {
         this.level = level;
     }
 
@@ -49,14 +49,6 @@ public class LevelInput extends InputAdapter {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         isDown = false;
-        return true;
-    }
-
-    @Override
-    public boolean scrolled(float amountX, float amountY) {
-        level.camera.zoom += amountY * 0.025;
-        level.camera.zoom = MathUtils.clamp(level.camera.zoom, level.minScale, level.maxScale * 10);
-        level.resize();
         return true;
     }
 

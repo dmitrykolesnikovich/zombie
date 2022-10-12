@@ -4,7 +4,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
-import zombie.features.LevelInput;
+import zombie.features.DragLevelFeature;
+import zombie.features.ZoomLevelFeature;
 import zombie.types.Level;
 import zombie.types.LevelBuilder;
 
@@ -18,7 +19,7 @@ public class Context extends ApplicationAdapter {
     @Override
     public void create() {
         level = LevelBuilder.buildLevel("main_island");
-        Gdx.input.setInputProcessor(new InputMultiplexer(new LevelInput(level)));
+        Gdx.input.setInputProcessor(new InputMultiplexer(new DragLevelFeature(level), new ZoomLevelFeature(level)));
     }
 
     @Override

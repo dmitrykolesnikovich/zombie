@@ -2,19 +2,20 @@ package zombie.types;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import zombie.features.HeroInput;
+import zombie.features.HeroMovementFeature;
 
 public class Hero {
 
     public final Vector2 origin = new Vector2();
+    public float movementSpeed = 16;
+    private final HeroMovementFeature movementFeature = new HeroMovementFeature(this);
     private Animation animation;
-    private final HeroInput input = new HeroInput(this, 16f);
 
     public void update(float deltaTime) {
         if (animation != null) {
             animation.totalTime += deltaTime;
         }
-        input.update();
+        movementFeature.update(movementSpeed);
     }
 
     public void animate(String animationName, boolean flipped) {
