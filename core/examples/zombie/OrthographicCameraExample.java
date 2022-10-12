@@ -21,7 +21,7 @@ public class OrthographicCameraExample implements ApplicationListener {
     @Override
     public void create() {
         rotationSpeed = 0.5f;
-        mapSprite = new Texture(Gdx.files.internal("example.jpg"));
+        mapSprite = new Texture(Gdx.files.internal("badlogic.jpg"));
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
         camera = new OrthographicCamera(w, h);

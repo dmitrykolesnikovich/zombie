@@ -1,5 +1,8 @@
 sourceSets {
     main {
-        java.srcDirs = ["src", "examples"]
+        java {
+            srcDirs("src", "examples")
+            exclude("examples/assets")
+        }
     }
 }

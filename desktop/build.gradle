@@ -1,5 +1,6 @@
 ext {
     assetsDir = new File("../assets")
+    examplesAssets = "../core/examples/assets"
 }
 
 sourceSets {
@@ -38,10 +39,11 @@ dist.dependsOn classes
 /*examples*/
 
 task orthographicCamera(dependsOn: classes, type: JavaExec) {
+    sourceSets.main.resources.srcDirs += [project.examplesAssets]
     mainClass = "zombie.OrthographicCameraExampleLauncher"
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
-    workingDir = project.assetsDir
+    workingDir = new File(project.examplesAssets)
     ignoreExitValue = true
 
     if (org.gradle.internal.os.OperatingSystem.current() == org.gradle.internal.os.OperatingSystem.MAC_OS) {
