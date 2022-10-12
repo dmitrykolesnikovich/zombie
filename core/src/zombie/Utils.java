@@ -6,16 +6,23 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+// IMPORTANT for isometry Y increases upwards
 public class Utils {
 
     private static final Vector2 VECTOR_ISO = new Vector2();
 
     /*isometry*/
 
-    // x is down, y is up
     public static Vector2 convert2dToIso(Vector2 vector) {
         float x = vector.x + vector.y;
         float y = (vector.x - vector.y) / 2;
+        vector.set(x, y);
+        return vector;
+    }
+
+    public static Vector2 convertIsoTo2d(Vector2 vector) {
+        float x = (vector.x + 2 * vector.y) / 2;
+        float y = (vector.x - 2 * vector.y) / 2;
         vector.set(x, y);
         return vector;
     }
@@ -36,13 +43,6 @@ public class Utils {
         convert2dToIso(VECTOR_ISO.set(x, y).sub(ox, oy)).add(ox, oy);
         rectangleIso[offset] = VECTOR_ISO.x;
         rectangleIso[offset + 1] = VECTOR_ISO.y;
-    }
-
-    public static Vector2 convertIsoTo2d(Vector2 pt) {
-        Vector2 tempPt = new Vector2(0, 0);
-        tempPt.x = (2 * pt.y + pt.x) / 2;
-        tempPt.y = (2 * pt.y - pt.x) / 2;
-        return tempPt;
     }
 
     /*rectangle*/
