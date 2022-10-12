@@ -8,7 +8,7 @@ import java.io.FileReader;
 
 public class PhysicsBuilder {
 
-    public static Physics buildPhysics(String name) {
+    public static Physics buildPhysics(String name, Level level) {
         String dirPath = "maps/" + name;
         String filePath = dirPath + "/" + name + "_physics_config.xml";
         XmlReader parser = new XmlReader();
@@ -36,6 +36,7 @@ public class PhysicsBuilder {
         physics.grid = new Cell[physics.width][physics.height];
         for (XmlReader.Element cellElement : cellElements) {
             Cell cell = CellBuilder.buildCell(cellElement, physics);
+            cell.level = level;
             physics.cells.add(cell);
             physics.grid[cell.i][cell.j] = cell;
         }

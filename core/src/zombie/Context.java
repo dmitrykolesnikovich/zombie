@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.Color;
 import zombie.features.DragLevelFeature;
 import zombie.features.MoveHeroFeature;
 import zombie.features.ZoomLevelFeature;
+import zombie.types.Cell;
 import zombie.types.Level;
 import zombie.types.LevelBuilder;
+import zombie.types.Movement;
 
 public class Context extends ApplicationAdapter {
 
@@ -25,6 +27,13 @@ public class Context extends ApplicationAdapter {
                 new ZoomLevelFeature(level),
                 new MoveHeroFeature(level)
         ));
+
+        // debug
+        level.hero.animate("anim_woodcutter_walkwood_down", false);
+        Cell[][] grid = level.physics.grid;
+        level.hero.move(new Cell[]{
+                grid[0][30], grid[0][31], grid[0][32], grid[0][33], grid[0][34], grid[0][35], grid[0][36], grid[0][37], grid[0][38], grid[0][39], grid[0][40]
+        });
     }
 
     @Override

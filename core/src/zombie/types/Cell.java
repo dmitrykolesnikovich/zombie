@@ -1,6 +1,7 @@
 package zombie.types;
 
 import com.badlogic.gdx.math.Vector2;
+import zombie.Utils;
 
 public class Cell {
 
@@ -8,7 +9,18 @@ public class Cell {
     public int j;
     public Zone zone;
 
-    public Vector2 centerIso; // used by MoveHeroFeature
+    // used by features
+    public Level level;
+    private Vector2 centerIso;
+
+    public Vector2 getCenterIso() {
+        float side = level.cellSide;
+        if (centerIso == null) {
+            centerIso = new Vector2(j * side, i * side).add(side * 0.5f, side * 0.5f);
+            Utils.convertOrthoToIso(centerIso);
+        }
+        return centerIso;
+    }
 
     @Override
     public String toString() {

@@ -3,17 +3,15 @@ package zombie.types;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import zombie.Utils;
-import zombie.features.MoveHeroWithKeyboardDebugFeature;
 
 public class Hero {
 
     private final Level level;
     public final Vector2 position = new Vector2();
-    public float movementSpeed = 16;
-    private final MoveHeroWithKeyboardDebugFeature movementFeature = new MoveHeroWithKeyboardDebugFeature(this);
+    public float movementSpeed = 32;
     private Animation animation;
     private final Rectangle bounds = new Rectangle();
+    private Movement movement;
 
     public Hero(Level level) {
         this.level = level;
@@ -23,7 +21,14 @@ public class Hero {
         if (animation != null) {
             animation.totalTime += deltaTime;
         }
-        movementFeature.update(movementSpeed);
+        if (movement != null) {
+            float cellProgressDelta = movementSpeed / level.cellSide * deltaTime;
+            boolean running = movement.update(cellProgressDelta);
+            position.set(movement.getCurrentPosition());
+            if (!running) {
+                movement = null;
+            }
+        }
     }
 
     public void animate(String animationName, boolean flipped) {
@@ -39,14 +44,19 @@ public class Hero {
 
     public Rectangle getBounds() {
         TextureRegion image = getImageOrNull();
+        if (image == null) return bounds.setPosition(0, 0).setSize(0, 0);
+
         float w = image.getRegionWidth();
         float h = image.getRegionHeight();
         float x = position.x - w / 2;
         float y = position.y - h / 2;
-        y -= level.cellSide; // quickfix todo conceptualize
-        bounds.setPosition(x, y);
-        bounds.setSize(w, h);
-        return bounds;
+
+        // quickfix todo conceptualize
+        x -= 4;
+        y -= 20;
+        // <<
+
+        return bounds.setPosition(x, y).setSize(w, h);
     }
 
     public void placeTo(int i, int j) {
@@ -55,12 +65,7 @@ public class Hero {
     }
 
     public void placeTo(Cell cell) {
-        float side = level.cellSide;
-        if (cell.centerIso == null) {
-            cell.centerIso = new Vector2(cell.j * side, cell.i * side).add(side * 0.5f, side * 0.5f);
-            Utils.convertOrthoToIso(cell.centerIso);
-        }
-        position.set(cell.centerIso);
+        position.set(cell.getCenterIso());
     }
 
     public void moveTo(int i, int j) {
@@ -70,6 +75,10 @@ public class Hero {
 
     public void moveTo(Cell cell) {
         placeTo(cell); // just for debug todo implement
+    }
+
+    public void move(Cell[] path) {
+        movement = new Movement(path);
     }
 
 }
