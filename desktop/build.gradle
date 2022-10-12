@@ -21,18 +21,6 @@ task run(dependsOn: classes, type: JavaExec) {
     }
 }
 
-task orthographicCamera(dependsOn: classes, type: JavaExec) {
-    mainClass = "zombie.OrthographicCameraExampleLauncher"
-    classpath = sourceSets.main.runtimeClasspath
-    standardInput = System.in
-    workingDir = project.assetsDir
-    ignoreExitValue = true
-
-    if (org.gradle.internal.os.OperatingSystem.current() == org.gradle.internal.os.OperatingSystem.MAC_OS) {
-        jvmArgs += "-XstartOnFirstThread"
-    }
-}
-
 task dist(type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     manifest {
@@ -45,5 +33,18 @@ task dist(type: Jar) {
     with jar
 }
 
-
 dist.dependsOn classes
+
+/*examples*/
+
+task orthographicCamera(dependsOn: classes, type: JavaExec) {
+    mainClass = "zombie.OrthographicCameraExampleLauncher"
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+    workingDir = project.assetsDir
+    ignoreExitValue = true
+
+    if (org.gradle.internal.os.OperatingSystem.current() == org.gradle.internal.os.OperatingSystem.MAC_OS) {
+        jvmArgs += "-XstartOnFirstThread"
+    }
+}

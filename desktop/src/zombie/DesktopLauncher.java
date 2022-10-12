@@ -11,6 +11,7 @@ public class DesktopLauncher {
     public static void main(String[] arg) throws FileNotFoundException {
         Graphics.DisplayMode displayMode = Lwjgl3ApplicationConfiguration.getDisplayMode();
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+        
         config.setForegroundFPS(60);
         config.setTitle("Zombie");
         config.setWindowedMode(displayMode.width, displayMode.height);
