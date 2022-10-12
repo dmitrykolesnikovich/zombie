@@ -28,12 +28,10 @@ public class Context extends ApplicationAdapter {
                 new MoveHeroFeature(level)
         ));
 
-        // debug
+        // test
         level.hero.animate("anim_woodcutter_walkwood_down", false);
-        Cell[][] grid = level.physics.grid;
-        level.hero.move(new Cell[]{
-                grid[0][30], grid[0][31], grid[0][32], grid[0][33], grid[0][34], grid[0][35], grid[0][36], grid[0][37], grid[0][38], grid[0][39], grid[0][40]
-        });
+        level.hero.placeTo(40, 40);
+        level.hero.movementSpeed = 4;
     }
 
     @Override

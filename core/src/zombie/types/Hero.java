@@ -8,7 +8,7 @@ public class Hero {
 
     private final Level level;
     public final Vector2 position = new Vector2();
-    public float movementSpeed = 32;
+    public float movementSpeed = 16;
     private Animation animation;
     private final Rectangle bounds = new Rectangle();
     private Movement movement;
@@ -74,7 +74,18 @@ public class Hero {
     }
 
     public void moveTo(Cell cell) {
-        placeTo(cell); // just for debug todo implement
+        Cell[][] grid = level.physics.grid;
+        Cell currentCell = level.findCellOrNull(position);
+        if (currentCell == null) return;
+
+        Cell[] path;
+        Cell middleCell = grid[currentCell.i][cell.j];
+        if (middleCell != currentCell && middleCell != cell) {
+            path = new Cell[]{currentCell, middleCell, cell};
+        } else {
+            path = new Cell[]{currentCell, cell};
+        }
+        move(path);
     }
 
     public void move(Cell[] path) {
