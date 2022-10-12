@@ -19,39 +19,45 @@ public class HeroMovement {
     }
 
     public void update() {
+        boolean existsMovement = false;
+
         // direction
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_DOWN)) {
             isDown = true;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP)) {
+            existsMovement = true;
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_UP)) {
             isDown = false;
+            existsMovement = true;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_RIGHT)) {
             isRight = true;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) {
+            existsMovement = true;
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_LEFT)) {
             isRight = false;
+            existsMovement = true;
         }
 
         // movement
         Vector2 movement = new Vector2(0, 0);
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_LEFT)) {
             if (isDown) {
                 movement.y += speed;
             } else {
                 movement.x -= speed;
             }
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_RIGHT)) {
             if (isDown) {
                 movement.x += speed;
             } else {
                 movement.y -= speed;
             }
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_DOWN)) {
             if (isRight) {
                 movement.x += speed;
             } else {
                 movement.y += speed;
             }
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_UP)) {
             if (isRight) {
                 movement.y -= speed;
             } else {
@@ -62,6 +68,17 @@ public class HeroMovement {
         // origin
         Utils.convert2dToIso(movement);
         context.heroOrigin.add(movement);
+
+        // animation
+        if (existsMovement) {
+            if (isDown && !isRight) context.hero.animate("anim_woodcutter_walk_down", false);
+            if (isDown && isRight) context.hero.animate("anim_woodcutter_walk_down", true);
+            if (!isDown && !isRight) context.hero.animate("anim_woodcutter_walk_up", false);
+            if (!isDown && isRight) context.hero.animate("anim_woodcutter_walk_up", true);
+        } else {
+            if (!isRight) context.hero.animate("anim_woodcutter_stand", false);
+            if (isRight) context.hero.animate("anim_woodcutter_stand", true);
+        }
     }
 
 }

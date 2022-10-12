@@ -8,7 +8,9 @@ import com.badlogic.gdx.utils.XmlReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Animation {
 
@@ -17,7 +19,14 @@ public class Animation {
     String animationTexture;
     Texture texture;
 
-    public static Animation createAnimation(String name) throws FileNotFoundException {
+    private static Map<String, Animation> cacheFlippedNone = new HashMap<>();
+    private static Map<String, Animation> cacheFlippedHorizontally = new HashMap<>();
+
+    public static Animation createAnimation(String name, boolean flipped) throws FileNotFoundException {
+        Map<String, Animation> cache = flipped ? cacheFlippedHorizontally : cacheFlippedNone;
+        Animation existingAnimation = cache.get(name);
+        if (existingAnimation != null) return existingAnimation;
+
         String dirPath = "animations/" + name;
         String filePath = dirPath + "/" + name + ".xml";
         XmlReader xmlReader = new XmlReader();
@@ -39,6 +48,7 @@ public class Animation {
             int height = Integer.parseInt(frameElement.getAttribute("height"));
             int ticks = Integer.parseInt(frameElement.getAttribute("ticks"));
             TextureRegion frame = new TextureRegion(animation.texture, x, y, width, height);
+            if (flipped) frame.flip(true, false);
             for (int i = 0; i < ticks; i++) {
                 frames.add(frame);
             }
@@ -46,6 +56,7 @@ public class Animation {
 
         float frameDuration = 1f / frameElements.size;
         animation.delegate = new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, frames.toArray(new TextureRegion[0]));
+        cache.put(name, animation);
         return animation;
     }
 

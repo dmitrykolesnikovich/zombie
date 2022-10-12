@@ -56,9 +56,9 @@ public class LevelInput extends InputAdapter {
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
-        System.out.println("scroll: " + amountX + ", " + amountY);
+        // System.out.println("scroll: " + amountX + ", " + amountY);
         context.camera.zoom += amountY * 0.025;
-        context.camera.zoom = MathUtils.clamp(context.camera.zoom, context.level.minScale, context.level.maxScale);
+        context.camera.zoom = MathUtils.clamp(context.camera.zoom, context.level.minScale, context.level.maxScale * 10);
         context.updateCamera();
         return true;
     }
