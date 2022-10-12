@@ -36,6 +36,9 @@ public class Level implements Disposable {
     public TextureRegion[] atlasFlippedVerticallyOnly;
     public TextureRegion[] atlasFlippedBoth;
 
+    public Physics physics;
+    public final Vector2 origin = new Vector2();
+
     @Override
     public void dispose() {
         texture.dispose();
@@ -87,6 +90,7 @@ public class Level implements Disposable {
             result.tiles.add(tile);
         }
 
+        result.physics = Physics.createPhysics(name);
         return result;
     }
 

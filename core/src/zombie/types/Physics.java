@@ -12,8 +12,8 @@ public class Physics {
 
     public int width;
     public int height;
-    public final List<Cell> cells = new ArrayList<>();
     public Zone[] zones;
+    public final List<Cell> cells = new ArrayList<>();
 
     public static Physics createPhysics(String name) throws FileNotFoundException {
         String dirPath = "maps/" + name;

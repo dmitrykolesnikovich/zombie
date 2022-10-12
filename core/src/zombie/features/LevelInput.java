@@ -11,11 +11,11 @@ import zombie.Utils;
 public class LevelInput extends InputAdapter {
 
     private final Context context;
+    private final Vector3 initialPoint = new Vector3();
+    private final Vector3 currentPoint = new Vector3();
+    private final Matrix4 initialCameraMatrix = new Matrix4();
+    private final Vector2 initialLevelOrigin = new Vector2();
     private boolean isDown = false;
-    private final Vector3 initialDraggingPoint = new Vector3();
-    private final Vector3 currentDraggingPoint = new Vector3();
-    private final Vector2 currentOrigin = new Vector2();
-    private Matrix4 initialMatrix;
 
     public LevelInput(Context context) {
         this.context = context;
@@ -24,10 +24,10 @@ public class LevelInput extends InputAdapter {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button != com.badlogic.gdx.Input.Buttons.LEFT || pointer > 0) return false;
-        initialDraggingPoint.set(screenX, screenY, 0);
-        initialMatrix = new Matrix4(context.camera.invProjectionView);
-        Utils.unproject(context.camera, initialDraggingPoint, initialMatrix);
-        currentOrigin.set(context.cameraOrigin);
+        initialPoint.set(screenX, screenY, 0);
+        initialCameraMatrix.set(context.camera.invProjectionView);
+        Utils.unproject(context.camera, initialPoint, initialCameraMatrix);
+        initialLevelOrigin.set(context.level.origin);
         isDown = true;
         return true;
     }
@@ -35,15 +35,13 @@ public class LevelInput extends InputAdapter {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if (isDown) {
-            currentDraggingPoint.set(screenX, screenY, 0);
-            Utils.unproject(context.camera, currentDraggingPoint, initialMatrix);
-            Vector2 origin = context.cameraOrigin;
-            float dx = currentDraggingPoint.x - initialDraggingPoint.x;
-            float dy = currentDraggingPoint.y - initialDraggingPoint.y;
-            System.out.println("dragging: " + dx + ", " + dy);
-            origin.x = currentOrigin.x - dx;
-            origin.y = currentOrigin.y - dy;
-            context.updateCamera();
+            currentPoint.set(screenX, screenY, 0);
+            Utils.unproject(context.camera, currentPoint, initialCameraMatrix);
+            float dx = currentPoint.x - initialPoint.x;
+            float dy = currentPoint.y - initialPoint.y;
+            context.level.origin.x = initialLevelOrigin.x - dx;
+            context.level.origin.y = initialLevelOrigin.y - dy;
+            context.resize();
         }
         return true;
     }
@@ -56,10 +54,9 @@ public class LevelInput extends InputAdapter {
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
-        // System.out.println("scroll: " + amountX + ", " + amountY);
         context.camera.zoom += amountY * 0.025;
         context.camera.zoom = MathUtils.clamp(context.camera.zoom, context.level.minScale, context.level.maxScale * 10);
-        context.updateCamera();
+        context.resize();
         return true;
     }
 

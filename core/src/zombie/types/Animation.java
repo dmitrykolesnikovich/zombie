@@ -15,12 +15,13 @@ import java.util.Map;
 public class Animation {
 
     public com.badlogic.gdx.graphics.g2d.Animation<TextureRegion> delegate;
-    String name;
-    String animationTexture;
-    Texture texture;
+    public String name;
+    public String texturePath;
+    public Texture texture;
+    public float totalTime;
 
-    private static Map<String, Animation> cacheFlippedNone = new HashMap<>();
-    private static Map<String, Animation> cacheFlippedHorizontally = new HashMap<>();
+    private static final Map<String, Animation> cacheFlippedNone = new HashMap<>();
+    private static final Map<String, Animation> cacheFlippedHorizontally = new HashMap<>();
 
     public static Animation createAnimation(String name, boolean flipped) throws FileNotFoundException {
         Map<String, Animation> cache = flipped ? cacheFlippedHorizontally : cacheFlippedNone;
@@ -35,8 +36,8 @@ public class Animation {
         // attributes
         Animation animation = new Animation();
         animation.name = animationElement.getAttribute("name");
-        animation.animationTexture = animationElement.getAttribute("animationTexture");
-        animation.texture = new Texture(dirPath + "/" + animation.animationTexture);
+        animation.texturePath = animationElement.getAttribute("animationTexture");
+        animation.texture = new Texture(dirPath + "/" + animation.texturePath);
 
         // children
         Array<XmlReader.Element> frameElements = animationElement.getChildByName("frames").getChildByName("list").getChildrenByName("Frame");

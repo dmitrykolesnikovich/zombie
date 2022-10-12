@@ -5,16 +5,17 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import zombie.Context;
 import zombie.Utils;
+import zombie.types.Hero;
 
 public class HeroMovement {
-
-    private final Context context;
+    
+    private final Hero hero;
     private final float speed;
     private boolean isDown = true;
     private boolean isRight = true;
 
-    public HeroMovement(Context context, float speed) {
-        this.context = context;
+    public HeroMovement(Hero hero, float speed) {
+        this.hero = hero;
         this.speed = speed;
     }
 
@@ -67,17 +68,17 @@ public class HeroMovement {
 
         // origin
         Utils.convert2dToIso(movement);
-        context.heroOrigin.add(movement);
+        hero.origin.add(movement);
 
         // animation
         if (existsMovement) {
-            if (isDown && !isRight) context.hero.animate("anim_woodcutter_walk_down", false);
-            if (isDown && isRight) context.hero.animate("anim_woodcutter_walk_down", true);
-            if (!isDown && !isRight) context.hero.animate("anim_woodcutter_walk_up", false);
-            if (!isDown && isRight) context.hero.animate("anim_woodcutter_walk_up", true);
+            if (isDown && !isRight) hero.animate("anim_woodcutter_walk_down", false);
+            if (isDown && isRight) hero.animate("anim_woodcutter_walk_down", true);
+            if (!isDown && !isRight) hero.animate("anim_woodcutter_walk_up", false);
+            if (!isDown && isRight) hero.animate("anim_woodcutter_walk_up", true);
         } else {
-            if (!isRight) context.hero.animate("anim_woodcutter_stand", false);
-            if (isRight) context.hero.animate("anim_woodcutter_stand", true);
+            if (!isRight) hero.animate("anim_woodcutter_stand", false);
+            if (isRight) hero.animate("anim_woodcutter_stand", true);
         }
     }
 
