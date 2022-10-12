@@ -4,16 +4,21 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import zombie.types.Cell;
 import zombie.types.Hero;
 import zombie.types.Level;
 import zombie.types.Tile;
 
+import static zombie.Utils.convert2dToIso;
+import static zombie.Utils.initializeRectangle2d;
+
 public class Renderer {
 
-    private static final Color TILE_OUTLINE_COLOR = new Color(1, 0.25f, 0.25f, 1);
-    private static final Color HERO_OUTLINE_COLOR = new Color(1, 1, 0.25f, 1);
+    private static final float[] RECTANGLE_2D = new float[8];
+    private static final float[] RECTANGLE_ISO = new float[8];
+    private static final Vector2 VECTOR_ISO = new Vector2();
 
     public static void drawBackground(Level level) {
         ScreenUtils.clear(level.backgroundColor);
@@ -24,7 +29,7 @@ public class Renderer {
 
         renderer.begin();
         for (Tile tile : level.tiles) {
-            Utils.drawImage(renderer, tile.image, tile.x, tile.y, tile.width, tile.height);
+            drawImage(renderer, tile.image, tile.x, tile.y, tile.width, tile.height);
         }
         renderer.end();
     }
@@ -35,27 +40,27 @@ public class Renderer {
         TextureRegion image = hero.getImageOrNull();
 
         renderer.begin();
-        Utils.drawImage(renderer, image, hero.origin.x, hero.origin.y, image.getRegionWidth(), image.getRegionHeight());
+        drawImage(renderer, image, hero.origin.x, hero.origin.y, image.getRegionWidth(), image.getRegionHeight());
         renderer.end();
     }
 
-    public static void drawTilesOutline(Level level) {
+    public static void drawTilesOutline(Level level, Color color) {
         ShapeRenderer renderer = level.tilesOutlineRenderer;
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
         for (Tile tile : level.tiles) {
-            Utils.drawRectangle2d(renderer, tile.x, tile.y, tile.width, tile.height, TILE_OUTLINE_COLOR);
+            drawRectangle2d(renderer, tile.x, tile.y, tile.width, tile.height, color);
         }
         renderer.end();
     }
 
-    public static void drawHeroOutline(Level level) {
+    public static void drawHeroOutline(Level level, Color color) {
         ShapeRenderer renderer = level.heroOutlineRenderer;
         Hero hero = level.hero;
         TextureRegion image = hero.getImageOrNull();
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
-        Utils.drawRectangle2d(renderer, hero.origin.x, hero.origin.y, image.getRegionWidth(), image.getRegionHeight(), HERO_OUTLINE_COLOR);
+        drawRectangle2d(renderer, hero.origin.x, hero.origin.y, image.getRegionWidth(), image.getRegionHeight(), color);
         renderer.end();
     }
 
@@ -66,9 +71,34 @@ public class Renderer {
         for (Cell cell : level.physics.cells) {
             float x = cell.j * level.cellSide;
             float y = cell.i * level.cellSide;
-            Utils.drawRectangleIso(renderer, x, y, level.cellSide, level.cellSide, cell.zone.color);
+            drawRectangleIso(renderer, x, y, level.cellSide, level.cellSide, cell.zone.color);
         }
         renderer.end();
+    }
+
+    /*internals*/
+
+    private static void drawImage(SpriteBatch renderer, TextureRegion image, float x, float y, float width, float height) {
+        renderer.draw(image, x, y, width / 2, height / 2, width, height, 1, -1, 0);
+    }
+
+    private static void drawRectangle2d(ShapeRenderer renderer, float x, float y, float width, float height, Color color) {
+        renderer.setColor(color);
+        renderer.rect(x, y, width, height);
+    }
+
+    private static void drawRectangleIso(ShapeRenderer renderer, float x, float y, float width, float height, Color color) {
+        renderer.setColor(color);
+
+        // convert to iso
+        VECTOR_ISO.set(x, y);
+        convert2dToIso(VECTOR_ISO);
+        x = VECTOR_ISO.x;
+        y = VECTOR_ISO.y;
+
+        initializeRectangle2d(RECTANGLE_2D, x, y, width, height);
+        convert2dToIso(RECTANGLE_2D, RECTANGLE_ISO);
+        renderer.polygon(RECTANGLE_ISO);
     }
 
 }

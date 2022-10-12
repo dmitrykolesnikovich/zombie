@@ -2,44 +2,13 @@ package zombie;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class Utils {
 
-    private static final float[] RECTANGLE_2D = new float[8];
-    private static final float[] RECTANGLE_ISO = new float[8];
     private static final Vector2 VECTOR_ISO = new Vector2();
-
-    /*renderer*/
-
-    public static void drawImage(SpriteBatch renderer, TextureRegion image, float x, float y, float width, float height) {
-        renderer.draw(image, x, y, width / 2, height / 2, width, height, 1, -1, 0);
-    }
-
-    public static void drawRectangle2d(ShapeRenderer renderer, float x, float y, float width, float height, Color color) {
-        renderer.setColor(color);
-        renderer.rect(x, y, width, height);
-    }
-
-    public static void drawRectangleIso(ShapeRenderer renderer, float x, float y, float width, float height, Color color) {
-        renderer.setColor(color);
-
-        // convert to iso
-        VECTOR_ISO.set(x, y);
-        convert2dToIso(VECTOR_ISO);
-        x = VECTOR_ISO.x;
-        y = VECTOR_ISO.y;
-
-        initializeRectangle2d(RECTANGLE_2D, x, y, width, height);
-        convert2dToIso(RECTANGLE_2D, RECTANGLE_ISO);
-        renderer.polygon(RECTANGLE_ISO);
-    }
 
     /*isometry*/
 
@@ -80,7 +49,7 @@ public class Utils {
 
     /*rectangle*/
 
-    private static void initializeRectangle2d(float[] rectangle, float x, float y, float width, float height) {
+    public static void initializeRectangle2d(float[] rectangle, float x, float y, float width, float height) {
         float x1 = x;
         float y1 = y;
         float x2 = x + width;
