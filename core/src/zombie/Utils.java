@@ -12,6 +12,7 @@ public class Utils {
 
     /*isometry*/
 
+    // x is down, y is up
     public static Vector2 convert2dToIso(Vector2 vector) {
         float x = vector.x + vector.y;
         float y = (vector.x - vector.y) / 2;
