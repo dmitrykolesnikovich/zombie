@@ -32,7 +32,7 @@ public class Renderer {
     public static void drawHero(Level level) {
         SpriteBatch renderer = level.heroRenderer;
         Hero hero = level.hero;
-        TextureRegion image = hero.getImage();
+        TextureRegion image = hero.getImageOrNull();
 
         renderer.begin();
         Utils.drawImage(renderer, image, hero.origin.x, hero.origin.y, image.getRegionWidth(), image.getRegionHeight());
@@ -52,7 +52,7 @@ public class Renderer {
     public static void drawHeroOutline(Level level) {
         ShapeRenderer renderer = level.heroOutlineRenderer;
         Hero hero = level.hero;
-        TextureRegion image = hero.getImage();
+        TextureRegion image = hero.getImageOrNull();
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
         Utils.drawRectangle2d(renderer, hero.origin.x, hero.origin.y, image.getRegionWidth(), image.getRegionHeight(), HERO_OUTLINE_COLOR);

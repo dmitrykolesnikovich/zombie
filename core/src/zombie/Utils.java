@@ -14,7 +14,7 @@ public class Utils {
 
     private static final float[] RECTANGLE_2D = new float[8];
     private static final float[] RECTANGLE_ISO = new float[8];
-    private static final float[] VECTOR_2D = new float[2];
+    private static final Vector2 VECTOR_ISO = new Vector2();
 
     /*renderer*/
 
@@ -24,11 +24,18 @@ public class Utils {
 
     public static void drawRectangle2d(ShapeRenderer renderer, float x, float y, float width, float height, Color color) {
         renderer.setColor(color);
-        renderer.rect(x - width / 2, y - height / 2, width, height);
+        renderer.rect(x, y, width, height);
     }
 
     public static void drawRectangleIso(ShapeRenderer renderer, float x, float y, float width, float height, Color color) {
         renderer.setColor(color);
+
+        // convert to iso
+        VECTOR_ISO.set(x, y);
+        convert2dToIso(VECTOR_ISO);
+        x = VECTOR_ISO.x;
+        y = VECTOR_ISO.y;
+
         initializeRectangle2d(RECTANGLE_2D, x, y, width, height);
         convert2dToIso(RECTANGLE_2D, RECTANGLE_ISO);
         renderer.polygon(RECTANGLE_ISO);
@@ -37,11 +44,9 @@ public class Utils {
     /*isometry*/
 
     public static void convert2dToIso(Vector2 vector) {
-        VECTOR_2D[0] = vector.x;
-        VECTOR_2D[1] = vector.y;
-        Utils.convert2dToIso(VECTOR_2D, VECTOR_2D);
-        vector.x = VECTOR_2D[0];
-        vector.y = VECTOR_2D[1];
+        float x = vector.x + vector.y;
+        float y = (vector.x - vector.y) / 2;
+        vector.set(x, y);
     }
 
     public static void convert2dToIso(float[] rectangle2d, float[] rectangleIso) {
@@ -51,21 +56,19 @@ public class Utils {
     }
 
     public static void convert2dToIso(float[] rectangle2d, float[] rectangleIso, int offset) {
-        // 2d
         float ox = rectangle2d[0];
         float oy = rectangle2d[1];
         float x = rectangle2d[offset];
         float y = rectangle2d[offset + 1];
-        x -= ox;
-        y -= oy;
 
-        // iso
-        float xIso = x + y;
-        float yIso = (x - y) / 2;
-        xIso += ox;
-        yIso += oy;
-        rectangleIso[offset] = xIso;
-        rectangleIso[offset + 1] = yIso;
+        // convert to iso
+        VECTOR_ISO.set(x, y);
+        VECTOR_ISO.sub(ox, oy);
+        convert2dToIso(VECTOR_ISO);
+        VECTOR_ISO.add(ox, oy);
+
+        rectangleIso[offset] = VECTOR_ISO.x;
+        rectangleIso[offset + 1] = VECTOR_ISO.y;
     }
 
     public static Vector2 convertIsoTo2d(Vector2 pt) {

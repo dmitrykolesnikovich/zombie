@@ -24,13 +24,13 @@ public class Hero {
             if (animation != null) {
                 animation.totalTime = 0;
             }
-            animation = Animation.createAnimation(animationName, flipped);
+            animation = AnimationBuilder.buildAnimation(animationName, flipped);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public TextureRegion getImage() {
+    public TextureRegion getImageOrNull() {
         if (animation == null) return null;
         return animation.delegate.getKeyFrame(animation.totalTime, true);
     }

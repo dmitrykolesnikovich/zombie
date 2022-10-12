@@ -91,7 +91,7 @@ public class Level implements Disposable {
         cellsRenderer.dispose();
     }
 
-    TextureRegion findImage(int index, boolean flipHorizontal, boolean flippedVertical) {
+    public TextureRegion findImage(int index, boolean flipHorizontal, boolean flippedVertical) {
         boolean isFlippedNone = !flipHorizontal && !flippedVertical;
         boolean isFlippedHorizontallyOnly = flipHorizontal && !flippedVertical;
         boolean isFlippedVerticallyOnly = !flipHorizontal && flippedVertical;
@@ -116,68 +116,6 @@ public class Level implements Disposable {
         // validate
         if (image == null) throw new IllegalStateException("index: " + index);
         return image;
-    }
-
-    public static Level createLevel(String name) throws FileNotFoundException {
-        String dirPath = "maps/" + name;
-        String filePath = dirPath + "/" + name + "_map_config.xml";
-        XmlReader xml = new XmlReader();
-        XmlReader.Element tileMapElement = xml.parse(new FileReader(filePath));
-
-        // attributes
-        Level level = new Level();
-        level.image = tileMapElement.getAttribute("image");
-        level.tileWidth = Float.parseFloat(tileMapElement.getAttribute("tileWidth"));
-        level.tileHeight = Float.parseFloat(tileMapElement.getAttribute("tileHeight"));
-        level.tileBorderSize = Float.parseFloat(tileMapElement.getAttribute("tileBorderSize"));
-        level.tileMapWidth = Float.parseFloat(tileMapElement.getAttribute("tileMapWidth"));
-        level.tileMapHeight = Float.parseFloat(tileMapElement.getAttribute("tileMapHeight"));
-        level.defaultScale = Float.parseFloat(tileMapElement.getAttribute("defaultScale"));
-        level.maxScale = Float.parseFloat(tileMapElement.getAttribute("maxScale"));
-        level.minScale = Float.parseFloat(tileMapElement.getAttribute("minScale"));
-        level.tilesPerAtlasRow = Float.parseFloat(tileMapElement.getAttribute("tilesPerAtlasRow"));
-        level.tilesPerAtlasColumn = Float.parseFloat(tileMapElement.getAttribute("tilesPerAtlasColumn"));
-
-        XmlReader.Element pointElement = tileMapElement.getChildByName("offset").getChildByName("Point");
-        level.offsetPoint = new Vector2(Float.parseFloat(pointElement.getAttribute("x")), Float.parseFloat(pointElement.getAttribute("y")));
-
-        // graphics
-        int atlasSize = (int) (level.tilesPerAtlasRow * level.tilesPerAtlasColumn);
-        level.atlas = new TextureRegion[atlasSize];
-        level.texture = new Texture(dirPath + "/" + level.image);
-        for (int row = 0; row < level.tilesPerAtlasRow; row++) {
-            for (int column = 0; column < level.tilesPerAtlasColumn; column++) {
-                float x = (2 * column + 1) * level.tileBorderSize + column * level.tileWidth;
-                float y = (2 * row + 1) * level.tileBorderSize + row * level.tileHeight;
-                TextureRegion image = new TextureRegion(level.texture, (int) x, (int) y, (int) level.tileWidth, (int) level.tileHeight);
-                level.atlas[(int) (row * level.tilesPerAtlasColumn + column)] = image;
-            }
-        }
-        level.atlasFlippedHorizontallyOnly = new TextureRegion[atlasSize];
-        level.atlasFlippedVerticallyOnly = new TextureRegion[atlasSize];
-        level.atlasFlippedBoth = new TextureRegion[atlasSize];
-
-        // children
-        Array<XmlReader.Element> tileElements = tileMapElement.getChildByName("items").getChildByName("list").getChildrenByName("Tile");
-        for (XmlReader.Element tileElement : tileElements) {
-            Tile tile = Tile.createTile(level, tileElement);
-            level.tiles.add(tile);
-        }
-
-        // model
-        level.physics = Physics.createPhysics(name);
-        level.origin.set(level.offsetPoint.x, level.offsetPoint.y);
-        level.camera.setToOrtho(true);
-        level.hero = new Hero();
-
-        // renderer
-        level.tilesRenderer = new SpriteBatch();
-        level.heroRenderer = new SpriteBatch();
-        level.tilesOutlineRenderer = new ShapeRenderer();
-        level.heroOutlineRenderer = new ShapeRenderer();
-        level.cellsRenderer = new ShapeRenderer();
-
-        return level;
     }
 
 }

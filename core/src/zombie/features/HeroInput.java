@@ -41,7 +41,7 @@ public class HeroInput {
         Vector2 movement = new Vector2(0, 0);
         if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_LEFT)) {
             if (isDown) {
-                movement.y += speed;
+                movement.y -= speed;
             } else {
                 movement.x -= speed;
             }
@@ -49,17 +49,17 @@ public class HeroInput {
             if (isDown) {
                 movement.x += speed;
             } else {
-                movement.y -= speed;
+                movement.y += speed;
             }
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_DOWN)) {
             if (isRight) {
                 movement.x += speed;
             } else {
-                movement.y += speed;
+                movement.y -= speed;
             }
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_UP)) {
             if (isRight) {
-                movement.y -= speed;
+                movement.y += speed;
             } else {
                 movement.x -= speed;
             }

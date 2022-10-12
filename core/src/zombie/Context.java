@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import zombie.features.LevelInput;
 import zombie.types.Level;
+import zombie.types.LevelBuilder;
 
 import java.io.FileNotFoundException;
 
@@ -15,7 +16,7 @@ public class Context extends ApplicationAdapter {
     @Override
     public void create() {
         try {
-            level = Level.createLevel("main_island");
+            level = LevelBuilder.buildLevel("main_island");
             Gdx.input.setInputProcessor(new InputMultiplexer(new LevelInput(level)));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
