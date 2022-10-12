@@ -60,14 +60,14 @@ public class Renderer {
         renderer.end();
     }
 
-    public static void drawCells(Level level) {
+    public static void drawCells(Level level, Color color) {
         ShapeRenderer renderer = level.cellsRenderer;
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
         for (Cell cell : level.physics.cells) {
             float x = cell.j * level.cellSide;
             float y = cell.i * level.cellSide;
-            drawRectangleIso(renderer, x, y, level.cellSide, level.cellSide, cell.availableForMovement() ? cell.zone.color : Color.DARK_GRAY);
+            drawRectangleIso(renderer, x, y, level.cellSide, level.cellSide, cell.isPassable() ? color : Color.DARK_GRAY);
         }
         renderer.end();
     }

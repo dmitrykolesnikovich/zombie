@@ -24,7 +24,7 @@ public class MoveHeroFeature extends InputAdapter {
         Cell cell = level.findCellOrNull(touchPoint);
         System.out.println("cell: " + cell);
         if (cell == null) return false;
-        if (!cell.availableForMovement()) return false;
+        if (!cell.isPassable()) return false;
 
         level.hero.moveTo(cell);
         level.wave = AnimationBuilder.buildAnimation("white_wave", false).reset();

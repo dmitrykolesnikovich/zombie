@@ -23,7 +23,7 @@ public class Cell {
         return centerIso;
     }
 
-    public boolean availableForMovement() {
+    public boolean isPassable() {
         return zone.passable && body == null;
     }
 

@@ -4,18 +4,18 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import zombie.Context;
 
-public class OutlineDebugFeature extends InputAdapter {
+public class DebugFeature extends InputAdapter {
 
     private final Context context;
 
-    public OutlineDebugFeature(Context context) {
+    public DebugFeature(Context context) {
         this.context = context;
     }
 
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.O) {
-            context.isOutlineDebugEnabled = !context.isOutlineDebugEnabled;
+            context.isDebugEnabled = !context.isDebugEnabled;
             return true;
         }
         return false;
