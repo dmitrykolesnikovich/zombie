@@ -35,17 +35,11 @@ public class Context extends ApplicationAdapter {
         level.hero.movementSpeed = 4;
 
         // bodies
-        Body sklep1 = level.addBody(1, "sklep");
-        sklep1.transform.placeTo(50, 30);
-
-        /*Body tower2 = level.addBody(2, "tower");
-        tower2.transform.placeTo(50, 30);*/
-
-        /*Body tropicPalm3 = level.addBody(3, "tropic_palm");
-        tropicPalm3.transform.placeTo(50, 30);*/
-
-        /*Body oak4 = level.addBody(4, "oak");
-        oak4.transform.placeTo(50, 30);*/
+        level.addBody(1, "sklep").transform.placeTo(50, 30);
+        level.addBody(2, "tower").transform.placeTo(50, 40);
+        level.addBody(3, "tropic_palm").transform.placeTo(50, 50);
+        level.addBody(4, "oak").transform.placeTo(50, 60);
+        level.addBody(5, "palm").transform.placeTo(50, 70);
 
         // camera
         level.pivot.y += 500;
