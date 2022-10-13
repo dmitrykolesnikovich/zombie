@@ -1,9 +1,5 @@
 package zombie.types;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.XmlReader;
 
@@ -24,6 +20,7 @@ public class LevelBuilder {
         }
         XmlReader.Element pointElement = levelElement.getChildByName("offset").getChildByName("Point");
 
+        // level
         Level level = new Level();
         level.name = name;
         level.dirPath = dirPath;
@@ -43,12 +40,13 @@ public class LevelBuilder {
         level.offsetPoint = new Vector2(Float.parseFloat(pointElement.getAttribute("x")), Float.parseFloat(pointElement.getAttribute("y")));
         level.image = levelElement.getAttribute("image");
 
-        // mechanics
+        // children
         level.pivot.set(level.offsetPoint.x, level.offsetPoint.y);
         level.hero = level.addBody(0, "hero");
         level.physics = PhysicsBuilder.buildPhysics(name, level);
         level.tiles = TileAtlasBuilder.buildTileAtlas(levelElement, level);
 
+        World.initializeLevel(level);
         return level;
     }
 

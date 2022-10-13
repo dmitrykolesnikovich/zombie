@@ -32,12 +32,13 @@ public class AnimationBuilder {
             throw new RuntimeException(name);
         }
 
+        // animation
         Animation animation = new Animation();
+        animation.name = name; // animationElement.getAttribute("name");
         animation.dirPath = dirPath;
         animation.filePath = filePath;
 
         // attributes
-        animation.name = animationElement.getAttribute("name");
         animation.texturePath = animationElement.getAttribute("animationTexture");
         animation.texture = new Texture(dirPath + "/" + animation.texturePath);
 
@@ -57,8 +58,12 @@ public class AnimationBuilder {
             }
         }
 
+        // delegate
         float frameDuration = 1f / frameElements.size;
-        animation.delegate = new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, images.toArray(new TextureRegion[0]));
+        TextureRegion[] keyFrames = images.toArray(new TextureRegion[0]);
+        animation.delegate = new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, keyFrames);
+
+        // cache
         cache.put(name, animation);
         return animation;
     }

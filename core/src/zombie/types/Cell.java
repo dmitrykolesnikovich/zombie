@@ -11,20 +11,23 @@ public class Cell {
 
     public Physics physics;
     public Body body;
-    private Vector2 center;
+    private Vector2 centerIso;
 
     public boolean isPassable() {
         return zone.passable && body == null;
     }
 
-    // iso
-    public Vector2 getCenter() {
+    public Vector2 getCenterIso() {
         float side = physics.cellSide;
-        if (center == null) {
-            center = new Vector2(j * side, i * side).add(side * 0.5f, side * 0.5f);
-            Isometry.convertOrthoToIso(center);
+        if (centerIso == null) {
+            float ox = side / 2;
+            float oy = side / 2;
+            float x = j * side;
+            float y = i * side;
+            centerIso = new Vector2(ox + x, oy + y);
+            Isometry.convertOrthoToIso(centerIso);
         }
-        return center;
+        return centerIso;
     }
 
     @Override

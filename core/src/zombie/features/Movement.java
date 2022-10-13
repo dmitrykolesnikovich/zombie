@@ -45,11 +45,11 @@ public class Movement {
         int index1 = currentCellIndex;
         int index2 = currentCellIndex + 1;
         Cell cell1 = path[index1];
-        if (index2 >= path.length) return cell1.getCenter();
+        if (index2 >= path.length) return cell1.getCenterIso();
 
         Cell cell2 = path[index2];
-        Vector2 center1 = cell1.getCenter();
-        Vector2 center2 = cell2.getCenter();
+        Vector2 center1 = cell1.getCenterIso();
+        Vector2 center2 = cell2.getCenterIso();
         float deltaX = center2.x - center1.x;
         float deltaY = center2.y - center1.y;
 
@@ -60,14 +60,14 @@ public class Movement {
     }
 
     public boolean isRight() {
-        Vector2 p1 = path[currentCellIndex].getCenter();
-        Vector2 p2 = path[currentCellIndex + 1].getCenter();
+        Vector2 p1 = path[currentCellIndex].getCenterIso();
+        Vector2 p2 = path[currentCellIndex + 1].getCenterIso();
         return p2.x > p1.x;
     }
 
     public boolean isDown() {
-        Vector2 p1 = path[currentCellIndex].getCenter();
-        Vector2 p2 = path[currentCellIndex + 1].getCenter();
+        Vector2 p1 = path[currentCellIndex].getCenterIso();
+        Vector2 p2 = path[currentCellIndex + 1].getCenterIso();
         return p2.y > p1.y;
     }
 

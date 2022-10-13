@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Isometry {
 
     private static final Vector2 VECTOR_ISO = new Vector2();
-    private static final Vector2 VECTOR_2D = new Vector2();
+    private static final Vector2 VECTOR_ORTHO = new Vector2();
 
     public static Vector2 convertOrthoToIso(Vector2 vector) {
         float x = vector.x + vector.y;
@@ -44,11 +44,11 @@ public class Isometry {
     }
 
     public static int[] findCellLocationOrNull(Vector2 point, float cellWidth, float cellHeight) {
-        Isometry.convertIsoToOrtho(VECTOR_2D.set(point));
-        if (VECTOR_2D.y < 0 || VECTOR_2D.x < 0) return null;
+        Isometry.convertIsoToOrtho(VECTOR_ORTHO.set(point));
+        if (VECTOR_ORTHO.y < 0 || VECTOR_ORTHO.x < 0) return null;
 
-        int i = (int) (VECTOR_2D.y / cellHeight);
-        int j = (int) (VECTOR_2D.x / cellWidth);
+        int i = (int) (VECTOR_ORTHO.y / cellHeight);
+        int j = (int) (VECTOR_ORTHO.x / cellWidth);
         return new int[]{i, j};
     }
 

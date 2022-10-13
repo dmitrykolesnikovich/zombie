@@ -5,13 +5,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Disposable;
 import zombie.features.Isometry;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Level implements Disposable {
+public class Level {
 
     public String name;
     public String dirPath;
@@ -38,19 +37,19 @@ public class Level implements Disposable {
     /*physics*/
 
     public Physics physics;
-    public List<Body> bodies = new ArrayList<>();
+    public final List<Body> bodies = new ArrayList<>();
 
     /*graphics*/
 
     public TileAtlas tiles;
-    public SpriteBatch tilesRenderer = new SpriteBatch();
-    public SpriteBatch bodiesRenderer = new SpriteBatch();
-    public SpriteBatch heroRenderer = new SpriteBatch();
-    public ShapeRenderer tilesOutlineRenderer = new ShapeRenderer();
-    public ShapeRenderer heroOutlineRenderer = new ShapeRenderer();
-    public ShapeRenderer cellsRenderer = new ShapeRenderer();
-    public SpriteBatch waveRenderer = new SpriteBatch();
-    public OrthographicCamera camera = new OrthographicCamera();
+    public final OrthographicCamera camera = new OrthographicCamera();
+    public final SpriteBatch tilesRenderer = new SpriteBatch();
+    public final SpriteBatch bodiesRenderer = new SpriteBatch();
+    public final SpriteBatch heroRenderer = new SpriteBatch();
+    public final ShapeRenderer tilesOutlineRenderer = new ShapeRenderer();
+    public final ShapeRenderer heroOutlineRenderer = new ShapeRenderer();
+    public final ShapeRenderer cellsRenderer = new ShapeRenderer();
+    public final SpriteBatch waveRenderer = new SpriteBatch();
 
     public Level() {
         camera.setToOrtho(true);
@@ -98,7 +97,6 @@ public class Level implements Disposable {
         waveRenderer.setProjectionMatrix(camera.combined);
     }
 
-    @Override
     public void dispose() {
         tiles.dispose();
         tilesRenderer.dispose();
@@ -108,6 +106,11 @@ public class Level implements Disposable {
         heroOutlineRenderer.dispose();
         cellsRenderer.dispose();
         waveRenderer.dispose();
+    }
+
+    @Override
+    public String toString() {
+        return "Level('" + name + "')";
     }
 
 }

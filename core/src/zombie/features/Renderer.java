@@ -16,13 +16,13 @@ import static zombie.features.Debug.PASSABLE_CELL_OUTLINE_COLOR;
 
 public class Renderer {
 
-    private static final float[] RECTANGLE_2D = new float[8];
     private static final float[] RECTANGLE_ISO = new float[8];
+    private static final float[] RECTANGLE_ORTHO = new float[8];
     private static final Vector2 VECTOR_ISO = new Vector2();
-    private static final Color LEVEL_BACKGROUND_COLOR = new Color(0x7AAAC9FF);
+    private static final Color BACKGROUND_COLOR = new Color(0x7AAAC9FF);
 
-    public static void drawBackground(Level level) {
-        ScreenUtils.clear(LEVEL_BACKGROUND_COLOR);
+    public static void clearBackground() {
+        ScreenUtils.clear(BACKGROUND_COLOR);
     }
 
     public static void drawTiles(Level level) {
@@ -128,8 +128,8 @@ public class Renderer {
         x = VECTOR_ISO.x;
         y = VECTOR_ISO.y;
 
-        Utils.assignRectangle(RECTANGLE_2D, x, y, width, height);
-        Isometry.convertOrthoToIso(RECTANGLE_2D, RECTANGLE_ISO);
+        Utils.assignRectangle(RECTANGLE_ORTHO, x, y, width, height);
+        Isometry.convertOrthoToIso(RECTANGLE_ORTHO, RECTANGLE_ISO);
         renderer.polygon(RECTANGLE_ISO);
     }
 

@@ -8,11 +8,12 @@ import com.badlogic.gdx.utils.XmlReader;
 public class TileAtlasBuilder {
 
     public static TileAtlas buildTileAtlas(XmlReader.Element levelElement, Level level) {
+        // atlas
         int size = (int) (level.tilesPerAtlasRow * level.tilesPerAtlasColumn);
-
-        // images
         Texture texture = new Texture(level.dirPath + "/" + level.image);
         TileAtlas tileAtlas = new TileAtlas(texture, size);
+
+        // images
         for (int row = 0; row < level.tilesPerAtlasRow; row++) {
             for (int column = 0; column < level.tilesPerAtlasColumn; column++) {
                 int index = (int) (row * level.tilesPerAtlasColumn + column);

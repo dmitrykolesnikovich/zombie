@@ -31,7 +31,7 @@ public class Transform {
     }
 
     public void placeTo(Cell cell) {
-        Vector2 position = cell.getCenter();
+        Vector2 position = cell.getCenterIso();
         placeTo(position);
     }
 
