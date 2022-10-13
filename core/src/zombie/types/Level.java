@@ -1,20 +1,22 @@
 package zombie.types;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import zombie.features.Isometry;
+import zombie.features.World;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Level implements Disposable {
 
+    public String name;
+    public String dirPath;
+    public String filePath;
     public float tilesPerAtlasRow;
     public float tilesPerAtlasColumn;
     public float tileWidth;
@@ -27,21 +29,22 @@ public class Level implements Disposable {
     public float minScale;
     public Vector2 offsetPoint;
     public String image;
-    public Texture texture;
 
     /*mechanics*/
 
-    public final OrthographicCamera camera = new OrthographicCamera();
-    public TileAtlas tiles;
-    public Physics physics;
-    public Body hero;
-    public List<Body> bodies = new ArrayList<>();
     public final Vector2 pivot = new Vector2();
-    public Color backgroundColor = new Color(0x7AAAC9FF);
-    public Animation wave; // quickfix todo improve
+    public Body hero;
+    public Animation wave;
+
+    /*physics*/
+
+    public Physics physics;
+    public List<Body> bodies = new ArrayList<>();
 
     /*graphics*/
 
+    public final OrthographicCamera camera = new OrthographicCamera();
+    public TileAtlas tiles;
     public SpriteBatch tilesRenderer = new SpriteBatch();
     public SpriteBatch bodiesRenderer = new SpriteBatch();
     public SpriteBatch heroRenderer = new SpriteBatch();
@@ -55,18 +58,24 @@ public class Level implements Disposable {
         if (wave != null && !wave.update(deltaTime)) wave = null;
     }
 
-    @Override
-    public void dispose() {
-        texture.dispose();
+    /*physics*/
 
-        tilesRenderer.dispose();
-        bodiesRenderer.dispose();
-        heroRenderer.dispose();
-        tilesOutlineRenderer.dispose();
-        heroOutlineRenderer.dispose();
-        cellsRenderer.dispose();
-        waveRenderer.dispose();
+    public Cell findCellOrNull(Vector2 point) {
+        int[] location = Isometry.findCellLocationOrNull(point, physics.cellSide, physics.cellSide);
+        if (location == null) return null;
+        int i = location[0];
+        int j = location[1];
+        return physics.grid[i][j];
     }
+
+    public Body addBody(int id, String name) {
+        Body body = new Body(this, id, name);
+        World.initializeBody(body);
+        bodies.add(body);
+        return body;
+    }
+
+    /*graphics*/
 
     public void updateCamera() {
         int width = Gdx.graphics.getWidth();
@@ -86,18 +95,16 @@ public class Level implements Disposable {
         waveRenderer.setProjectionMatrix(camera.combined);
     }
 
-    public Cell findCellOrNull(Vector2 point) {
-        int[] location = Isometry.findCellLocationOrNull(point, physics.cellSide, physics.cellSide);
-        if (location == null) return null;
-        int i = location[0];
-        int j = location[1];
-        return physics.grid[i][j];
-    }
-
-    public Body addBody(int id, String name) {
-        Body body = BodyBuilder.buildBody(id, name, this);
-        bodies.add(body);
-        return body;
+    @Override
+    public void dispose() {
+        tiles.dispose();
+        tilesRenderer.dispose();
+        bodiesRenderer.dispose();
+        heroRenderer.dispose();
+        tilesOutlineRenderer.dispose();
+        heroOutlineRenderer.dispose();
+        cellsRenderer.dispose();
+        waveRenderer.dispose();
     }
 
 }

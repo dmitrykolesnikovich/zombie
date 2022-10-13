@@ -19,9 +19,10 @@ public class Renderer {
     private static final float[] RECTANGLE_2D = new float[8];
     private static final float[] RECTANGLE_ISO = new float[8];
     private static final Vector2 VECTOR_ISO = new Vector2();
+    private static final Color LEVEL_BACKGROUND_COLOR = new Color(0x7AAAC9FF);
 
     public static void drawBackground(Level level) {
-        ScreenUtils.clear(level.backgroundColor);
+        ScreenUtils.clear(LEVEL_BACKGROUND_COLOR);
     }
 
     public static void drawTiles(Level level) {

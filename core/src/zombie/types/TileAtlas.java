@@ -1,5 +1,6 @@
 package zombie.types;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 
 public class TileAtlas implements Iterable<Tile> {
 
+    public final Texture texture;
     public final int size;
     public final TextureRegion[] images;
     public final TextureRegion[] imagesFlippedHorizontallyOnly;
@@ -15,7 +17,8 @@ public class TileAtlas implements Iterable<Tile> {
     public final TextureRegion[] imagesFlippedBoth;
     private final List<Tile> tiles = new ArrayList<>();
 
-    public TileAtlas(int size) {
+    public TileAtlas(Texture texture, int size) {
+        this.texture = texture;
         this.size = size;
         this.images = new TextureRegion[size];
         this.imagesFlippedHorizontallyOnly = new TextureRegion[size];
@@ -57,6 +60,10 @@ public class TileAtlas implements Iterable<Tile> {
         // nulls are not allowed by design
         if (image == null) throw new IllegalStateException("index: " + index);
         return image;
+    }
+
+    public void dispose() {
+        texture.dispose();
     }
 
     @Override

@@ -19,8 +19,7 @@ public class Transform {
             if (running) {
                 body.face = movement.isRight() ? Face.LOOKING_RIGHT : Face.LOOKING_LEFT;
             } else {
-                // stop
-                movement = null;
+                stop();
             }
         }
     }
@@ -47,24 +46,31 @@ public class Transform {
     }
 
     public void moveTo(Cell cell) {
+        if (cell == null) return;
         Level level = body.level;
-        Cell[][] grid = level.physics.grid;
         Cell currentCell = level.findCellOrNull(body.position);
         if (currentCell == null) return;
-        if (cell == null) return;
+        start(currentCell, cell);
+    }
 
+    /*internals*/
+
+    private void start(Cell source, Cell target) {
+        Cell[][] grid = body.level.physics.grid;
         Cell[] path;
-        Cell middleCell = grid[currentCell.i][cell.j];
+        Cell middleCell = grid[source.i][target.j];
         if (middleCell == null) {
-            path = new Cell[]{currentCell, cell};
-        } else if (middleCell != currentCell && middleCell != cell) {
-            path = new Cell[]{currentCell, middleCell, cell};
+            path = new Cell[]{source, target};
+        } else if (middleCell != source && middleCell != target) {
+            path = new Cell[]{source, middleCell, target};
         } else {
-            path = new Cell[]{currentCell, cell};
+            path = new Cell[]{source, target};
         }
-
-        // start
         movement = new Movement(path);
+    }
+
+    private void stop() {
+        movement = null;
     }
 
 }

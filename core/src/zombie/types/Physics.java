@@ -5,6 +5,10 @@ import java.util.Map;
 
 public class Physics {
 
+    public Level level;
+    public String name;
+    public String dirPath;
+    public String filePath;
     public int width;
     public int height;
     public Map<Integer, Zone> zones;

@@ -11,8 +11,8 @@ import java.util.List;
 public class Body {
 
     public final Level level;
-    public int id;
-    public String name;
+    public final int id;
+    public final String name;
 
     /*mechanics*/
 
@@ -34,8 +34,10 @@ public class Body {
     public Face face;
     public boolean isVisible = true;
 
-    public Body(Level level) {
+    public Body(Level level, int id, String name) {
         this.level = level;
+        this.id = id;
+        this.name = name;
     }
 
     public void update(float deltaTime) {
@@ -100,8 +102,8 @@ public class Body {
         return setAnimation(name, false);
     }
 
-    public boolean setAnimation(String name, boolean flipped) {
-        Animation animation = AnimationBuilder.buildAnimation(name, flipped);
+    public boolean setAnimation(String name, boolean flippedHorizontally) {
+        Animation animation = AnimationBuilder.buildAnimation(name, flippedHorizontally);
         return setAnimation(animation);
     }
 

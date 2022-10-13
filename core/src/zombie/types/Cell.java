@@ -9,7 +9,7 @@ public class Cell {
     public int j;
     public Zone zone;
 
-    public Level level;
+    public Physics physics;
     public Body body;
     private Vector2 center;
 
@@ -19,7 +19,7 @@ public class Cell {
 
     // iso
     public Vector2 getCenter() {
-        float side = level.physics.cellSide;
+        float side = physics.cellSide;
         if (center == null) {
             center = new Vector2(j * side, i * side).add(side * 0.5f, side * 0.5f);
             Isometry.convertOrthoToIso(center);

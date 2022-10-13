@@ -17,11 +17,10 @@ public class AnimationBuilder {
     private static final Map<String, Animation> cachedAnimations = new HashMap<>();
     private static final Map<String, Animation> cachedAnimationsFlippedHorizontally = new HashMap<>();
 
-    public static Animation buildAnimation(String name, boolean flipped) {
-        Map<String, Animation> cache = flipped ? cachedAnimationsFlippedHorizontally : cachedAnimations;
+    public static Animation buildAnimation(String name, boolean flippedHorizontally) {
+        Map<String, Animation> cache = flippedHorizontally ? cachedAnimationsFlippedHorizontally : cachedAnimations;
         Animation existingAnimation = cache.get(name);
         if (existingAnimation != null) return existingAnimation;
-
 
         String dirPath = "animations/" + name;
         String filePath = dirPath + "/" + name + ".xml";
@@ -33,8 +32,11 @@ public class AnimationBuilder {
             throw new RuntimeException(name);
         }
 
-        // attributes
         Animation animation = new Animation();
+        animation.dirPath = dirPath;
+        animation.filePath = filePath;
+
+        // attributes
         animation.name = animationElement.getAttribute("name");
         animation.texturePath = animationElement.getAttribute("animationTexture");
         animation.texture = new Texture(dirPath + "/" + animation.texturePath);
@@ -49,7 +51,7 @@ public class AnimationBuilder {
             int height = Integer.parseInt(frameElement.getAttribute("height"));
             int ticks = Integer.parseInt(frameElement.getAttribute("ticks"));
             TextureRegion image = new TextureRegion(animation.texture, x, y, width, height);
-            if (flipped) image.flip(true, false);
+            if (flippedHorizontally) image.flip(true, false);
             for (int i = 0; i < ticks; i++) {
                 images.add(image);
             }

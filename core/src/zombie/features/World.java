@@ -1,14 +1,13 @@
-package zombie.types;
+package zombie.features;
+
+import zombie.types.Body;
 
 import static zombie.types.Face.*;
 
-public class BodyBuilder {
+public class World {
 
-    public static Body buildBody(int id, String name, Level level) {
-        Body body = new Body(level);
-        body.id = id;
-        body.name = name;
-        switch (name) {
+    public static void initializeBody(Body body) {
+        switch (body.name) {
             case "hero": {
                 body.rows = 1;
                 body.columns = 1;
@@ -47,10 +46,9 @@ public class BodyBuilder {
                 break;
             }
             default: {
-                throw new IllegalStateException("name: " + name);
+                throw new IllegalStateException("body: " + body);
             }
         }
-        return body;
     }
 
 }

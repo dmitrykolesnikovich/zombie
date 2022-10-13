@@ -21,8 +21,13 @@ public class PhysicsBuilder {
             throw new RuntimeException(name);
         }
 
-        // attributes
         Physics physics = new Physics();
+        physics.level = level;
+        physics.name = name;
+        physics.dirPath = dirPath;
+        physics.filePath = filePath;
+
+        // attributes
         physics.width = Integer.parseInt(physicsElement.getAttribute("width"));
         physics.height = Integer.parseInt(physicsElement.getAttribute("height"));
 
@@ -40,7 +45,6 @@ public class PhysicsBuilder {
         physics.cells = new ArrayList<>();
         for (XmlReader.Element cellElement : cellElements) {
             Cell cell = CellBuilder.buildCell(cellElement, physics);
-            cell.level = level;
             physics.grid[cell.i][cell.j] = cell;
             physics.cells.add(cell);
         }

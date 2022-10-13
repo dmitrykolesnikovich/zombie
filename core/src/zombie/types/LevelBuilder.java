@@ -23,8 +23,12 @@ public class LevelBuilder {
         }
         XmlReader.Element pointElement = levelElement.getChildByName("offset").getChildByName("Point");
 
-        // attributes
         Level level = new Level();
+        level.name = name;
+        level.dirPath = dirPath;
+        level.filePath = filePath;
+
+        // attributes
         level.tilesPerAtlasRow = Float.parseFloat(levelElement.getAttribute("tilesPerAtlasRow"));
         level.tilesPerAtlasColumn = Float.parseFloat(levelElement.getAttribute("tilesPerAtlasColumn"));
         level.tileWidth = Float.parseFloat(levelElement.getAttribute("tileWidth"));
@@ -37,7 +41,6 @@ public class LevelBuilder {
         level.minScale = Float.parseFloat(levelElement.getAttribute("minScale"));
         level.offsetPoint = new Vector2(Float.parseFloat(pointElement.getAttribute("x")), Float.parseFloat(pointElement.getAttribute("y")));
         level.image = levelElement.getAttribute("image");
-        level.texture = new Texture(dirPath + "/" + level.image);
 
         // mechanics
         level.tiles = TileAtlasBuilder.buildTileAtlas(levelElement, level);

@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 public class Animation {
 
     public String name;
+    public String dirPath;
+    public String filePath;
     public String texturePath;
     public Texture texture;
 
