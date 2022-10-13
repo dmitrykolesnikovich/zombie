@@ -57,7 +57,7 @@ public class Body {
         float y = position.y - h / 2;
 
         // position offset
-        float dx = face != null && face.isLookingRight() ? pivot.x : -pivot.x;
+        float dx = isLookingRight() ? pivot.x : -pivot.x;
         float dy = -pivot.y;
 
         return bounds.setPosition(x + dx, y + dy).setSize(w, h);
@@ -88,6 +88,10 @@ public class Body {
     public TextureRegion getImageOrNull() {
         if (animation == null) return null;
         return animation.getImage();
+    }
+
+    public boolean isLookingRight() {
+        return face == Face.LOOKING_RIGHT;
     }
 
     /*cells*/

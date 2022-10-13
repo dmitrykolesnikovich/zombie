@@ -7,7 +7,6 @@ import zombie.types.Movement;
 public class Animator {
 
     public static boolean update(Body body) {
-        Face face = body.face;
         Movement movement = body.transform.movement;
         boolean isMoving = movement != null;
         boolean isMovingDown = isMoving && movement.isDown();
@@ -15,7 +14,7 @@ public class Animator {
         switch (body.name) {
             case "hero":
                 String name = isMoving ? (isMovingDown ? "anim_woodcutter_walk_down" : "anim_woodcutter_walk_up") : "anim_woodcutter_stand";
-                return body.setAnimation(name, face.isLookingRight());
+                return body.setAnimation(name, body.isLookingRight());
             case "sklep":
                 return body.setAnimation("b_sklep_0");
             case "tower":

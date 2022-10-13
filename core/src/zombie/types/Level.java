@@ -38,17 +38,17 @@ public class Level implements Disposable {
     public List<Body> bodies = new ArrayList<>();
     public final Vector2 pivot = new Vector2();
     public Color backgroundColor = new Color(0x7AAAC9FF);
-    public Animation wave;
+    public Animation wave; // quickfix todo improve
 
     /*graphics*/
 
-    public SpriteBatch tilesRenderer;
-    public SpriteBatch bodiesRenderer;
-    public SpriteBatch heroRenderer;
-    public ShapeRenderer tilesOutlineRenderer;
-    public ShapeRenderer heroOutlineRenderer;
-    public ShapeRenderer cellsRenderer;
-    public SpriteBatch waveRenderer;
+    public SpriteBatch tilesRenderer = new SpriteBatch();
+    public SpriteBatch bodiesRenderer = new SpriteBatch();
+    public SpriteBatch heroRenderer = new SpriteBatch();
+    public ShapeRenderer tilesOutlineRenderer = new ShapeRenderer();
+    public ShapeRenderer heroOutlineRenderer = new ShapeRenderer();
+    public ShapeRenderer cellsRenderer = new ShapeRenderer();
+    public SpriteBatch waveRenderer = new SpriteBatch();
 
     public void update(float deltaTime) {
         for (Body body : bodies) body.update(deltaTime);

@@ -12,7 +12,6 @@ public class MoveHero extends InputAdapter {
     private final Level level;
     private final Vector2 touchPoint = new Vector2();
 
-
     public MoveHero(Level level) {
         this.level = level;
     }
@@ -30,10 +29,9 @@ public class MoveHero extends InputAdapter {
 
         level.hero.transform.moveTo(cell);
         level.wave = AnimationBuilder.buildAnimation("white_wave", false);
-        level.wave.stop(); // quickfix todo conceptualize
         level.wave.position.set(cell.getCenterIso());
-        level.wave.setFps(44);
         level.wave.duration = 0.77f;
+        level.wave.setFps(44);
         return true;
     }
 

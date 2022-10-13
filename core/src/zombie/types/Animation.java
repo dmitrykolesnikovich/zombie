@@ -25,6 +25,7 @@ public class Animation {
     public boolean update(float deltaTime) {
         currentTime += deltaTime;
         if (duration != -1 && currentTime > duration) {
+            stop();
             return false;
         }
         return true;

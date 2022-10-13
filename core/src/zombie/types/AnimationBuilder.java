@@ -22,12 +22,13 @@ public class AnimationBuilder {
         Animation existingAnimation = cache.get(name);
         if (existingAnimation != null) return existingAnimation;
 
+
         String dirPath = "animations/" + name;
         String filePath = dirPath + "/" + name + ".xml";
-        XmlReader xmlReader = new XmlReader();
+        XmlReader parser = new XmlReader();
         XmlReader.Element animationElement;
         try {
-            animationElement = xmlReader.parse(new FileReader(filePath));
+            animationElement = parser.parse(new FileReader(filePath));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(name);
         }

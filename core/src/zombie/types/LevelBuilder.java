@@ -14,46 +14,37 @@ public class LevelBuilder {
     public static Level buildLevel(String name) {
         String dirPath = "maps/" + name;
         String filePath = dirPath + "/" + name + "_map_config.xml";
-        XmlReader xml = new XmlReader();
-        XmlReader.Element tileMapElement;
+        XmlReader parser = new XmlReader();
+        XmlReader.Element levelElement;
         try {
-            tileMapElement = xml.parse(new FileReader(filePath));
+            levelElement = parser.parse(new FileReader(filePath));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(name);
         }
-        XmlReader.Element pointElement = tileMapElement.getChildByName("offset").getChildByName("Point");
+        XmlReader.Element pointElement = levelElement.getChildByName("offset").getChildByName("Point");
 
         // attributes
         Level level = new Level();
-        level.tilesPerAtlasRow = Float.parseFloat(tileMapElement.getAttribute("tilesPerAtlasRow"));
-        level.tilesPerAtlasColumn = Float.parseFloat(tileMapElement.getAttribute("tilesPerAtlasColumn"));
-        level.tileWidth = Float.parseFloat(tileMapElement.getAttribute("tileWidth"));
-        level.tileHeight = Float.parseFloat(tileMapElement.getAttribute("tileHeight"));
-        level.tileBorderSize = Float.parseFloat(tileMapElement.getAttribute("tileBorderSize"));
-        level.tileMapWidth = Float.parseFloat(tileMapElement.getAttribute("tileMapWidth"));
-        level.tileMapHeight = Float.parseFloat(tileMapElement.getAttribute("tileMapHeight"));
-        level.defaultScale = Float.parseFloat(tileMapElement.getAttribute("defaultScale"));
-        level.maxScale = Float.parseFloat(tileMapElement.getAttribute("maxScale"));
-        level.minScale = Float.parseFloat(tileMapElement.getAttribute("minScale"));
+        level.tilesPerAtlasRow = Float.parseFloat(levelElement.getAttribute("tilesPerAtlasRow"));
+        level.tilesPerAtlasColumn = Float.parseFloat(levelElement.getAttribute("tilesPerAtlasColumn"));
+        level.tileWidth = Float.parseFloat(levelElement.getAttribute("tileWidth"));
+        level.tileHeight = Float.parseFloat(levelElement.getAttribute("tileHeight"));
+        level.tileBorderSize = Float.parseFloat(levelElement.getAttribute("tileBorderSize"));
+        level.tileMapWidth = Float.parseFloat(levelElement.getAttribute("tileMapWidth"));
+        level.tileMapHeight = Float.parseFloat(levelElement.getAttribute("tileMapHeight"));
+        level.defaultScale = Float.parseFloat(levelElement.getAttribute("defaultScale"));
+        level.maxScale = Float.parseFloat(levelElement.getAttribute("maxScale"));
+        level.minScale = Float.parseFloat(levelElement.getAttribute("minScale"));
         level.offsetPoint = new Vector2(Float.parseFloat(pointElement.getAttribute("x")), Float.parseFloat(pointElement.getAttribute("y")));
-        level.image = tileMapElement.getAttribute("image");
+        level.image = levelElement.getAttribute("image");
         level.texture = new Texture(dirPath + "/" + level.image);
 
         // mechanics
-        level.tiles = TileAtlasBuilder.buildTileAtlas(tileMapElement, level);
+        level.tiles = TileAtlasBuilder.buildTileAtlas(levelElement, level);
         level.physics = PhysicsBuilder.buildPhysics(name, level);
         level.hero = level.addBody(0, "hero");
         level.camera.setToOrtho(true);
         level.pivot.set(level.offsetPoint.x, level.offsetPoint.y);
-
-        // graphics
-        level.tilesRenderer = new SpriteBatch();
-        level.bodiesRenderer = new SpriteBatch();
-        level.heroRenderer = new SpriteBatch();
-        level.tilesOutlineRenderer = new ShapeRenderer();
-        level.heroOutlineRenderer = new ShapeRenderer();
-        level.cellsRenderer = new ShapeRenderer();
-        level.waveRenderer = new SpriteBatch();
 
         return level;
     }
