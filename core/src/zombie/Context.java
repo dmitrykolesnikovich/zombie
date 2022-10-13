@@ -4,10 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
-import zombie.features.DragLevel;
-import zombie.features.MoveHero;
-import zombie.features.Debug;
-import zombie.features.ZoomLevel;
+import zombie.features.*;
 import zombie.types.Level;
 import zombie.types.LevelBuilder;
 

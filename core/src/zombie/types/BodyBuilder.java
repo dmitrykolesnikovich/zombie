@@ -1,5 +1,7 @@
 package zombie.types;
 
+import static zombie.types.Face.*;
+
 public class BodyBuilder {
 
     public static Body buildBody(int id, String name, Level level) {
@@ -11,6 +13,7 @@ public class BodyBuilder {
                 body.rows = 1;
                 body.columns = 1;
                 body.pivot.set(4, 20);
+                body.face = LOOKING_RIGHT;
                 break;
             }
             case "sklep": {
@@ -18,6 +21,7 @@ public class BodyBuilder {
                 body.columns = 8;
                 body.pivot.set(-72, 44);
                 body.animate("b_sklep_0", false);
+                body.face = LOOKING_RIGHT;
                 break;
             }
             case "tower": {
@@ -25,6 +29,7 @@ public class BodyBuilder {
                 body.columns = 4;
                 body.pivot.set(-45, 56.5f);
                 body.animate("b_tower_0", false);
+                body.face = LOOKING_LEFT;
                 break;
             }
             case "tropic_palm": {
@@ -32,6 +37,7 @@ public class BodyBuilder {
                 body.columns = 2;
                 body.pivot.set(-14, 209);
                 body.animate("d_tropic_palm_01_0", false);
+                body.face = LOOKING_STRAIGHT;
                 break;
             }
             case "oak": {
@@ -39,6 +45,7 @@ public class BodyBuilder {
                 body.columns = 1;
                 body.pivot.set(-4, 125);
                 body.animate("t_oak3_0", false);
+                body.face = LOOKING_STRAIGHT;
                 break;
             }
             case "palm": {
@@ -46,6 +53,7 @@ public class BodyBuilder {
                 body.columns = 1;
                 body.pivot.set(25, 126);
                 body.animate("t_palm_01_0", false);
+                body.face = LOOKING_STRAIGHT;
                 break;
             }
             default: {

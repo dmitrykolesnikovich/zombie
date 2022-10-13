@@ -59,4 +59,14 @@ public class Movement {
         return currentPosition;
     }
 
+    public boolean isDown() {
+        int i_delta = path[currentCellIndex + 1].i - path[currentCellIndex].i;
+        return i_delta < 0;
+    }
+
+    public boolean isRight() {
+        int j_delta = path[currentCellIndex + 1].j - path[currentCellIndex].j;
+        return j_delta > 0;
+    }
+
 }

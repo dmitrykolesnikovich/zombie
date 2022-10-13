@@ -3,6 +3,7 @@ package zombie.types;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import zombie.features.Animator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class Body {
     private final Rectangle bounds = new Rectangle();
     public boolean isVisible = true;
     public final List<Cell> placementCells = new ArrayList<>();
+    public Face face;
 
     public Body(Level level) {
         this.level = level;
@@ -30,6 +32,7 @@ public class Body {
 
     public void update(float deltaTime) {
         transform.update(deltaTime);
+        Animator.updateAnimation(this);
         if (animation != null) animation.update(deltaTime);
     }
 
