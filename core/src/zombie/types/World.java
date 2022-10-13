@@ -2,7 +2,7 @@ package zombie.types;
 
 import static zombie.types.Face.LOOKING_RIGHT;
 
-// todo replace with BodyBuilder in production
+// todo replace `World.initializeBody` with `BodyBuilder.buildBody` in production
 public class World {
 
     public static void initializeBody(Body body) {

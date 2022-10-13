@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import zombie.Utils;
 import zombie.types.Level;
+import com.badlogic.gdx.Input;
 
 public class DragLevel extends InputAdapter {
 
@@ -21,7 +22,7 @@ public class DragLevel extends InputAdapter {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (button != com.badlogic.gdx.Input.Buttons.LEFT || pointer > 0) return false;
+        if (button != Input.Buttons.LEFT || pointer > 0) return false;
 
         initialTouchPoint.set(screenX, screenY);
         Utils.unproject(level.camera, initialTouchPoint, initialTouchMatrix.set(level.camera.invProjectionView));
