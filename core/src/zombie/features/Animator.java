@@ -4,7 +4,6 @@ import zombie.types.Body;
 import zombie.types.Face;
 import zombie.types.Movement;
 
-// currently switching animations works without any performance optimizations
 public class Animator {
 
     public static boolean update(Body body) {

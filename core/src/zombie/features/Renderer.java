@@ -12,7 +12,6 @@ import zombie.types.*;
 
 import java.util.List;
 
-// currently drawing images works without any performance optimizations
 public class Renderer {
 
     private static final float[] RECTANGLE_2D = new float[8];
