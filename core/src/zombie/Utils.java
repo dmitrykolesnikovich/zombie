@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Utils {
 
-    private static final Vector3 VECTOR_UNPROJECT = new Vector3();
+    private static final Vector3 VECTOR3 = new Vector3();
 
     public static void assignRectangle(float[] rectangle, float x, float y, float width, float height) {
         float x1 = x;
@@ -35,18 +35,18 @@ public class Utils {
 
     // https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/graphics/Camera.java#L194
     public static void unproject(Camera camera, Vector2 screenCoords, Matrix4 invProjectionView) {
-        VECTOR_UNPROJECT.x = screenCoords.x;
-        VECTOR_UNPROJECT.y = screenCoords.y;
-        VECTOR_UNPROJECT.z = 0;
+        VECTOR3.x = screenCoords.x;
+        VECTOR3.y = screenCoords.y;
+        VECTOR3.z = 0;
 
         float x = screenCoords.x, y = Gdx.graphics.getHeight() - screenCoords.y;
-        VECTOR_UNPROJECT.x = (2 * x) / camera.viewportWidth - 1;
-        VECTOR_UNPROJECT.y = (2 * y) / camera.viewportHeight - 1;
-        VECTOR_UNPROJECT.z = -1;
-        VECTOR_UNPROJECT.prj(invProjectionView);
+        VECTOR3.x = (2 * x) / camera.viewportWidth - 1;
+        VECTOR3.y = (2 * y) / camera.viewportHeight - 1;
+        VECTOR3.z = -1;
+        VECTOR3.prj(invProjectionView);
 
-        screenCoords.x = VECTOR_UNPROJECT.x;
-        screenCoords.y = VECTOR_UNPROJECT.y;
+        screenCoords.x = VECTOR3.x;
+        screenCoords.y = VECTOR3.y;
     }
 
 }

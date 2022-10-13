@@ -56,7 +56,7 @@ public class LevelBuilder {
         level.inputController.addProcessor(new MoveHero(level));
         level.inputController.addProcessor(new DragLevel(level));
         level.inputController.addProcessor(new ZoomLevel(level));
-        level.inputController.addProcessor(new RendererDebug());
+        level.inputController.addProcessor(new RendererDebug(level));
 
         World.initializeLevel(level);
         return level;
