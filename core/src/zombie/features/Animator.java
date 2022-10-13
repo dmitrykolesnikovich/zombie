@@ -1,8 +1,6 @@
 package zombie.features;
 
 import zombie.types.Body;
-import zombie.types.Face;
-import zombie.types.Movement;
 
 public class Animator {
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import zombie.features.Animator;
+import zombie.features.Transform;
 
 import java.util.ArrayList;
 import java.util.List;

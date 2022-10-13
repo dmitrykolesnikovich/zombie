@@ -1,9 +1,8 @@
-package zombie.features;
+package zombie.types;
 
-import zombie.types.Body;
+import static zombie.types.Face.LOOKING_RIGHT;
 
-import static zombie.types.Face.*;
-
+// todo replace with BodyBuilder in production
 public class World {
 
     public static void initializeBody(Body body) {

@@ -1,6 +1,7 @@
-package zombie.types;
+package zombie.features;
 
 import com.badlogic.gdx.math.Vector2;
+import zombie.types.*;
 
 public class Transform {
 
