@@ -56,7 +56,6 @@ public class Context extends ApplicationAdapter {
         Renderer.drawTiles(level);
         Renderer.drawWave(level);
         Renderer.drawBodies(level);
-        Renderer.drawHero(level);
         if (isDebugEnabled) {
             Renderer.drawCells(level, PASSABLE_CELL_OUTLINE_COLOR);
         }

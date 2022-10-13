@@ -19,13 +19,14 @@ public class MoveHeroFeature extends InputAdapter {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (level.hero == null) return false;
+
         touchPoint.set(screenX, screenY);
         Utils.unproject(level.camera, touchPoint);
         Cell cell = level.findCellOrNull(touchPoint);
         System.out.println("cell: " + cell);
         if (cell == null) return false;
         if (!cell.isPassable()) return false;
-        if (level.hero == null) return false;
 
         level.hero.transform.moveTo(cell);
         level.wave = AnimationBuilder.buildAnimation("white_wave", false).reset();

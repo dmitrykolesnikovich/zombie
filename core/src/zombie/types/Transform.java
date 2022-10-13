@@ -1,5 +1,7 @@
 package zombie.types;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class Transform {
 
     private final Body body;
@@ -13,7 +15,7 @@ public class Transform {
         if (movement != null) {
             float cellProgressDelta = body.movementSpeed / body.level.cellSide * deltaTime;
             boolean running = movement.update(cellProgressDelta);
-            body.position.set(movement.getCurrentPosition());
+            body.transform.placeTo(movement.getCurrentPosition());
             if (!running) {
                 movement = null;
             }
@@ -21,15 +23,18 @@ public class Transform {
     }
 
     public void placeTo(int i, int j) {
-        Level level = body.level;
-        Cell cell = level.physics.grid[i][j];
+        Cell cell = body.level.physics.grid[i][j];
         placeTo(cell);
     }
 
     public void placeTo(Cell cell) {
-        Level level = body.level;
-        body.position.set(cell.getCenterIso());
-        level.onUpdateBody(body);
+        Vector2 centerIso = cell.getCenterIso();
+        placeTo(centerIso);
+    }
+
+    public void placeTo(Vector2 position) {
+        body.position.set(position);
+        body.level.onBodyPlacementUpdate(body);
     }
 
     public void moveTo(int i, int j) {

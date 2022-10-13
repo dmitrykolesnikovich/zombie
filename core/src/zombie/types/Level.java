@@ -60,7 +60,6 @@ public class Level implements Disposable {
     public TextureRegion[] atlasFlippedBoth;
 
     public void update(float deltaTime) {
-        if (hero != null) hero.update(deltaTime);
         for (Body body : bodies) body.update(deltaTime);
         if (wave != null && !wave.update(deltaTime)) wave = null;
     }
@@ -103,13 +102,19 @@ public class Level implements Disposable {
         return body;
     }
 
-    public void onUpdateBody(Body body) {
+    public void onBodyPlacementUpdate(Body body) {
+        // reset
+        for (Cell cell : body.placementCells) cell.body = null;
+        body.placementCells.clear();
+
+        // setup
         Cell[][] grid = physics.grid;
         Cell firstCell = body.getCellOrNull();
         for (int row = firstCell.i; row < firstCell.i + body.rows; row++) {
             for (int column = firstCell.j; column < firstCell.j + body.columns; column++) {
                 Cell cell = grid[row][column];
                 cell.body = body;
+                body.placementCells.add(cell);
             }
         }
     }

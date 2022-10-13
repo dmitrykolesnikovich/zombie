@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Body {
 
     public int id;
@@ -19,6 +22,7 @@ public class Body {
     public float movementSpeed = 16;
     private final Rectangle bounds = new Rectangle();
     public boolean isVisible = true;
+    public final List<Cell> placementCells = new ArrayList<>();
 
     public Body(Level level) {
         this.level = level;
@@ -55,6 +59,11 @@ public class Body {
 
     public Cell getCellOrNull() {
         return level.findCellOrNull(position);
+    }
+
+    @Override
+    public String toString() {
+        return "Body('" + name + "', position = " + position + ")";
     }
 
 }

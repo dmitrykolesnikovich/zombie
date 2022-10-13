@@ -45,19 +45,6 @@ public class Renderer {
         renderer.end();
     }
 
-    public static void drawHero(Level level) {
-        SpriteBatch renderer = level.heroRenderer;
-        Body hero = level.hero;
-        if (hero == null) return;
-        if (!hero.isVisible) return;
-        TextureRegion image = hero.getImageOrNull();
-        Rectangle bounds = hero.getBounds();
-
-        renderer.begin();
-        drawImage(renderer, image, bounds);
-        renderer.end();
-    }
-
     public static void drawTilesOutline(Level level, Color color) {
         ShapeRenderer renderer = level.tilesOutlineRenderer;
 
