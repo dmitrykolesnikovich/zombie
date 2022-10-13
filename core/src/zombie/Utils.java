@@ -10,7 +10,7 @@ public class Utils {
 
     private static final Vector3 VECTOR_UNPROJECT = new Vector3();
 
-    public static void initializeRectangleArray(float[] rectangle, float x, float y, float width, float height) {
+    public static void assignRectangle(float[] rectangle, float x, float y, float width, float height) {
         float x1 = x;
         float y1 = y;
         float x2 = x + width;
