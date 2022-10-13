@@ -16,7 +16,7 @@ public class ZoomLevel extends InputAdapter {
     public boolean scrolled(float amountX, float amountY) {
         level.camera.zoom += amountY * 0.025;
         level.camera.zoom = MathUtils.clamp(level.camera.zoom, level.minScale, level.maxScale * 10);
-        level.resize();
+        level.updateCamera();
         return true;
     }
 

@@ -10,39 +10,32 @@ import java.util.List;
 
 public class Body {
 
+    public final Level level;
     public int id;
     public String name;
-    public int rows;
-    public int columns;
 
-    public final Level level;
-    private Animation animation;
-    public final Transform transform = new Transform(this);
+    /*geometry*/
+
     public final Vector2 position = new Vector2();
     public final Vector2 pivot = new Vector2();
-    public float movementSpeed = 16;
     private final Rectangle bounds = new Rectangle();
-    public boolean isVisible = true;
-    public final List<Cell> placementCells = new ArrayList<>();
+    public final Transform transform = new Transform(this);
+    public float speed = 16;
+
+    /*animation*/
+
+    private Animation animation;
     public Face face;
+    public boolean isVisible = true;
+
+    /*cells*/
+
+    public int rows;
+    public int columns;
+    private final List<Cell> cells = new ArrayList<>();
 
     public Body(Level level) {
         this.level = level;
-    }
-
-    public void setAnimation(String animationName, boolean flipped) {
-        Animation animation = AnimationBuilder.buildAnimation(animationName, flipped);
-        setAnimation(animation);
-    }
-
-    public void setAnimation(Animation animation) {
-        if (this.animation == animation) return;
-        if (this.animation != null) this.animation.stop();
-        this.animation = animation;
-    }
-
-    public Animation getAnimation() {
-        return animation;
     }
 
     public void update(float deltaTime) {
@@ -51,14 +44,7 @@ public class Body {
         if (animation != null) animation.update(deltaTime); // 3. update animation
     }
 
-    public TextureRegion getImageOrNull() {
-        if (animation == null) return null;
-        return animation.getImage();
-    }
-
-    public Cell getCellOrNull() {
-        return level.findCellOrNull(position);
-    }
+    /*geometry*/
 
     public Rectangle getBounds() {
         TextureRegion image = getImageOrNull();
@@ -75,6 +61,59 @@ public class Body {
         float dy = -pivot.y;
 
         return bounds.setPosition(x + dx, y + dy).setSize(w, h);
+    }
+
+    /*animation*/
+
+    public void setAnimation(String animationName, boolean flipped) {
+        Animation animation = AnimationBuilder.buildAnimation(animationName, flipped);
+        setAnimation(animation);
+    }
+
+    public void setAnimation(Animation animation) {
+        if (this.animation == animation) return;
+        if (this.animation != null) this.animation.stop();
+        this.animation = animation;
+    }
+
+    public Animation getAnimation() {
+        return animation;
+    }
+
+    public TextureRegion getImageOrNull() {
+        if (animation == null) return null;
+        return animation.getImage();
+    }
+
+    /*cells*/
+
+    public void updateCells() {
+        // reset
+        for (Cell cell : cells) cell.body = null;
+        cells.clear();
+
+        // setup
+        Cell[][] grid = level.physics.grid;
+        Cell firstCell = getCellOrNull();
+        for (int row = firstCell.i; row < firstCell.i + rows; row++) {
+            for (int column = firstCell.j; column < firstCell.j + columns; column++) {
+                Cell cell = grid[row][column];
+                cell.body = this;
+                cells.add(cell);
+            }
+        }
+    }
+
+    public Cell getCellOrNull() {
+        return level.findCellOrNull(position);
+    }
+
+    public Cell getMinCell() {
+        return cells.get(0);
+    }
+
+    public Cell getMaxCell() {
+        return cells.get(cells.size() - 1);
     }
 
     @Override

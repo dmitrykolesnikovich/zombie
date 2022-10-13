@@ -27,7 +27,7 @@ public class Context extends ApplicationAdapter {
 
         // hero
         level.hero.transform.placeTo(50, 28);
-        level.hero.movementSpeed = 4;
+        level.hero.speed = 4;
 
         // bodies
         level.addBody(1, "sklep").transform.placeTo(50, 30);
@@ -38,7 +38,7 @@ public class Context extends ApplicationAdapter {
 
         // camera
         level.pivot.y += 500;
-        level.resize();
+        level.updateCamera();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class Context extends ApplicationAdapter {
 
     @Override
     public void resize(int width, int height) {
-        level.resize(width, height);
+        level.updateCamera();
     }
 
     @Override

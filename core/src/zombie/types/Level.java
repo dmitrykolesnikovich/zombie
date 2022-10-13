@@ -31,11 +31,11 @@ public class Level implements Disposable {
 
     /*mechanics*/
 
+    public final OrthographicCamera camera = new OrthographicCamera();
     public TileAtlas tiles;
     public Physics physics;
     public Body hero;
     public List<Body> bodies = new ArrayList<>();
-    public final OrthographicCamera camera = new OrthographicCamera();
     public final Vector2 pivot = new Vector2();
     public Color backgroundColor = new Color(0x7AAAC9FF);
     public Animation wave;
@@ -55,11 +55,23 @@ public class Level implements Disposable {
         if (wave != null && !wave.update(deltaTime)) wave = null;
     }
 
-    public void resize() {
-        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    @Override
+    public void dispose() {
+        texture.dispose();
+
+        tilesRenderer.dispose();
+        bodiesRenderer.dispose();
+        heroRenderer.dispose();
+        tilesOutlineRenderer.dispose();
+        heroOutlineRenderer.dispose();
+        cellsRenderer.dispose();
+        waveRenderer.dispose();
     }
 
-    public void resize(int width, int height) {
+    public void updateCamera() {
+        int width = Gdx.graphics.getWidth();
+        int height = Gdx.graphics.getHeight();
+
         camera.position.set(pivot.x + width / 2f, pivot.y + height / 2f, 0);
         camera.viewportWidth = width;
         camera.viewportHeight = height;
@@ -74,31 +86,18 @@ public class Level implements Disposable {
         waveRenderer.setProjectionMatrix(camera.combined);
     }
 
-    @Override
-    public void dispose() {
-        texture.dispose();
-
-        tilesRenderer.dispose();
-        bodiesRenderer.dispose();
-        heroRenderer.dispose();
-        tilesOutlineRenderer.dispose();
-        heroOutlineRenderer.dispose();
-        cellsRenderer.dispose();
-        waveRenderer.dispose();
-    }
-
-    public Body addBody(int id, String bodyName) {
-        Body body = BodyBuilder.buildBody(id, bodyName, this);
-        bodies.add(body);
-        return body;
-    }
-
     public Cell findCellOrNull(Vector2 point) {
         int[] location = Isometry.findCellLocationOrNull(point, physics.cellSide, physics.cellSide);
         if (location == null) return null;
         int i = location[0];
         int j = location[1];
         return physics.grid[i][j];
+    }
+
+    public Body addBody(int id, String bodyName) {
+        Body body = BodyBuilder.buildBody(id, bodyName, this);
+        bodies.add(body);
+        return body;
     }
 
 }

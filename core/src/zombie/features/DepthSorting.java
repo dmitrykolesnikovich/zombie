@@ -17,9 +17,9 @@ public class DepthSorting {
         SORTED_BODIES.addAll(bodies);
         SORTED_BODIES.sort((body1, body2) -> {
 
-            Cell min = body1.placementCells.get(0);
-            Cell max = body1.placementCells.get(body1.placementCells.size() - 1);
-            Cell current = body2.placementCells.get(0);
+            Cell min = body1.getMinCell();
+            Cell max = body1.getMaxCell();
+            Cell current = body2.getMinCell();
             if (current.j > max.j) return ABOVE;
             if (current.j < min.j) return UNDER;
             if (current.i > min.i) return UNDER;

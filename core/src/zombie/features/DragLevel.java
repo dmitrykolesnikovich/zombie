@@ -40,7 +40,7 @@ public class DragLevel extends InputAdapter {
         float dy = currentTouchPoint.y - initialTouchPoint.y;
         level.pivot.x = initialLevelPivot.x - dx;
         level.pivot.y = initialLevelPivot.y - dy;
-        level.resize();
+        level.updateCamera();
         return true;
     }
 

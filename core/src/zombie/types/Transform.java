@@ -14,7 +14,7 @@ public class Transform {
 
     public void update(float deltaTime) {
         if (movement != null) {
-            float cellProgressDelta = body.movementSpeed / body.level.physics.cellSide * deltaTime;
+            float cellProgressDelta = body.speed / body.level.physics.cellSide * deltaTime;
             boolean running = movement.update(cellProgressDelta);
             body.transform.placeTo(movement.getCurrentPosition());
             if (running) {
@@ -37,7 +37,7 @@ public class Transform {
 
     public void placeTo(Vector2 position) {
         body.position.set(position);
-        PathFinding.update(body);
+        body.updateCells();
     }
 
     public void moveTo(int i, int j) {
