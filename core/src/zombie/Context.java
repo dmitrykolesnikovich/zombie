@@ -15,6 +15,8 @@ public class Context extends ApplicationAdapter {
     @Override
     public void create() {
         level = LevelBuilder.buildLevel("main_island");
+
+        // features
         Gdx.input.setInputProcessor(new InputMultiplexer(
                 new Debug(this),
                 new MoveHero(level),
@@ -22,20 +24,22 @@ public class Context extends ApplicationAdapter {
                 new ZoomLevel(level)
         ));
 
+        // camera
+        level.pivot.y += 500;
+        level.updateCamera();
+
         // hero
         level.hero.transform.placeTo(50, 28);
         level.hero.speed = 4;
 
-        // bodies
+        // buildings
         level.addBody(1, "sklep").transform.placeTo(50, 30);
         level.addBody(2, "tower").transform.placeTo(50, 40);
+
+        // trees
         level.addBody(3, "tropic_palm").transform.placeTo(50, 50);
         level.addBody(4, "oak").transform.placeTo(50, 60);
         level.addBody(5, "palm").transform.placeTo(50, 70);
-
-        // camera
-        level.pivot.y += 500;
-        level.updateCamera();
     }
 
     @Override
