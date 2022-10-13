@@ -13,15 +13,17 @@ public class Context extends ApplicationAdapter {
     @Override
     public void create() {
         level = LevelBuilder.buildLevel("main_island");
+
+        // 1. input
         Gdx.input.setInputProcessor(level.inputController);
     }
 
     @Override
     public void render() {
-        // update
+        // 2. update
         level.update(Gdx.graphics.getDeltaTime());
 
-        // draw
+        // 3. draw
         Renderer.clearBackground();
         Renderer.drawTiles(level);
         Renderer.drawBodies(level);
