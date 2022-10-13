@@ -10,9 +10,7 @@ public class Utils {
 
     private static final Vector3 VECTOR_UNPROJECT = new Vector3();
 
-    /*rectangle*/
-
-    public static void initializeRectangleOrtho(float[] rectangle, float x, float y, float width, float height) {
+    public static void initializeRectangleArray(float[] rectangle, float x, float y, float width, float height) {
         float x1 = x;
         float y1 = y;
         float x2 = x + width;
@@ -30,8 +28,6 @@ public class Utils {
         rectangle[6] = x4;
         rectangle[7] = y4;
     }
-
-    /*camera*/
 
     public static void unproject(Camera camera, Vector2 screenCoords) {
         unproject(camera, screenCoords, camera.invProjectionView);

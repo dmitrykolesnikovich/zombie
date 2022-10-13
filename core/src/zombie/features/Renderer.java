@@ -125,7 +125,7 @@ public class Renderer {
         x = VECTOR_ISO.x;
         y = VECTOR_ISO.y;
 
-        Utils.initializeRectangleOrtho(RECTANGLE_2D, x, y, width, height);
+        Utils.initializeRectangleArray(RECTANGLE_2D, x, y, width, height);
         Isometry.convertOrthoToIso(RECTANGLE_2D, RECTANGLE_ISO);
         renderer.polygon(RECTANGLE_ISO);
     }
