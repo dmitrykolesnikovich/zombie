@@ -8,6 +8,7 @@ import zombie.features.DragLevelFeature;
 import zombie.features.MoveHeroFeature;
 import zombie.features.DebugFeature;
 import zombie.features.ZoomLevelFeature;
+import zombie.types.Body;
 import zombie.types.Level;
 import zombie.types.LevelBuilder;
 
@@ -23,18 +24,28 @@ public class Context extends ApplicationAdapter {
         level = LevelBuilder.buildLevel("main_island");
         Gdx.input.setInputProcessor(new InputMultiplexer(
                 new DebugFeature(this),
+                new MoveHeroFeature(level),
                 new DragLevelFeature(level),
-                new ZoomLevelFeature(level),
-                new MoveHeroFeature(level)
+                new ZoomLevelFeature(level)
         ));
 
         // hero
         level.hero.animate("anim_woodcutter_walkwood_down", false);
-        level.hero.placeTo(50, 30);
+        level.hero.transform.placeTo(50, 30);
         level.hero.movementSpeed = 4;
 
         // bodies
-        // todo
+        Body sklep1 = level.addBody(1, "sklep");
+        sklep1.transform.placeTo(50, 30);
+
+        /*Body tower2 = level.addBody(2, "tower");
+        tower2.transform.placeTo(50, 30);*/
+
+        /*Body tropicPalm3 = level.addBody(3, "tropic_palm");
+        tropicPalm3.transform.placeTo(50, 30);*/
+
+        /*Body oak4 = level.addBody(4, "oak");
+        oak4.transform.placeTo(50, 30);*/
 
         // camera
         level.pivot.y += 500;
@@ -43,11 +54,14 @@ public class Context extends ApplicationAdapter {
 
     @Override
     public void render() {
+        // mechanics
         level.update(Gdx.graphics.getDeltaTime());
 
+        // graphics
         Renderer.drawBackground(level);
         Renderer.drawTiles(level);
         Renderer.drawWave(level);
+        Renderer.drawBodies(level);
         Renderer.drawHero(level);
         if (isDebugEnabled) {
             Renderer.drawCells(level, PASSABLE_CELL_OUTLINE_COLOR);

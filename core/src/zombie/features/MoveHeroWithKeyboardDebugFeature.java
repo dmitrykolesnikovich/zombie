@@ -4,15 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import zombie.Utils;
-import zombie.types.Hero;
+import zombie.types.Body;
 
 public class MoveHeroWithKeyboardDebugFeature {
 
-    private final Hero hero;
+    private final Body hero;
     private boolean isDown = true;
     private boolean isRight = true;
 
-    public MoveHeroWithKeyboardDebugFeature(Hero hero) {
+    public MoveHeroWithKeyboardDebugFeature(Body hero) {
         this.hero = hero;
     }
 

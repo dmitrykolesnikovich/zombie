@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import zombie.types.*;
 
+import java.util.List;
+
 public class Renderer {
 
     private static final float[] RECTANGLE_2D = new float[8];
@@ -29,9 +31,25 @@ public class Renderer {
         renderer.end();
     }
 
+    public static void drawBodies(Level level) {
+        SpriteBatch renderer = level.bodiesRenderer;
+        List<Body> bodies = level.bodies;
+
+        renderer.begin();
+        for (Body body : bodies) {
+            if (!body.isVisible) continue;
+            TextureRegion image = body.getImageOrNull();
+            Rectangle bounds = body.getBounds();
+            drawImage(renderer, image, bounds);
+        }
+        renderer.end();
+    }
+
     public static void drawHero(Level level) {
         SpriteBatch renderer = level.heroRenderer;
-        Hero hero = level.hero;
+        Body hero = level.hero;
+        if (hero == null) return;
+        if (!hero.isVisible) return;
         TextureRegion image = hero.getImageOrNull();
         Rectangle bounds = hero.getBounds();
 
@@ -52,7 +70,7 @@ public class Renderer {
 
     public static void drawHeroOutline(Level level, Color color) {
         ShapeRenderer renderer = level.heroOutlineRenderer;
-        Hero hero = level.hero;
+        Body hero = level.hero;
         Rectangle bounds = hero.getBounds();
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
@@ -62,12 +80,15 @@ public class Renderer {
 
     public static void drawCells(Level level, Color color) {
         ShapeRenderer renderer = level.cellsRenderer;
+        Body hero = level.hero;
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
         for (Cell cell : level.physics.cells) {
-            float x = cell.j * level.cellSide;
-            float y = cell.i * level.cellSide;
-            drawRectangleIso(renderer, x, y, level.cellSide, level.cellSide, cell.isPassable() ? color : Color.DARK_GRAY);
+            drawCell(renderer, cell, level.cellSide, cell.isPassable() ? color : Color.DARK_GRAY);
+        }
+        if (hero != null) {
+            Cell heroCell = hero.getCellOrNull();
+            drawCell(renderer, heroCell, level.cellSide, Color.RED);
         }
         renderer.end();
     }
@@ -84,6 +105,12 @@ public class Renderer {
     }
 
     /*internals*/
+
+    private static void drawCell(ShapeRenderer renderer, Cell cell, float cellSide, Color color) {
+        float x = cell.j * cellSide;
+        float y = cell.i * cellSide;
+        drawRectangleIso(renderer, x, y, cellSide, cellSide, color);
+    }
 
     private static void drawImage(SpriteBatch renderer, TextureRegion image, Rectangle rectangle) {
         drawImage(renderer, image, rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());

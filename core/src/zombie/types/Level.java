@@ -37,12 +37,14 @@ public class Level implements Disposable {
     public Physics physics;
     public final Vector2 pivot = new Vector2();
     public final OrthographicCamera camera = new OrthographicCamera();
-    public Hero hero;
+    public Body hero;
+    public List<Body> bodies = new ArrayList<>();
     public Animation wave;
 
     /*render*/
 
     public SpriteBatch tilesRenderer;
+    public SpriteBatch bodiesRenderer;
     public SpriteBatch heroRenderer;
     public ShapeRenderer tilesOutlineRenderer;
     public ShapeRenderer heroOutlineRenderer;
@@ -59,6 +61,7 @@ public class Level implements Disposable {
 
     public void update(float deltaTime) {
         if (hero != null) hero.update(deltaTime);
+        for (Body body : bodies) body.update(deltaTime);
         if (wave != null && !wave.update(deltaTime)) wave = null;
     }
 
@@ -73,6 +76,7 @@ public class Level implements Disposable {
         camera.update();
 
         tilesRenderer.setProjectionMatrix(camera.combined);
+        bodiesRenderer.setProjectionMatrix(camera.combined);
         heroRenderer.setProjectionMatrix(camera.combined);
         tilesOutlineRenderer.setProjectionMatrix(camera.combined);
         heroOutlineRenderer.setProjectionMatrix(camera.combined);
@@ -85,6 +89,7 @@ public class Level implements Disposable {
         texture.dispose();
 
         tilesRenderer.dispose();
+        bodiesRenderer.dispose();
         heroRenderer.dispose();
         tilesOutlineRenderer.dispose();
         heroOutlineRenderer.dispose();
@@ -92,8 +97,21 @@ public class Level implements Disposable {
         waveRenderer.dispose();
     }
 
-    public void addBody(Object body) {
+    public Body addBody(int id, String bodyName) {
+        Body body = BodyBuilder.buildBody(id, bodyName, this);
+        bodies.add(body);
+        return body;
+    }
 
+    public void onUpdateBody(Body body) {
+        Cell[][] grid = physics.grid;
+        Cell firstCell = body.getCellOrNull();
+        for (int row = firstCell.i; row < firstCell.i + body.rows; row++) {
+            for (int column = firstCell.j; column < firstCell.j + body.columns; column++) {
+                Cell cell = grid[row][column];
+                cell.body = body;
+            }
+        }
     }
 
     public TextureRegion findImage(int index, boolean flipHorizontal, boolean flippedVertical) {

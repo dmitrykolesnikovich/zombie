@@ -68,10 +68,11 @@ public class LevelBuilder {
         level.physics = PhysicsBuilder.buildPhysics(name, level);
         level.pivot.set(level.offsetPoint.x, level.offsetPoint.y);
         level.camera.setToOrtho(true);
-        level.hero = new Hero(level);
+        level.hero = BodyBuilder.buildBody(0, "hero", level);
 
         // renderer
         level.tilesRenderer = new SpriteBatch();
+        level.bodiesRenderer = new SpriteBatch();
         level.heroRenderer = new SpriteBatch();
         level.tilesOutlineRenderer = new ShapeRenderer();
         level.heroOutlineRenderer = new ShapeRenderer();

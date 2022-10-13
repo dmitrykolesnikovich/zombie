@@ -25,12 +25,13 @@ public class MoveHeroFeature extends InputAdapter {
         System.out.println("cell: " + cell);
         if (cell == null) return false;
         if (!cell.isPassable()) return false;
+        if (level.hero == null) return false;
 
-        level.hero.moveTo(cell);
+        level.hero.transform.moveTo(cell);
         level.wave = AnimationBuilder.buildAnimation("white_wave", false).reset();
         level.wave.position.set(cell.getCenterIso());
         level.wave.setFps(44);
-        level.wave.lifeTime = 0.88f;
+        level.wave.lifeTime = 0.77f;
         return true;
     }
 
