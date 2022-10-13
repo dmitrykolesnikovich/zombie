@@ -1,5 +1,6 @@
 package zombie.types;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -43,11 +44,10 @@ public class LevelBuilder {
         level.image = levelElement.getAttribute("image");
 
         // mechanics
-        level.tiles = TileAtlasBuilder.buildTileAtlas(levelElement, level);
-        level.physics = PhysicsBuilder.buildPhysics(name, level);
-        level.hero = level.addBody(0, "hero");
-        level.camera.setToOrtho(true);
         level.pivot.set(level.offsetPoint.x, level.offsetPoint.y);
+        level.hero = level.addBody(0, "hero");
+        level.physics = PhysicsBuilder.buildPhysics(name, level);
+        level.tiles = TileAtlasBuilder.buildTileAtlas(levelElement, level);
 
         return level;
     }

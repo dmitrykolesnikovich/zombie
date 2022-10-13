@@ -42,7 +42,6 @@ public class Level implements Disposable {
 
     /*graphics*/
 
-    public final OrthographicCamera camera = new OrthographicCamera();
     public TileAtlas tiles;
     public SpriteBatch tilesRenderer = new SpriteBatch();
     public SpriteBatch bodiesRenderer = new SpriteBatch();
@@ -51,6 +50,11 @@ public class Level implements Disposable {
     public ShapeRenderer heroOutlineRenderer = new ShapeRenderer();
     public ShapeRenderer cellsRenderer = new ShapeRenderer();
     public SpriteBatch waveRenderer = new SpriteBatch();
+    public OrthographicCamera camera = new OrthographicCamera();
+
+    public Level() {
+        camera.setToOrtho(true);
+    }
 
     public void update(float deltaTime) {
         for (Body body : bodies) body.update(deltaTime);
