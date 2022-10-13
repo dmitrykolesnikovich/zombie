@@ -65,15 +65,20 @@ public class Body {
 
     /*animation*/
 
-    public void setAnimation(String animationName, boolean flipped) {
-        Animation animation = AnimationBuilder.buildAnimation(animationName, flipped);
-        setAnimation(animation);
+    public boolean setAnimation(String name) {
+        return setAnimation(name, false);
     }
 
-    public void setAnimation(Animation animation) {
-        if (this.animation == animation) return;
+    public boolean setAnimation(String name, boolean flipped) {
+        Animation animation = AnimationBuilder.buildAnimation(name, flipped);
+        return setAnimation(animation);
+    }
+
+    public boolean setAnimation(Animation animation) {
+        if (this.animation == animation) return false;
         if (this.animation != null) this.animation.stop();
         this.animation = animation;
+        return true;
     }
 
     public Animation getAnimation() {
