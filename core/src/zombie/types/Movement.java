@@ -4,9 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Movement {
 
-    public final Cell[] path;
-
-    private int currentCellIndex;
+    private final Cell[] path;
+    private int currentCellIndex; // 0..path.length - 1
     private float currentCellProgress; // 0..1
     private final Vector2 currentPosition = new Vector2();
 
@@ -14,19 +13,24 @@ public class Movement {
         this.path = path;
     }
 
-    public boolean update(float cellProgressDelta) {
-        long integer1 = (long) cellProgressDelta;
-        double fractional1 = cellProgressDelta - integer1;
+    public boolean updateCurrentPosition(float cellProgressDelta) {
+        // calculate before
+        long integerBefore = (long) cellProgressDelta;
+        double fractionalBefore = cellProgressDelta - integerBefore;
 
-        currentCellIndex += integer1;
-        currentCellProgress += fractional1;
+        // update before
+        currentCellIndex += integerBefore;
+        currentCellProgress += fractionalBefore;
 
-        long integer2 = (long) currentCellProgress;
-        double fractional2 = currentCellProgress - integer2;
+        // calculate after
+        long integerAfter = (long) currentCellProgress;
+        double fractionalAfter = currentCellProgress - integerAfter;
 
-        currentCellIndex += integer2;
-        currentCellProgress = (float) fractional2;
+        // update after
+        currentCellIndex += integerAfter;
+        currentCellProgress = (float) fractionalAfter;
 
+        // stop
         if (currentCellIndex >= path.length - 1) {
             currentCellIndex = path.length - 1;
             currentCellProgress = 0;
@@ -34,11 +38,6 @@ public class Movement {
         }
 
         return true;
-    }
-
-    public Cell getCurrentCellOrNull() {
-        if (currentCellIndex >= path.length) return null;
-        return path[currentCellIndex];
     }
 
     public Vector2 getCurrentPosition() {

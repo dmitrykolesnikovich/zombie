@@ -54,7 +54,7 @@ public class TileAtlas implements Iterable<Tile> {
         if (isFlippedVerticallyOnly) imagesFlippedVerticallyOnly[index] = image;
         if (isFlippedBoth) imagesFlippedBoth[index] = image;
 
-        // prevent nulls
+        // nulls are not allowed by design
         if (image == null) throw new IllegalStateException("index: " + index);
         return image;
     }

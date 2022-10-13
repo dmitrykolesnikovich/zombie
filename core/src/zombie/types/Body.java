@@ -14,7 +14,7 @@ public class Body {
     public int id;
     public String name;
 
-    /*geometry*/
+    /*mechanics*/
 
     public final Vector2 position = new Vector2();
     public final Vector2 pivot = new Vector2();
@@ -22,17 +22,17 @@ public class Body {
     public final Transform transform = new Transform(this);
     public float speed = 16;
 
-    /*animation*/
-
-    private Animation animation;
-    public Face face;
-    public boolean isVisible = true;
-
-    /*cells*/
+    /*physics*/
 
     public int rows;
     public int columns;
     private final List<Cell> cells = new ArrayList<>();
+
+    /*graphics*/
+
+    private Animation animation;
+    public Face face;
+    public boolean isVisible = true;
 
     public Body(Level level) {
         this.level = level;
@@ -44,7 +44,7 @@ public class Body {
         if (animation != null) animation.update(deltaTime); // 3. update animation
     }
 
-    /*geometry*/
+    /*mechanics*/
 
     public Rectangle getBounds() {
         TextureRegion image = getImageOrNull();
@@ -63,38 +63,7 @@ public class Body {
         return bounds.setPosition(x + dx, y + dy).setSize(w, h);
     }
 
-    /*animation*/
-
-    public boolean setAnimation(String name) {
-        return setAnimation(name, false);
-    }
-
-    public boolean setAnimation(String name, boolean flipped) {
-        Animation animation = AnimationBuilder.buildAnimation(name, flipped);
-        return setAnimation(animation);
-    }
-
-    public boolean setAnimation(Animation animation) {
-        if (this.animation == animation) return false;
-        if (this.animation != null) this.animation.stop();
-        this.animation = animation;
-        return true;
-    }
-
-    public Animation getAnimation() {
-        return animation;
-    }
-
-    public TextureRegion getImageOrNull() {
-        if (animation == null) return null;
-        return animation.getImage();
-    }
-
-    public boolean isLookingRight() {
-        return face == Face.LOOKING_RIGHT;
-    }
-
-    /*cells*/
+    /*physics*/
 
     public void updateCells() {
         // reset
@@ -123,6 +92,39 @@ public class Body {
 
     public Cell getMaxCell() {
         return cells.get(cells.size() - 1);
+    }
+
+    /*graphics*/
+
+    public boolean setAnimation(String name) {
+        return setAnimation(name, false);
+    }
+
+    public boolean setAnimation(String name, boolean flipped) {
+        Animation animation = AnimationBuilder.buildAnimation(name, flipped);
+        return setAnimation(animation);
+    }
+
+    public boolean setAnimation(Animation animation) {
+        if (this.animation == animation) return false;
+        if (this.animation != null) {
+            this.animation.stop();
+        }
+        this.animation = animation;
+        return true;
+    }
+
+    public Animation getAnimation() {
+        return animation;
+    }
+
+    public TextureRegion getImageOrNull() {
+        if (animation == null) return null;
+        return animation.getImage();
+    }
+
+    public boolean isLookingRight() {
+        return face == Face.LOOKING_RIGHT;
     }
 
     @Override

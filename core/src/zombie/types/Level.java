@@ -94,8 +94,8 @@ public class Level implements Disposable {
         return physics.grid[i][j];
     }
 
-    public Body addBody(int id, String bodyName) {
-        Body body = BodyBuilder.buildBody(id, bodyName, this);
+    public Body addBody(int id, String name) {
+        Body body = BodyBuilder.buildBody(id, name, this);
         bodies.add(body);
         return body;
     }
