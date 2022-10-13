@@ -27,7 +27,7 @@ public class Movement {
         currentCellIndex += integer2;
         currentCellProgress = (float) fractional2;
 
-        if (currentCellIndex >= path.length) {
+        if (currentCellIndex >= path.length - 1) {
             currentCellIndex = path.length - 1;
             currentCellProgress = 0;
             return false;
@@ -59,14 +59,16 @@ public class Movement {
         return currentPosition;
     }
 
-    public boolean isDown() {
-        int i_delta = path[currentCellIndex + 1].i - path[currentCellIndex].i;
-        return i_delta < 0;
+    public boolean isRight() {
+        Vector2 p1 = path[currentCellIndex].getCenterIso();
+        Vector2 p2 = path[currentCellIndex + 1].getCenterIso();
+        return p2.x > p1.x;
     }
 
-    public boolean isRight() {
-        int j_delta = path[currentCellIndex + 1].j - path[currentCellIndex].j;
-        return j_delta > 0;
+    public boolean isDown() {
+        Vector2 p1 = path[currentCellIndex].getCenterIso();
+        Vector2 p2 = path[currentCellIndex + 1].getCenterIso();
+        return p2.y > p1.y;
     }
 
 }

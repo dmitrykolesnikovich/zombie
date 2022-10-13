@@ -6,21 +6,21 @@ import zombie.types.Movement;
 
 public class Animator {
 
-    public static void updateAnimation(Body body) {
+    public static void syncAnimationWithState(Body body) {
         Movement movement = body.transform.movement;
         if (movement != null) {
-            boolean isDown = movement.isDown();
             boolean isRight = movement.isRight();
-            updateAnimation(body, isDown, isRight, true);
+            boolean isDown = movement.isDown();
+            animate(body, isRight, isDown, true);
             body.face = isRight ? Face.LOOKING_RIGHT : Face.LOOKING_LEFT;
         } else {
-            updateAnimation(body, true, body.face.isLookingRight(), false);
+            animate(body, body.face.isLookingRight(), true, false);
         }
     }
 
     /*internals*/
 
-    private static void updateAnimation(Body body, boolean isDown, boolean isRight, boolean isMoving) {
+    private static void animate(Body body, boolean isRight, boolean isDown, boolean isMoving) {
         switch (body.name) {
             case "hero": {
                 if (isMoving) {
@@ -34,6 +34,7 @@ public class Animator {
                 break;
             }
             default: {
+                // no op
                 break;
             }
         }

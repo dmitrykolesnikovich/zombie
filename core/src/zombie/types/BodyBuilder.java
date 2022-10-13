@@ -21,7 +21,7 @@ public class BodyBuilder {
                 body.columns = 8;
                 body.pivot.set(-72, 44);
                 body.animate("b_sklep_0", false);
-                body.face = LOOKING_RIGHT;
+                body.face = LOOKING_STRAIGHT;
                 break;
             }
             case "tower": {
@@ -29,7 +29,7 @@ public class BodyBuilder {
                 body.columns = 4;
                 body.pivot.set(-45, 56.5f);
                 body.animate("b_tower_0", false);
-                body.face = LOOKING_LEFT;
+                body.face = LOOKING_STRAIGHT;
                 break;
             }
             case "tropic_palm": {

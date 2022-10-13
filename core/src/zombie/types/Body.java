@@ -31,15 +31,16 @@ public class Body {
     }
 
     public void update(float deltaTime) {
-        transform.update(deltaTime);
-        Animator.updateAnimation(this);
-        if (animation != null) animation.update(deltaTime);
+        transform.update(deltaTime); // 1. update state
+        Animator.syncAnimationWithState(this); // 2. sync animation with state
+        if (animation != null) animation.update(deltaTime); // 3. update animation
     }
 
     public void animate(String animationName, boolean flipped) {
-        if (animation != null && animation.name.equals(animationName)) return;
-        if (animation != null) animation.reset();
-        animation = AnimationBuilder.buildAnimation(animationName, flipped);
+        Animation newAnimation = AnimationBuilder.buildAnimation(animationName, flipped);
+        if (animation == newAnimation) return;
+        if (animation != null) animation.reset(); // quickfix todo conceptualize
+        animation = newAnimation;
     }
 
     public TextureRegion getImageOrNull() {
@@ -55,8 +56,20 @@ public class Body {
         float h = image.getRegionHeight();
         float x = position.x - w / 2;
         float y = position.y - h / 2;
-        x -= pivot.x;
-        y -= pivot.y;
+
+        switch (face) {
+            case LOOKING_LEFT:
+            case LOOKING_STRAIGHT: {
+                x -= pivot.x;
+                y -= pivot.y;
+                break;
+            }
+            case LOOKING_RIGHT: {
+                x += pivot.x;
+                y -= pivot.y;
+                break;
+            }
+        }
         return bounds.setPosition(x, y).setSize(w, h);
     }
 
