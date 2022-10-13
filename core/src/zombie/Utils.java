@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-// IMPORTANT for isometry Y increases upwards
+// IMPORTANT isometry Y axis increases upwards
 public class Utils {
 
     private static final Vector2 VECTOR_ISO = new Vector2();
