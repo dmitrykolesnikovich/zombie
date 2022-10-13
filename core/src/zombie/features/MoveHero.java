@@ -1,7 +1,11 @@
 package zombie.features;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
+import zombie.Context;
 import zombie.Utils;
 import zombie.types.AnimationBuilder;
 import zombie.types.Body;

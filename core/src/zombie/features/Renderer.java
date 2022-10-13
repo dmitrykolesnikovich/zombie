@@ -12,14 +12,13 @@ import zombie.types.*;
 
 import java.util.List;
 
-import static zombie.features.Debug.PASSABLE_CELL_OUTLINE_COLOR;
-
 public class Renderer {
 
-    private static final float[] RECTANGLE_ISO = new float[8];
-    private static final float[] RECTANGLE_ORTHO = new float[8];
-    private static final Vector2 VECTOR_ISO = new Vector2();
+    public static boolean isDebugEnabled = false;
+
     private static final Color BACKGROUND_COLOR = new Color(0x7AAAC9FF);
+    private static final Color PASSABLE_CELL_COLOR = new Color(0.8f, 0.8f, 0.2f, 1);
+    private static final Color NOT_PASSABLE_CELL_COLOR = new Color(0.2f, 0.2f, 0.2f, 1);
 
     public static void clearBackground() {
         ScreenUtils.clear(BACKGROUND_COLOR);
@@ -75,7 +74,8 @@ public class Renderer {
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
         for (Cell cell : level.physics.cells) {
-            drawCell(renderer, cell, level.physics.cellSide, cell.isPassable() ? PASSABLE_CELL_OUTLINE_COLOR : Color.DARK_GRAY);
+            Color color = cell.isPassable() ? PASSABLE_CELL_COLOR : NOT_PASSABLE_CELL_COLOR;
+            drawCell(renderer, cell, level.physics.cellSide, color);
         }
         if (hero != null) {
             Cell heroCell = hero.getCellOrNull();
@@ -132,5 +132,10 @@ public class Renderer {
         Isometry.convertOrthoToIso(RECTANGLE_ORTHO, RECTANGLE_ISO);
         renderer.polygon(RECTANGLE_ISO);
     }
+
+    // quickfix todo replace to Isometry
+    private static final float[] RECTANGLE_ISO = new float[8];
+    private static final float[] RECTANGLE_ORTHO = new float[8];
+    private static final Vector2 VECTOR_ISO = new Vector2();
 
 }

@@ -1,7 +1,12 @@
 package zombie.types;
 
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.XmlReader;
+import zombie.features.DragLevel;
+import zombie.features.MoveHero;
+import zombie.features.RendererDebug;
+import zombie.features.ZoomLevel;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -45,6 +50,13 @@ public class LevelBuilder {
         level.hero = level.addBody(0, "hero");
         level.physics = PhysicsBuilder.buildPhysics(name, level);
         level.tiles = TileAtlasBuilder.buildTileAtlas(levelElement, level);
+
+        // controller
+        level.inputController = new InputMultiplexer();
+        level.inputController.addProcessor(new MoveHero(level));
+        level.inputController.addProcessor(new DragLevel(level));
+        level.inputController.addProcessor(new ZoomLevel(level));
+        level.inputController.addProcessor(new RendererDebug());
 
         World.initializeLevel(level);
         return level;

@@ -1,6 +1,7 @@
 package zombie.types;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -33,6 +34,7 @@ public class Level {
     public final Vector2 pivot = new Vector2();
     public Body hero;
     public Animation wave;
+    public InputMultiplexer inputController;
 
     /*physics*/
 

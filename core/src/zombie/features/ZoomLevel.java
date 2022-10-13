@@ -1,7 +1,10 @@
 package zombie.features;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.math.MathUtils;
+import zombie.Context;
 import zombie.types.Level;
 
 public class ZoomLevel extends InputAdapter {
