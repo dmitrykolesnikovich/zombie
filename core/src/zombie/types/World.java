@@ -45,10 +45,8 @@ public class World {
                 body.pivot.set(25, 126);
                 break;
             }
-            default: {
-                throw new IllegalStateException("body: " + body);
-            }
         }
+        throw new IllegalStateException("body: " + body);
     }
 
     public static void initializeLevel(Level level) {
@@ -72,10 +70,8 @@ public class World {
                 level.addBody(5, "palm").transform.placeTo(50, 70);
                 break;
             }
-            default: {
-                throw new IllegalStateException("level: " + level);
-            }
         }
+        throw new IllegalStateException("level: " + level);
     }
 
 }

@@ -126,6 +126,10 @@ public class Body {
         return animation.getImage();
     }
 
+    public boolean isLookingLeft() {
+        return face == Face.LOOKING_LEFT;
+    }
+
     public boolean isLookingRight() {
         return face == Face.LOOKING_RIGHT;
     }

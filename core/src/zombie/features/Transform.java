@@ -16,7 +16,7 @@ public class Transform {
         if (movement != null) {
             float cellProgressDelta = body.speed / body.level.physics.cellSide * deltaTime;
             boolean running = movement.updateCurrentPosition(cellProgressDelta);
-            body.transform.placeTo(movement.getCurrentPosition());
+            placeTo(movement.getCurrentPosition());
             if (running) {
                 body.face = movement.isRight() ? Face.LOOKING_RIGHT : Face.LOOKING_LEFT;
             } else {
@@ -47,9 +47,9 @@ public class Transform {
     }
 
     public void moveTo(Cell cell) {
-        if (cell == null) return;
         Level level = body.level;
         Cell currentCell = level.findCellOrNull(body.position);
+        if (cell == null) return;
         if (currentCell == null) return;
         start(currentCell, cell);
     }
