@@ -1,6 +1,7 @@
 package zombie.types;
 
 import com.badlogic.gdx.math.Vector2;
+import zombie.features.PathFinding;
 
 public class Transform {
 
@@ -13,10 +14,12 @@ public class Transform {
 
     public void update(float deltaTime) {
         if (movement != null) {
-            float cellProgressDelta = body.movementSpeed / body.level.cellSide * deltaTime;
+            float cellProgressDelta = body.movementSpeed / body.level.physics.cellSide * deltaTime;
             boolean running = movement.update(cellProgressDelta);
             body.transform.placeTo(movement.getCurrentPosition());
-            if (!running) {
+            if (running) {
+                body.face = movement.isRight() ? Face.LOOKING_RIGHT : Face.LOOKING_LEFT;
+            } else {
                 movement = null;
             }
         }
@@ -34,7 +37,7 @@ public class Transform {
 
     public void placeTo(Vector2 position) {
         body.position.set(position);
-        body.level.onBodyPlacementUpdate(body);
+        PathFinding.update(body);
     }
 
     public void moveTo(int i, int j) {

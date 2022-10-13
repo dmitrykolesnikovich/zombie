@@ -1,7 +1,7 @@
 package zombie.types;
 
 import com.badlogic.gdx.math.Vector2;
-import zombie.Utils;
+import zombie.features.Isometry;
 
 public class Cell {
 
@@ -9,22 +9,21 @@ public class Cell {
     public int j;
     public Zone zone;
 
-    // used by features
     public Level level;
+    public Body body;
     private Vector2 centerIso;
-    public Object body;
-
-    public Vector2 getCenterIso() {
-        float side = level.cellSide;
-        if (centerIso == null) {
-            centerIso = new Vector2(j * side, i * side).add(side * 0.5f, side * 0.5f);
-            Utils.convertOrthoToIso(centerIso);
-        }
-        return centerIso;
-    }
 
     public boolean isPassable() {
         return zone.passable && body == null;
+    }
+
+    public Vector2 getCenterIso() {
+        float side = level.physics.cellSide;
+        if (centerIso == null) {
+            centerIso = new Vector2(j * side, i * side).add(side * 0.5f, side * 0.5f);
+            Isometry.convertOrthoToIso(centerIso);
+        }
+        return centerIso;
     }
 
     @Override

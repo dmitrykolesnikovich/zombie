@@ -26,7 +26,6 @@ public class Context extends ApplicationAdapter {
         ));
 
         // hero
-        level.hero.animate("anim_woodcutter_walkwood_down", false);
         level.hero.transform.placeTo(50, 28);
         level.hero.movementSpeed = 4;
 

@@ -29,10 +29,11 @@ public class MoveHero extends InputAdapter {
         if (!cell.isPassable()) return false;
 
         level.hero.transform.moveTo(cell);
-        level.wave = AnimationBuilder.buildAnimation("white_wave", false).reset();
+        level.wave = AnimationBuilder.buildAnimation("white_wave", false);
+        level.wave.stop(); // quickfix todo conceptualize
         level.wave.position.set(cell.getCenterIso());
         level.wave.setFps(44);
-        level.wave.lifeTime = 0.77f;
+        level.wave.duration = 0.77f;
         return true;
     }
 

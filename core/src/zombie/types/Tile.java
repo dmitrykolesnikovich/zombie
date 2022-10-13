@@ -11,7 +11,6 @@ public class Tile {
     public boolean flipHorizontal;
     public boolean flipVertical;
     public int index;
-
     public TextureRegion image;
 
 }

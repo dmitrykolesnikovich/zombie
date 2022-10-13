@@ -5,31 +5,37 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+// here we can do much better
 public class Animation {
 
     public String name;
     public String texturePath;
     public Texture texture;
 
-    public com.badlogic.gdx.graphics.g2d.Animation<TextureRegion> delegate;
-    private float totalTime;
-    public float lifeTime = -1;
     public final Vector2 position = new Vector2();
     private final Rectangle bounds = new Rectangle();
+    public float duration = -1;
+    private float currentTime;
+    public com.badlogic.gdx.graphics.g2d.Animation<TextureRegion> delegate;
+
+    public void setFps(float fps) {
+        delegate.setFrameDuration(1 / fps);
+    }
 
     public boolean update(float deltaTime) {
-        totalTime += deltaTime;
-        if (lifeTime != -1 && totalTime > lifeTime) return false;
+        currentTime += deltaTime;
+        if (duration != -1 && currentTime > duration) {
+            return false;
+        }
         return true;
     }
 
-    public Animation reset() {
-        totalTime = 0;
-        return this;
+    public void stop() {
+        currentTime = 0;
     }
 
     public TextureRegion getImage() {
-        return delegate.getKeyFrame(totalTime, true);
+        return delegate.getKeyFrame(currentTime, true);
     }
 
     public Rectangle getBounds() {
@@ -40,10 +46,6 @@ public class Animation {
         float x = position.x - w / 2;
         float y = position.y - h / 2;
         return bounds.setPosition(x, y).setSize(w, h);
-    }
-
-    public void setFps(float fps) {
-        delegate.setFrameDuration(1 / fps);
     }
 
 }

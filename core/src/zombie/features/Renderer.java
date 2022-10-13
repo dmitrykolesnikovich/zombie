@@ -72,11 +72,11 @@ public class Renderer {
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
         for (Cell cell : level.physics.cells) {
-            drawCell(renderer, cell, level.cellSide, cell.isPassable() ? color : Color.DARK_GRAY);
+            drawCell(renderer, cell, level.physics.cellSide, cell.isPassable() ? color : Color.DARK_GRAY);
         }
         if (hero != null) {
             Cell heroCell = hero.getCellOrNull();
-            drawCell(renderer, heroCell, level.cellSide, Color.RED);
+            drawCell(renderer, heroCell, level.physics.cellSide, Color.RED);
         }
         renderer.end();
     }
@@ -121,12 +121,12 @@ public class Renderer {
         renderer.setColor(color);
 
         // convert ortho to iso
-        Utils.convertOrthoToIso(VECTOR_ISO.set(x, y));
+        Isometry.convertOrthoToIso(VECTOR_ISO.set(x, y));
         x = VECTOR_ISO.x;
         y = VECTOR_ISO.y;
 
         Utils.initializeRectangleOrtho(RECTANGLE_2D, x, y, width, height);
-        Utils.convertOrthoToIso(RECTANGLE_2D, RECTANGLE_ISO);
+        Isometry.convertOrthoToIso(RECTANGLE_2D, RECTANGLE_ISO);
         renderer.polygon(RECTANGLE_ISO);
     }
 

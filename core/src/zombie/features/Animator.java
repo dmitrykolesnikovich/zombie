@@ -1,41 +1,50 @@
 package zombie.features;
 
-import zombie.types.Body;
-import zombie.types.Face;
-import zombie.types.Movement;
+import zombie.types.*;
 
 public class Animator {
 
-    public static void syncAnimationWithState(Body body) {
+    public static void update(Body body) {
+        Face face = body.face;
         Movement movement = body.transform.movement;
-        if (movement != null) {
-            boolean isRight = movement.isRight();
-            boolean isDown = movement.isDown();
-            animate(body, isRight, isDown, true);
-            body.face = isRight ? Face.LOOKING_RIGHT : Face.LOOKING_LEFT;
-        } else {
-            animate(body, body.face.isLookingRight(), true, false);
-        }
-    }
 
-    /*internals*/
-
-    private static void animate(Body body, boolean isRight, boolean isDown, boolean isMoving) {
+        boolean isMoving = movement != null;
+        boolean isMovingDown = isMoving && movement.isDown();
         switch (body.name) {
             case "hero": {
                 if (isMoving) {
-                    if (isDown && !isRight) body.animate("anim_woodcutter_walk_down", false);
-                    if (isDown && isRight) body.animate("anim_woodcutter_walk_down", true);
-                    if (!isDown && !isRight) body.animate("anim_woodcutter_walk_up", false);
-                    if (!isDown && isRight) body.animate("anim_woodcutter_walk_up", true);
+                    if (isMovingDown) {
+                        body.setAnimation("anim_woodcutter_walk_down", face.isLookingRight());
+                    } else {
+                        body.setAnimation("anim_woodcutter_walk_up", face.isLookingRight());
+                    }
                 } else {
-                    body.animate("anim_woodcutter_stand", isRight);
+                    body.setAnimation("anim_woodcutter_stand", face.isLookingRight());
                 }
                 break;
             }
-            default: {
-                // no op
+            case "sklep": {
+                body.setAnimation("b_sklep_0", false);
                 break;
+            }
+            case "tower": {
+                body.setAnimation("b_tower_0", false);
+                break;
+            }
+            case "tropic_palm": {
+                body.setAnimation("d_tropic_palm_01_0", false);
+                break;
+            }
+            case "oak": {
+                body.setAnimation("t_oak3_0", false);
+                break;
+            }
+            case "palm": {
+                body.setAnimation("t_palm_01_0", false);
+                break;
+            }
+            default: {
+                throw new IllegalStateException("body: " + body);
             }
         }
     }

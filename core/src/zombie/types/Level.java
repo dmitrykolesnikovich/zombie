@@ -5,43 +5,42 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
-import zombie.Utils;
+import zombie.features.Isometry;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Level implements Disposable {
 
+    public float tilesPerAtlasRow;
+    public float tilesPerAtlasColumn;
+    public float tileWidth;
+    public float tileHeight;
+    public float tileBorderSize;
+    public float tileMapWidth;
+    public float tileMapHeight;
     public float defaultScale;
-    public String image;
     public float maxScale;
     public float minScale;
-    public float tileBorderSize;
-    public float tileHeight;
-    public float tileMapHeight;
-    public float tileMapWidth;
-    public float tileWidth;
-    public float tilesPerAtlasColumn;
-    public float tilesPerAtlasRow;
-    public List<Tile> tiles = new ArrayList<>();
     public Vector2 offsetPoint;
+    public String image;
+    public Texture texture;
 
-    /*model*/
+    /*mechanics*/
 
-    public float cellSide = 16;
-    public Color backgroundColor = new Color(0x7AAAC9FF);
+    public TileAtlas tiles;
     public Physics physics;
-    public final Vector2 pivot = new Vector2();
-    public final OrthographicCamera camera = new OrthographicCamera();
     public Body hero;
     public List<Body> bodies = new ArrayList<>();
+    public final OrthographicCamera camera = new OrthographicCamera();
+    public final Vector2 pivot = new Vector2();
+    public Color backgroundColor = new Color(0x7AAAC9FF);
     public Animation wave;
 
-    /*render*/
+    /*graphics*/
 
     public SpriteBatch tilesRenderer;
     public SpriteBatch bodiesRenderer;
@@ -50,14 +49,6 @@ public class Level implements Disposable {
     public ShapeRenderer heroOutlineRenderer;
     public ShapeRenderer cellsRenderer;
     public SpriteBatch waveRenderer;
-
-    /*cache*/
-
-    public Texture texture;
-    public TextureRegion[] atlas;
-    public TextureRegion[] atlasFlippedHorizontallyOnly;
-    public TextureRegion[] atlasFlippedVerticallyOnly;
-    public TextureRegion[] atlasFlippedBoth;
 
     public void update(float deltaTime) {
         for (Body body : bodies) body.update(deltaTime);
@@ -102,61 +93,12 @@ public class Level implements Disposable {
         return body;
     }
 
-    public void onBodyPlacementUpdate(Body body) {
-        // reset
-        for (Cell cell : body.placementCells) cell.body = null;
-        body.placementCells.clear();
-
-        // setup
-        Cell[][] grid = physics.grid;
-        Cell firstCell = body.getCellOrNull();
-        for (int row = firstCell.i; row < firstCell.i + body.rows; row++) {
-            for (int column = firstCell.j; column < firstCell.j + body.columns; column++) {
-                Cell cell = grid[row][column];
-                cell.body = body;
-                body.placementCells.add(cell);
-            }
-        }
-    }
-
-    public TextureRegion findImage(int index, boolean flipHorizontal, boolean flippedVertical) {
-        boolean isFlippedNone = !flipHorizontal && !flippedVertical;
-        boolean isFlippedHorizontallyOnly = flipHorizontal && !flippedVertical;
-        boolean isFlippedVerticallyOnly = !flipHorizontal && flippedVertical;
-        boolean isFlippedBoth = flipHorizontal && flippedVertical;
-        if (isFlippedNone) return atlas[index];
-
-        // read from cache
-        TextureRegion image = null;
-        if (isFlippedHorizontallyOnly) image = atlasFlippedHorizontallyOnly[index];
-        if (isFlippedVerticallyOnly) image = atlasFlippedVerticallyOnly[index];
-        if (isFlippedBoth) image = atlasFlippedBoth[index];
-
-        // write to cache
-        if (image == null) {
-            image = new TextureRegion(atlas[index]);
-            image.flip(isFlippedHorizontallyOnly, isFlippedVerticallyOnly);
-        }
-        if (isFlippedHorizontallyOnly) atlasFlippedHorizontallyOnly[index] = image;
-        if (isFlippedVerticallyOnly) atlasFlippedVerticallyOnly[index] = image;
-        if (isFlippedBoth) atlasFlippedBoth[index] = image;
-
-        // validate
-        if (image == null) throw new IllegalStateException("index: " + index);
-        return image;
-    }
-
     public Cell findCellOrNull(Vector2 point) {
-        Utils.convertIsoToOrtho(VECTOR_2D.set(point));
-        if (VECTOR_2D.y < 0 || VECTOR_2D.x < 0) return null;
-
-        int i = (int) (VECTOR_2D.y / cellSide);
-        int j = (int) (VECTOR_2D.x / cellSide);
+        int[] location = Isometry.findCellLocationOrNull(point, physics.cellSide, physics.cellSide);
+        if (location == null) return null;
+        int i = location[0];
+        int j = location[1];
         return physics.grid[i][j];
     }
-
-    /*internals*/
-
-    private static final Vector2 VECTOR_2D = new Vector2();
 
 }

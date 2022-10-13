@@ -30,17 +30,25 @@ public class Body {
         this.level = level;
     }
 
-    public void update(float deltaTime) {
-        transform.update(deltaTime); // 1. update state
-        Animator.syncAnimationWithState(this); // 2. sync animation with state
-        if (animation != null) animation.update(deltaTime); // 3. update animation
+    public void setAnimation(String animationName, boolean flipped) {
+        Animation animation = AnimationBuilder.buildAnimation(animationName, flipped);
+        setAnimation(animation);
     }
 
-    public void animate(String animationName, boolean flipped) {
-        Animation newAnimation = AnimationBuilder.buildAnimation(animationName, flipped);
-        if (animation == newAnimation) return;
-        if (animation != null) animation.reset(); // quickfix todo conceptualize
-        animation = newAnimation;
+    public void setAnimation(Animation animation) {
+        if (this.animation == animation) return;
+        if (this.animation != null) this.animation.stop();
+        this.animation = animation;
+    }
+
+    public Animation getAnimation() {
+        return animation;
+    }
+
+    public void update(float deltaTime) {
+        transform.update(deltaTime); // 1. update state
+        Animator.update(this); // 2. sync animation with state
+        if (animation != null) animation.update(deltaTime); // 3. update animation
     }
 
     public TextureRegion getImageOrNull() {
@@ -48,33 +56,25 @@ public class Body {
         return animation.getImage();
     }
 
+    public Cell getCellOrNull() {
+        return level.findCellOrNull(position);
+    }
+
     public Rectangle getBounds() {
         TextureRegion image = getImageOrNull();
         if (image == null) return bounds.setPosition(0, 0).setSize(0, 0);
 
+        // position
         float w = image.getRegionWidth();
         float h = image.getRegionHeight();
         float x = position.x - w / 2;
         float y = position.y - h / 2;
 
-        switch (face) {
-            case LOOKING_LEFT:
-            case LOOKING_STRAIGHT: {
-                x -= pivot.x;
-                y -= pivot.y;
-                break;
-            }
-            case LOOKING_RIGHT: {
-                x += pivot.x;
-                y -= pivot.y;
-                break;
-            }
-        }
-        return bounds.setPosition(x, y).setSize(w, h);
-    }
+        // position offset
+        float dx = face != null && face.isLookingRight() ? pivot.x : -pivot.x;
+        float dy = -pivot.y;
 
-    public Cell getCellOrNull() {
-        return level.findCellOrNull(position);
+        return bounds.setPosition(x + dx, y + dy).setSize(w, h);
     }
 
     @Override

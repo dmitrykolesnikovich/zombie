@@ -12,5 +12,6 @@ public class Physics {
     public Map<Integer, Zone> zones = new HashMap<>();
     public final List<Cell> cells = new ArrayList<>();
     public Cell[][] grid;
+    public float cellSide = 16;
 
 }
