@@ -3,14 +3,11 @@ package zombie;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Color;
 import zombie.features.*;
 import zombie.types.Level;
 import zombie.types.LevelBuilder;
 
 public class Context extends ApplicationAdapter {
-
-    private static final Color PASSABLE_CELL_OUTLINE_COLOR = new Color(0.8f, 0.8f, 0.2f, 1);
 
     public Level level;
     public boolean isDebugEnabled = false;
@@ -52,7 +49,7 @@ public class Context extends ApplicationAdapter {
         Renderer.drawBodies(level);
         Renderer.drawWave(level);
         if (isDebugEnabled) {
-            Renderer.drawCells(level, PASSABLE_CELL_OUTLINE_COLOR);
+            Renderer.drawCells(level);
         }
     }
 

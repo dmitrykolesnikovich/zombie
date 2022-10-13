@@ -12,6 +12,8 @@ import zombie.types.*;
 
 import java.util.List;
 
+import static zombie.features.Debug.PASSABLE_CELL_OUTLINE_COLOR;
+
 public class Renderer {
 
     private static final float[] RECTANGLE_2D = new float[8];
@@ -66,13 +68,13 @@ public class Renderer {
         renderer.end();
     }
 
-    public static void drawCells(Level level, Color color) {
+    public static void drawCells(Level level) {
         ShapeRenderer renderer = level.cellsRenderer;
         Body hero = level.hero;
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
         for (Cell cell : level.physics.cells) {
-            drawCell(renderer, cell, level.physics.cellSide, cell.isPassable() ? color : Color.DARK_GRAY);
+            drawCell(renderer, cell, level.physics.cellSide, cell.isPassable() ? PASSABLE_CELL_OUTLINE_COLOR : Color.DARK_GRAY);
         }
         if (hero != null) {
             Cell heroCell = hero.getCellOrNull();
