@@ -11,19 +11,20 @@ public class Cell {
 
     public Level level;
     public Body body;
-    private Vector2 centerIso;
+    private Vector2 center;
 
     public boolean isPassable() {
         return zone.passable && body == null;
     }
 
-    public Vector2 getCenterIso() {
+    // iso
+    public Vector2 getCenter() {
         float side = level.physics.cellSide;
-        if (centerIso == null) {
-            centerIso = new Vector2(j * side, i * side).add(side * 0.5f, side * 0.5f);
-            Isometry.convertOrthoToIso(centerIso);
+        if (center == null) {
+            center = new Vector2(j * side, i * side).add(side * 0.5f, side * 0.5f);
+            Isometry.convertOrthoToIso(center);
         }
-        return centerIso;
+        return center;
     }
 
     @Override

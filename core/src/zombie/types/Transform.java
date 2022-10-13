@@ -19,6 +19,7 @@ public class Transform {
             if (running) {
                 body.face = movement.isRight() ? Face.LOOKING_RIGHT : Face.LOOKING_LEFT;
             } else {
+                // stop
                 movement = null;
             }
         }
@@ -30,8 +31,8 @@ public class Transform {
     }
 
     public void placeTo(Cell cell) {
-        Vector2 centerIso = cell.getCenterIso();
-        placeTo(centerIso);
+        Vector2 position = cell.getCenter();
+        placeTo(position);
     }
 
     public void placeTo(Vector2 position) {
@@ -61,10 +62,8 @@ public class Transform {
         } else {
             path = new Cell[]{currentCell, cell};
         }
-        move(path);
-    }
 
-    public void move(Cell[] path) {
+        // start
         movement = new Movement(path);
     }
 

@@ -8,8 +8,7 @@ public class CellBuilder {
         Cell cell = new Cell();
         cell.i = Integer.parseInt(cellElement.getAttribute("i"));
         cell.j = Integer.parseInt(cellElement.getAttribute("j"));
-        int zoneId = Integer.parseInt(cellElement.getAttribute("zone"));
-        cell.zone = physics.zones.get(zoneId);
+        cell.zone = physics.zones.get(Integer.parseInt(cellElement.getAttribute("zone")));
         return cell;
     }
 
