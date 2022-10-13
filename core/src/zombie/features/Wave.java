@@ -4,6 +4,7 @@ import zombie.types.AnimationBuilder;
 import zombie.types.Cell;
 import zombie.types.Level;
 
+// quickfix todo conceptualize
 public class Wave {
 
     public static void animateWave(Cell cell) {

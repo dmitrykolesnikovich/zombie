@@ -4,6 +4,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import zombie.Utils;
 import zombie.types.AnimationBuilder;
+import zombie.types.Body;
 import zombie.types.Cell;
 import zombie.types.Level;
 
@@ -18,7 +19,8 @@ public class MoveHero extends InputAdapter {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (level.hero == null) return false;
+        Body hero = level.hero;
+        if (hero == null) return false;
 
         touchPoint.set(screenX, screenY);
         Utils.unproject(level.camera, touchPoint);
@@ -27,7 +29,7 @@ public class MoveHero extends InputAdapter {
         if (cell == null) return false;
         if (!cell.isPassable()) return false;
 
-        level.hero.transform.moveTo(cell);
+        hero.transform.moveTo(cell);
         Wave.animateWave(cell);
         return true;
     }
