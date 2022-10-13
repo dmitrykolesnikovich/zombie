@@ -33,7 +33,6 @@ public class Level {
 
     public final Vector2 pivot = new Vector2();
     public Body hero;
-    public Animation wave;
     public InputMultiplexer inputController;
 
     /*physics*/
@@ -43,6 +42,7 @@ public class Level {
 
     /*graphics*/
 
+    public Animation wave;
     public TileAtlas tiles;
     public final OrthographicCamera camera = new OrthographicCamera();
     public final SpriteBatch tilesRenderer = new SpriteBatch();
@@ -58,7 +58,9 @@ public class Level {
     }
 
     public void update(float deltaTime) {
-        for (Body body : bodies) body.update(deltaTime);
+        for (Body body : bodies) {
+            body.update(deltaTime);
+        }
         if (wave != null && !wave.update(deltaTime)) wave = null;
     }
 
