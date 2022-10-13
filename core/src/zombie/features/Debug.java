@@ -4,11 +4,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import zombie.Context;
 
-public class DebugFeature extends InputAdapter {
+public class Debug extends InputAdapter {
 
     private final Context context;
 
-    public DebugFeature(Context context) {
+    public Debug(Context context) {
         this.context = context;
     }
 

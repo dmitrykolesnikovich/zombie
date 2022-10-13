@@ -7,13 +7,13 @@ import zombie.types.AnimationBuilder;
 import zombie.types.Cell;
 import zombie.types.Level;
 
-public class MoveHeroFeature extends InputAdapter {
+public class MoveHero extends InputAdapter {
 
     private final Level level;
     private final Vector2 touchPoint = new Vector2();
 
 
-    public MoveHeroFeature(Level level) {
+    public MoveHero(Level level) {
         this.level = level;
     }
 

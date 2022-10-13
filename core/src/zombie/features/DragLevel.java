@@ -4,10 +4,9 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import zombie.Utils;
-import zombie.types.Cell;
 import zombie.types.Level;
 
-public class DragLevelFeature extends InputAdapter {
+public class DragLevel extends InputAdapter {
 
     private final Level level;
     private final Vector2 initialTouchPoint = new Vector2();
@@ -16,7 +15,7 @@ public class DragLevelFeature extends InputAdapter {
     private final Vector2 currentTouchPoint = new Vector2();
     private boolean isDown = false;
 
-    public DragLevelFeature(Level level) {
+    public DragLevel(Level level) {
         this.level = level;
     }
 

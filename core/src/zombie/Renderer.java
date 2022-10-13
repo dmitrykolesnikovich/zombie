@@ -7,10 +7,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import zombie.features.DepthSorting;
 import zombie.types.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class Renderer {
@@ -18,7 +17,6 @@ public class Renderer {
     private static final float[] RECTANGLE_2D = new float[8];
     private static final float[] RECTANGLE_ISO = new float[8];
     private static final Vector2 VECTOR_ISO = new Vector2();
-    private static final List<Body> SORTED_BODIES = new ArrayList<>();
 
     public static void drawBackground(Level level) {
         ScreenUtils.clear(level.backgroundColor);
@@ -36,27 +34,10 @@ public class Renderer {
 
     public static void drawBodies(Level level) {
         SpriteBatch renderer = level.bodiesRenderer;
-        List<Body> bodies = level.bodies;
+        List<Body> bodies = DepthSorting.sortBodies(level.bodies);
 
-        // sort
-        SORTED_BODIES.clear();
-        SORTED_BODIES.addAll(bodies);
-        SORTED_BODIES.sort((body1, body2) -> {
-            int UNDER = 1;
-            int ABOVE = -1;
-            Cell min = body1.placementCells.get(0);
-            Cell max = body1.placementCells.get(body1.placementCells.size() - 1);
-            Cell current = body2.placementCells.get(0);
-            if (current.j > max.j) return ABOVE;
-            if (current.j < min.j) return UNDER;
-            if (current.i > min.i) return UNDER;
-            if (current.i < min.i) return ABOVE;
-            return 0;
-        });
-
-        // sorted draw
         renderer.begin();
-        for (Body body : SORTED_BODIES) {
+        for (Body body : bodies) {
             if (!body.isVisible) continue;
             TextureRegion image = body.getImageOrNull();
             Rectangle bounds = body.getBounds();

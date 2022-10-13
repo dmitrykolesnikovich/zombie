@@ -4,11 +4,11 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.MathUtils;
 import zombie.types.Level;
 
-public class ZoomLevelFeature extends InputAdapter {
+public class ZoomLevel extends InputAdapter {
 
     private final Level level;
 
-    public ZoomLevelFeature(Level level) {
+    public ZoomLevel(Level level) {
         this.level = level;
     }
 
