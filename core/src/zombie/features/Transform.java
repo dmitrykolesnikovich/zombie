@@ -57,16 +57,7 @@ public class Transform {
     /*internals*/
 
     private void start(Cell source, Cell target) {
-        Cell[][] grid = body.level.physics.grid;
-        Cell[] path;
-        Cell middleCell = grid[source.i][target.j];
-        if (middleCell == null) {
-            path = new Cell[]{source, target};
-        } else if (middleCell != source && middleCell != target) {
-            path = new Cell[]{source, middleCell, target};
-        } else {
-            path = new Cell[]{source, target};
-        }
+        Cell[] path = PathFinding.findPath(body.level.physics.grid, source, target);
         movement = new Movement(path);
     }
 
