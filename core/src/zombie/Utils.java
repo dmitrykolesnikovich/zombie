@@ -53,10 +53,10 @@ public class Utils {
         screenCoords.y = VECTOR3.y;
     }
 
-    public static void convertGraphPathToCollection(GraphPath<Cell> graphPath, List<Cell> cells) {
+    public static void convertPathToCollection(GraphPath<Cell> path, List<Cell> cells) {
         cells.clear();
-        for (int index = 0; index < graphPath.getCount(); index++) {
-            Cell cell = graphPath.get(index);
+        for (int index = 0; index < path.getCount(); index++) {
+            Cell cell = path.get(index);
             cells.add(cell);
         }
     }

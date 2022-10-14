@@ -17,6 +17,6 @@ public class Physics {
     public float cellSide = 16;
     public List<Cell> cells;
     public Cell[][] grid;
-    public IndexedGraph<Cell> graph;
+    public IndexedGraph<Cell> graph; // path finding
 
 }

@@ -15,22 +15,25 @@ import java.util.List;
 // https://happycoding.io/tutorials/libgdx/pathfinding
 public class PathFinding {
 
-    private static final List<Cell> PATH = new ArrayList<>();
+    private static final List<Cell> CELLS = new ArrayList<>();
 
     public static List<Cell> findPath(IndexedGraph<Cell> graph, Cell source, Cell target) {
-        GraphPath<Cell> graphPath = new DefaultGraphPath<>();
+        GraphPath<Cell> path = new DefaultGraphPath<>();
         PathFinder<Cell> pathFinder = new IndexedAStarPathFinder<>(graph);
-        pathFinder.searchNodePath(source, target, CellHeuristic.INSTANCE, graphPath);
-        Utils.convertGraphPathToCollection(graphPath, PATH);
-        return PATH;
+        pathFinder.searchNodePath(source, target, CellHeuristic.INSTANCE, path);
+        Utils.convertPathToCollection(path, CELLS);
+        return CELLS;
     }
 
     public static IndexedGraph<Cell> buildGraph(Cell[][] grid) {
-        IndexedGraph<Cell> graph = new CellGraph();
+        CellGraph graph = new CellGraph();
+
         return graph;
     }
 
 }
+
+/*internals*/
 
 class CellHeuristic implements Heuristic<Cell> {
 
