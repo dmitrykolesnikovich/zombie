@@ -1,5 +1,7 @@
 package zombie.types;
 
+import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
+
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +15,8 @@ public class Physics {
     public int height;
     public Map<Integer, Zone> zones;
     public float cellSide = 16;
-    public Cell[][] grid;
     public List<Cell> cells;
+    public Cell[][] grid;
+    public IndexedGraph<Cell> graph;
 
 }

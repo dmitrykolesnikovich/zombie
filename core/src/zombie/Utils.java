@@ -1,10 +1,14 @@
 package zombie;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import zombie.types.Cell;
+
+import java.util.List;
 
 public class Utils {
 
@@ -47,6 +51,14 @@ public class Utils {
 
         screenCoords.x = VECTOR3.x;
         screenCoords.y = VECTOR3.y;
+    }
+
+    public static void convertGraphPathToCollection(GraphPath<Cell> graphPath, List<Cell> cells) {
+        cells.clear();
+        for (int index = 0; index < graphPath.getCount(); index++) {
+            Cell cell = graphPath.get(index);
+            cells.add(cell);
+        }
     }
 
 }

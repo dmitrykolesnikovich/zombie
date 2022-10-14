@@ -3,6 +3,8 @@ package zombie.features;
 import com.badlogic.gdx.math.Vector2;
 import zombie.types.*;
 
+import java.util.List;
+
 public class Transform {
 
     private final Body body;
@@ -57,7 +59,7 @@ public class Transform {
     /*internals*/
 
     private void start(Cell source, Cell target) {
-        Cell[] path = PathFinding.findPath(body.level.physics.grid, source, target);
+        List<Cell> path = PathFinding.findPath(body.level.physics.graph, source, target);
         movement = new Movement(path);
     }
 

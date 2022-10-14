@@ -12,6 +12,7 @@ public class Cell {
     public Physics physics;
     public Body body;
     private Vector2 centerIso;
+    public int index; // path finding
 
     public boolean isPassable() {
         return zone.passable && body == null;

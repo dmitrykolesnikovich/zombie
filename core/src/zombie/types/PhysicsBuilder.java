@@ -2,6 +2,7 @@ package zombie.types;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
+import zombie.features.PathFinding;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -42,14 +43,15 @@ public class PhysicsBuilder {
 
         // cells
         Array<XmlReader.Element> cellElements = physicsElement.getChildByName("cells").getChildByName("list").getChildrenByName("PhysicsCell");
-        physics.grid = new Cell[physics.width][physics.height];
         physics.cells = new ArrayList<>();
+        physics.grid = new Cell[physics.width][physics.height];
         for (XmlReader.Element cellElement : cellElements) {
             Cell cell = CellBuilder.buildCell(cellElement, physics);
-            physics.grid[cell.i][cell.j] = cell;
             physics.cells.add(cell);
+            physics.grid[cell.i][cell.j] = cell;
         }
 
+        physics.graph = PathFinding.initializeGraph(physics.grid);
         return physics;
     }
 
