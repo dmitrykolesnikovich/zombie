@@ -25,7 +25,7 @@ public class PathFinding {
         return PATH;
     }
 
-    public static IndexedGraph<Cell> initializeGraph(Cell[][] grid) {
+    public static IndexedGraph<Cell> buildGraph(Cell[][] grid) {
         IndexedGraph<Cell> graph = new CellGraph();
         return graph;
     }
