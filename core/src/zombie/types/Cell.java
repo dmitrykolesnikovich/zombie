@@ -15,7 +15,8 @@ public class Cell {
     public int index; // path finding
 
     public boolean isPassable() {
-        return zone.passable && body == null;
+        if (body == physics.level.hero) return true; // quickfix for path finding todo improve
+        return body == null && zone.passable;
     }
 
     public Vector2 getCenterIso() {

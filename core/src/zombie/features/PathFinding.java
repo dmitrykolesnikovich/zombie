@@ -1,7 +1,6 @@
 package zombie.features;
 
 import com.badlogic.gdx.ai.pfa.*;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import zombie.Utils;
 import zombie.types.Cell;
@@ -22,15 +21,42 @@ public class PathFinding {
         PathFinder<Cell> pathFinder = new IndexedAStarPathFinder<>(graph);
         pathFinder.searchNodePath(source, target, CellHeuristic.INSTANCE, path);
         Utils.convertPathToCollection(path, CELLS);
+        if (CELLS.isEmpty()) {
+            System.out.println("breakpoint");
+        }
         return CELLS;
     }
 
     public static IndexedGraph<Cell> buildGraph(Cell[][] grid) {
         CellGraph graph = new CellGraph();
-        // todo
+        int rowCount = grid.length;
+        int columnCount = grid[0].length;
+
+        // cells
+        for (int row = 0; row < rowCount; row++) {
+            for (int column = 0; column < columnCount; column++) {
+                Cell cell = grid[row][column];
+                graph.addCell(cell);
+            }
+        }
+
+        // steps
+        for (int row = 0; row < rowCount; row++) {
+            for (int column = 0; column < columnCount; column++) {
+                Cell cell = grid[row][column];
+                int top_row = row - 1;
+                int bottom_row = row + 1;
+                int left_column = column - 1;
+                int right_column = column + 1;
+                if (top_row >= 0) graph.addStep(cell, grid[top_row][column]);
+                if (bottom_row < rowCount) graph.addStep(cell, grid[bottom_row][column]);
+                if (left_column >= 0) graph.addStep(cell, grid[row][left_column]);
+                if (right_column < columnCount) graph.addStep(cell, grid[row][right_column]);
+            }
+        }
+
         return graph;
     }
-
 }
 
 /*internals*/
@@ -54,11 +80,16 @@ class CellGraph implements IndexedGraph<Cell> {
     private final ObjectMap<Cell, Array<Connection<Cell>>> stepMap = new ObjectMap<>();
 
     public void addCell(Cell cell) {
+        if (cell == null || !cell.isPassable()) return;
+
         cell.index = cells.size;
         cells.add(cell);
     }
 
     public void addStep(Cell source, Cell target) {
+        if (source == null || !source.isPassable()) return;
+        if (target == null || !target.isPassable()) return;
+
         Step step = new Step(source, target);
         steps.add(step);
         if (!stepMap.containsKey(source)) stepMap.put(source, new Array<>());

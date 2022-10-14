@@ -51,7 +51,6 @@ public class PhysicsBuilder {
             physics.grid[cell.i][cell.j] = cell;
         }
 
-        physics.graph = PathFinding.buildGraph(physics.grid);
         return physics;
     }
 
