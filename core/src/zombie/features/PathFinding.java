@@ -27,7 +27,7 @@ public class PathFinding {
 
     public static IndexedGraph<Cell> buildGraph(Cell[][] grid) {
         CellGraph graph = new CellGraph();
-
+        // todo
         return graph;
     }
 
@@ -41,7 +41,8 @@ class CellHeuristic implements Heuristic<Cell> {
 
     @Override
     public float estimate(Cell source, Cell target) {
-        return Vector2.dst(source.i, source.j, target.i, target.j);
+        int cost = Math.abs(target.i - source.i) + Math.abs(target.j - source.j);
+        return cost;
     }
 
 }
