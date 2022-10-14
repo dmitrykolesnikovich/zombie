@@ -8,23 +8,34 @@ import java.util.List;
 public class Transform {
 
     private final Body body;
-    public Movement movement;
+    private Movement movement;
 
     public Transform(Body body) {
         this.body = body;
     }
 
     public void update(float deltaTime) {
-        if (movement != null) {
+        if (isMoving()) {
             float cellProgressDelta = body.speed / body.level.physics.cellSide * deltaTime;
             boolean running = movement.updateCurrentPosition(cellProgressDelta);
             placeTo(movement.getCurrentPosition());
             if (running) {
-                body.face = movement.isRight() ? Face.LOOKING_RIGHT : Face.LOOKING_LEFT;
+                body.face = isMovingRight() ? Face.LOOKING_RIGHT : Face.LOOKING_LEFT;
             } else {
                 stop();
             }
         }
+    }
+
+    public boolean start(Cell source, Cell target) {
+        List<Cell> path = PathFinding.findPath(body.level.physics.graph, source, target);
+        if (path.isEmpty()) return false;
+        movement = new Movement(path);
+        return true;
+    }
+
+    public void stop() {
+        movement = null;
     }
 
     public void placeTo(int i, int j) {
@@ -42,29 +53,30 @@ public class Transform {
         body.updateCells();
     }
 
-    public void moveTo(int i, int j) {
+    public boolean moveTo(int i, int j) {
         Level level = body.level;
         Cell cell = level.physics.grid[i][j];
-        moveTo(cell);
+        return moveTo(cell);
     }
 
-    public void moveTo(Cell cell) {
+    public boolean moveTo(Cell cell) {
         Level level = body.level;
-        Cell currentCell = level.findCellOrNull(body.position);
-        if (cell == null) return;
-        if (currentCell == null) return;
-        start(currentCell, cell);
+        Cell currentCell = body.getCellOrNull();
+        if (cell == null) return false;
+        if (currentCell == null) return false;
+        return start(currentCell, cell);
     }
 
-    /*internals*/
-
-    private void start(Cell source, Cell target) {
-        List<Cell> path = PathFinding.findPath(body.level.physics.graph, source, target);
-        movement = new Movement(path);
+    public boolean isMoving() {
+        return movement != null;
     }
 
-    private void stop() {
-        movement = null;
+    public boolean isMovingDown() {
+        return movement != null && movement.getCurrentDirection().y > 0;
+    }
+
+    public boolean isMovingRight() {
+        return movement != null && movement.getCurrentDirection().x > 0;
     }
 
 }

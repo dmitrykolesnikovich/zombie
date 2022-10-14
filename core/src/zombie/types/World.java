@@ -59,16 +59,16 @@ public class World {
 
                 // hero
                 level.hero.transform.placeTo(50, 28);
-                level.hero.speed = 24;
+                level.hero.speed = 48;
 
                 // buildings
                 level.addBody(1, "sklep").transform.placeTo(50, 30);
-                /*level.addBody(2, "tower").transform.placeTo(50, 40);
+                level.addBody(2, "tower").transform.placeTo(50, 40);
 
                 // trees
                 level.addBody(3, "tropic_palm").transform.placeTo(50, 50);
                 level.addBody(4, "oak").transform.placeTo(50, 60);
-                level.addBody(5, "palm").transform.placeTo(50, 70);*/
+                level.addBody(5, "palm").transform.placeTo(50, 70);
                 break;
             }
             default:

@@ -5,9 +5,9 @@ import zombie.types.Body;
 public class Animator {
 
     public static boolean update(Body body) {
-        Movement movement = body.transform.movement;
-        boolean isMoving = movement != null;
-        boolean isMovingDown = isMoving && movement.isDown();
+        Transform transform = body.transform;
+        boolean isMoving = transform.isMoving();
+        boolean isMovingDown = transform.isMovingDown();
 
         switch (body.name) {
             case "hero":

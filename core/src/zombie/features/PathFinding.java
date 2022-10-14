@@ -21,9 +21,6 @@ public class PathFinding {
         PathFinder<Cell> pathFinder = new IndexedAStarPathFinder<>(graph);
         pathFinder.searchNodePath(source, target, CellHeuristic.INSTANCE, path);
         Utils.convertPathToCollection(path, CELLS);
-        if (CELLS.isEmpty()) {
-            System.out.println("breakpoint");
-        }
         return CELLS;
     }
 

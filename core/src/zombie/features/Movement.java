@@ -11,6 +11,7 @@ public class Movement {
     private int currentCellIndex; // 0..path.length - 1
     private float currentCellProgress; // 0..1
     private final Vector2 currentPosition = new Vector2();
+    private final Vector2 currentDirection = new Vector2();
 
     public Movement(List<Cell> path) {
         this.path = path;
@@ -61,16 +62,11 @@ public class Movement {
         return currentPosition;
     }
 
-    public boolean isRight() {
+    public Vector2 getCurrentDirection() {
         Vector2 p1 = path.get(currentCellIndex).getCenterIso();
         Vector2 p2 = path.get(currentCellIndex + 1).getCenterIso();
-        return p2.x > p1.x;
-    }
-
-    public boolean isDown() {
-        Vector2 p1 = path.get(currentCellIndex).getCenterIso();
-        Vector2 p2 = path.get(currentCellIndex + 1).getCenterIso();
-        return p2.y > p1.y;
+        currentDirection.set(p2.x - p1.x, p2.y - p1.y);
+        return currentDirection;
     }
 
 }
